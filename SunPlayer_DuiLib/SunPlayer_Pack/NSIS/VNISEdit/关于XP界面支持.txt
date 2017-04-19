@@ -1,0 +1,4 @@
+由于 Delphi 控件的未知因素，使得如果加入 XP 界面支持，可能部分用户使用 VNISEdit 的时候会出现一些未知错误，因此 VNISEdit 将不会加入 XP 界面支持，然而对于部分使用了之前的版本仍然没有出现错误的用户来说，这是一种损失，所以这里仍然提供一个外部引用 XP 界面支持的方法，在目录中有一个文件“XPTheme.manifest”，把它改名“VNISEdit.exe.manifest”，那么 VNISEdit 将会仍然显示 XP 支持的界面。
+
+restools
+2005-4-16

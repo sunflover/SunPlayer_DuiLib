@@ -1,0 +1,81 @@
+This Licence applies to the Dcryptdll, Ncrypt, and NGenKeys programs included in this "Dcryptdll" distribution.
+
+License
+Copyright © 2005 Ron Bishop
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute
+it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented;
+   you must not claim that you wrote the original software.
+   If you use this software in a product, an acknowledgment in the
+   product documentation would be appreciated but is not required.
+2. Altered versions must be plainly marked as such,
+   and must not be misrepresented as being the original software.
+3. This notice may not be removed or altered from any distribution.
+ 
+Copyright © 2005 Ron Bishop
+
+
+Note the Arc4 symmetric cipher code used in this software comes from the FreeBsd system and was obtained from the LXR Project at the following url:  http://fxr.watson.org/
+*********************************************
+This Arc4 implementation is Copyright (c) 2003 Markus Friedl <markus@openbsd.org> with the following license terms:
+
+ Permission to use, copy, modify, and distribute this software for any  purpose with or without fee is hereby granted, provided that the above  copyright notice and this permission notice appear in all copies.
+
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+**********************************************
+
+I simply renamed the arc4 source from a .c to a .cpp file, modified the function declaration / function definition statements appropriately, edited the variable type definitions a bit for my preferences, and renamed the variables slightly to avoid a Linker name collision I was having when using this code in another project.
+
+Thank you FreeBsd / OpenBsd and especially YOU Markus! 
+
+
+Also note that the MD5 code included in this distribution was obtained from the following url: http://www.fourmilab.ch/ as a distribution named MD5.zip
+
+Again, I simply renamed to .cpp and modified the function declaration / function definition statements accordingly.
+
+The MD5.c source file (renamed to MD5.cpp) contains the following text:
+***********************************************
+ This code implements the MD5 message-digest algorithm.
+ The algorithm is due to Ron Rivest.	This code was
+ written by Colin Plumb in 1993, no copyright is claimed.
+ This code is in the public domain; do with it what you wish.
+
+ Equivalent code is available from RSA Data Security, Inc.
+ This code has been tested against that, and is equivalent,
+ except that you don't need to include two pages of legalese
+ with every copy.
+
+ To compute the message digest of a chunk of bytes, declare an
+ MD5Context structure, pass it to MD5Init, call MD5Update as
+ needed on buffers full of bytes, and then call MD5Final, which
+ will fill a supplied 16-byte array with the digest.
+
+ Brutally hacked by John Walker back from ANSI C to K&R (no
+ prototypes) to maintain the tradition that Netfone will compile
+ with Sun's original "cc". 
+*********************************************
+
+Also in the main.c  file included with the MD5.zip distribution from the web site (which I have NOT included as it is not necessary) is the following text:
+*********************************************
+  Calculate or Check MD5 Signature of File or Command Line Argument
+
+			    by John Walker
+		                 http://www.fourmilab.ch/
+
+		This program is in the public domain.
+*********************************************
+
+Thank you John!

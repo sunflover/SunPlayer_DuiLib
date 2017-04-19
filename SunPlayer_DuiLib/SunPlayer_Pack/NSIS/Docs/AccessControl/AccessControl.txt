@@ -1,0 +1,238 @@
+访问控制插件|ACCESS CONTROL PLUGIN
+---------------------
+http://www.dangloude.com/?p=47
+
+Written by Mathias Hasselmann <mathias@taschenorakel.de>
+Modifications by Afrow UK <afrowuk@afrowsoft.co.uk>
+
+NSIS 访问控制插件提供了一系列相关的函数用于管理Windows NT的访问控制列表（ACL）。
+
+变更历史
+-------------
+
+v1.0.7.0 - 25th February 2012 - Afrow UK
+* Fixed DisableFileInheritance (broken in v1.0.5.0).
+
+v1.0.6.0 - 26th January 2012 - Afrow UK
+* Wrote replacements for ConvertSidToStringSid/ConvertStringSidToSid for
+  backwards compatibility with Windows NT4/ME (ANSI build only).
+* Loads RegSetKeySecurity/RegGetKeySecurity functions at run-time for
+  backwards compatibility with Windows NT4/ME (ANSI build only).
+* Removed commented out legacy code.
+
+v1.0.5.0 - 25th January 2012 - Afrow UK
+* Removed IsUserTheAdministrator.
+* Added NameToSid.
+* Major code cleanup/rewrite.
+* Proper Unicode build (with Unicode plugin API).
+* Support for 64-bit registry (SetRegView 64).
+* Functions now return "ok" on success or "error" otherwise. On "error",
+  the next item on the stack will be the error description.
+* Added version information resource.
+
+23rd January 2008 - Afrow UK
+* Added function IsUserTheAdministrator.
+* Cleaned up code. Rebuilt as pure cpp, decreasing DLL size.
+* No longer using gobal temp variable for strings.
+
+7th January 2008 - Afrow UK
+* Fixed registry instructions.
+
+8th November 2007 - Afrow UK
+* EnableInheritance/DisableInheritance names changed.
+* Functions added:
+    EnableFileInheritance
+    DisableFileInheritance
+    EnableRegKeyInheritance
+    DisableRegKeyInheritance
+    GetFileOwner
+    GetFileGroup
+    GetRegKeyOwner
+    GetRegKeyGroup
+    ClearOnFile
+    ClearOnRegKey
+    GetCurrentUserName
+    SidToName
+
+21st August 2007 - Afrow UK
+* Added /noinherit switch to prevent child objects inheriting a
+  particular permission.
+* Added EnableInheritance and DisableInheritance functions.
+* Removed code to print items in the install log.
+
+13th July 2007 - kichik
+* Return proper error codes (return value instead of GetLastError())
+
+30th June 2006 - Afrow UK
+* Error MessageBox removed.
+* Error messages are now just returned on NSIS stack.
+
+
+约定
+-----------
+
+<filename>
+  有效的Windows（TM）文件名 (如 "C:\WINDOWS\" 或"\\HOSTNAME\SHARE")。
+
+<rootkey>
+  众所周知的注册表根键。下列为值的定义:
+
+    HKCR - HKEY_CLASSES_ROOT
+    HKLM - HKEY_LOCAL_MACHINE
+    HKCU - HKEY_CURRENT_USER
+    HKU  - HKEY_USERS
+
+<regkey>
+  注册表中可修改的项名称 (如 "Software\Microsoft\Windows")。
+
+<trustee>
+  有效的Windows帐户（TM）。该帐户可以被指定为相对帐户名称(如 "Administrator" 或 "Everyone"),
+  一个域帐户名(如 "Domain\Administrator")或安全标识符(SID, 如 "(S-1-5-32-545)")。
+  "BUILTIN\USERS" 同样也是有效的帐户名。
+  可以打开 控制面板 > 管理工具 > 计算机管理 > 本地用户和组 获取更多的有效的帐户名。
+
+<permissions>
+  访问权限的组合 (如 "FullAccess" 或 "GenericRead + GenericWrite")。
+  在源代码 AccessControl.cpp 中可查看完整列表的访问权限。
+
+/NOINHERIT
+  指定的ACEs(访问控制列表)不是继承的子节点 (如 目录或注册表根键)。
+
+错误处理
+---------------
+
+检查堆栈上返回值并处理错误：
+
+AccessControl::SetOnRegKey HKLM Software\MyApp Stuart FullAccess
+Pop $R0
+${If} $R0 == error
+    Pop $R0
+    DetailPrint `AccessControl 错误: $R0`
+${EndIf}
+
+函数
+---------
+
+GrantOnFile [/NOINHERIT] <filename> <trustee> <permissions>
+GrantOnRegKey [/NOINHERIT] <rootkey> <regkey> <trustee> <permissions>
+Pop $Result ; "ok" 或 "error"
+
+  指定帐户获得该对象的请求访问权限。
+
+---------
+
+SetOnFile [/NOINHERIT] <filename> <trustee> <permissions>
+SetOnRegKey [/NOINHERIT] <rootkey> <regkey> <trustee> <permissions>
+Pop $Result ; "ok" 或 "error"
+
+  把指定帐户对该对象现有的访问权限替换成任何指定的访问权限。
+
+---------
+
+ClearOnFile [/NOINHERIT] <filename> <trustee> <permissions>
+ClearOnRegKey [/NOINHERIT] <rootkey> <regkey> <trustee> <permissions>
+Pop $Result ; "ok" 或 "error"
+
+  把对象上的帐户替换成指定的帐户及访问权限。
+
+---------
+
+DenyOnFile [/NOINHERIT] <filename> <trustee> <permissions>
+DenyOnRegKey [/NOINHERIT] <rootkey> <regkey> <trustee> <permissions>
+Pop $Result ; "ok" 或 "error"
+
+  明确地拒绝对象的访问权限。
+
+---------
+
+RevokeOnFile [/NOINHERIT] <filename> <trustee> <permissions>
+RevokeOnRegKey [/NOINHERIT] <rootkey> <regkey> <trustee> <permissions>
+Pop $Result ; "ok" 或 "error"
+
+  删除对象上原来定义的访问权限。
+  注意：即使是它们继承的访问权限仍会被删除。
+
+---------
+
+SetFileOwner <filename> <trustee>
+SetRegKeyOwner <rootkey> <regkey> <trustee>
+Pop $Result ; "ok" 或 "error"
+
+  改变一个对象的所有者。
+
+---------
+
+GetFileOwner <filename>
+GetRegKeyOwner <rootkey> <regkey>
+Pop $Owner ; 或 "error"
+
+  获取一个对象的所有者。
+
+---------
+
+SetFileGroup <filename> <trustee>
+SetRegKeyGroup <rootkey> <regkey> <trustee>
+Pop $Result ; "ok" 或 "error"
+
+  改变对象的主要组。
+
+---------
+
+GetFileGroup <filename>
+GetRegKeyGroup <rootkey> <regkey>
+Pop $Group ; 或 "error"
+
+  Gets the primary group of the object.
+  获取对象的主要组。
+
+---------
+
+EnableFileInheritance <filename>
+EnableRegKeyInheritance <rootkey> <regkey>
+Pop $Result ; "ok" 或 "error"
+
+  设置继承父对象的权限。
+
+---------
+
+DisableFileInheritance <filename>
+DisableRegKeyInheritance <rootkey> <regkey>
+Pop $Result ; "ok" 或 "error"
+
+  禁用继承父对象的权限。
+
+---------
+
+SidToName <sidstring>
+Pop $Domain ; 或 "error"
+Pop $Username
+
+  转换本地机器上的SID成相应的用户名和域名。
+
+---------
+
+NameToSid <username>
+Pop $SID ; 或 "error"
+
+  在本地机器上获取指定用户名的SID。
+
+---------
+
+GetCurrentUserName
+Pop $Username ; 或 "error"
+
+  获取运行当前安装程序的用户名。
+
+---------
+
+示例
+---------
+
+# 修改文件"C:\test.txt"使得用户Waterloo\Mathias对其拥有所有权 
+AccessControl::SetFileOwner "C:\test.txt" "Waterloo\Mathias"
+# 修改目录"$INSTDIR\database"使得所有用户对其有读+写权限
+AccessControl::GrantOnFile "$INSTDIR\database" "(BU)" "GenericRead + GenericWrite"
+#修改注册表键HKEY_LOCAL_MACHINE\Software\Vendor\SomeApp使得所有用户(BUILTIN\Users)对其有完全访问权限
+AccessControl::GrantOnRegKey HKLM "Software\Vendor\SomeApp" "(BU)" "FullAccess"
+# 同上，但使用的是数字字符串SID而不是(BU)
+AccessControl::GrantOnRegKey HKLM "Software\Vendor\SomeApp" "(S-1-5-32-545)" "FullAccess"

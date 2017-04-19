@@ -1,0 +1,1039 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>NSIS 新式用户界面 - 文档</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <style type="text/css">
+        /*<![CDATA[*/body
+        {
+            padding: 10px;
+            background-color: #F0F0F0;
+            font-size: 13px;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            text-align: justify;
+        }
+        p, li
+        {
+            font-size: 13px;
+        }
+        table
+        {
+            margin: auto;
+            background-color: #FFFFFF;
+        }
+        .maintable
+        {
+            border: 2px solid #376EAB;
+        }
+        .parameter
+        {
+            font-weight: bold;
+            color: #6586AC;
+        }
+        h1
+        {
+            font-size: 20px;
+            color: #7A7272;
+            font-weight: normal;
+        }
+        h2
+        {
+            font-size: 17px;
+            font-weight: bold;
+            color: #303030;
+        }
+        h3
+        {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2B5885;
+        }
+        pre
+        {
+            font-size: 13px;
+        }
+        div
+        {
+            margin: 20px;
+        }
+        div.settings
+        {
+            margin-right: 0;
+        }
+        a:link, a:visited, a:active
+        {
+            color: #294F75;
+            text-decoration: none;
+        }
+        a:hover
+        {
+            color: #182634;
+            text-decoration: underline;
+        }
+        .trigger
+        {
+            cursor: pointer;
+            cursor: hand;
+            height: 14px;
+        }
+        .toggle
+        {
+            display: none;
+        }
+        .options
+        {
+            text-align: center;
+            cursor: pointer;
+            cursor: hand;
+            color: #294F75;
+        }
+        /*]]>*/</style>
+
+    <script type="text/javascript">
+//<![CDATA[
+
+   var image_open = new Image();
+   image_open.src = "images/open.gif";
+   var image_closed = new Image();
+   image_closed.src = "images/closed.gif";
+   
+   function toggle(image, section) {
+   
+      if(document.all) {
+        if(document.all[section].style.display == "block") {
+           document.all[section].style.display = "none";
+           document.all[image].src = image_closed.src;
+        }
+        else
+        {              
+           document.all[section].style.display = "block";
+           document.all[image].src = image_open.src;
+        }
+      }
+      else
+      {
+      if(document.getElementById(section).style.display == "block") {
+         document.getElementById(section).style.display = "none";
+         document.getElementById(image).src = image_closed.src;
+         }
+      else
+         {              
+         document.getElementById(section).style.display = "block";
+         document.getElementById(image).src = image_open.src;
+         }
+      }
+   
+   }
+
+   function expandall() {
+
+     var divNodeList = document.getElementsByTagName('div'); 
+     for (i = 0; i < divNodeList.length; i++) { 
+        if(divNodeList[i].id) {
+           divNodeList[i].style.display = "block";
+           document.getElementById('trigger_' + divNodeList[i].id.substr(7)).src = "images/open.gif";
+        }
+     }
+     
+   }
+
+   function collapseall() {
+
+     var divNodeList = document.getElementsByTagName('div'); 
+     for (i = 0; i < divNodeList.length; i++) { 
+        if(divNodeList[i].id) {
+           divNodeList[i].style.display = "none";
+           document.getElementById('trigger_' + divNodeList[i].id.substr(7)).src = "images/closed.gif";
+        }
+     }
+
+   }
+
+//]]>
+    </script>
+
+</head>
+<body>
+    <table width="750" class="maintable" cellspacing="0" cellpadding="0" align="center">
+        <tr>
+            <td>
+                <img src="images/header.gif" width="750" height="80" alt="" />
+                <p class="options">
+                    <a onclick="expandall()">[全部展开]</a>&nbsp; &nbsp;<a onclick="collapseall()">[全部折叠]</a></p>
+                <div>
+                    <h1>
+                        介绍</h1>
+                    <div>
+                        <p>
+                            NSIS 2 能够使你更容易地创建自定义用户界面的安装程序. Modern UI (新式用户界面) 提供的界面样式与最近版本的 Windows 所使用的向导的界面样式很相似.</p>
+                        <p>
+                            它包括 NSIS 所有的标准页面 (如 组件选择页面、安装目录选择页面) 以及一些扩展页面。你可以在欢迎页面上提供一些安装相关的介绍, 在完成页面上提供一些选项, 允许用户选择在安装程序关闭时执行。(例如, 应用程序是否立即执行)。你也可以在完成页面为用户提供是否重启系统的选项。</p>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_scr" src="images/closed.gif"
+                                onclick="toggle('trigger_scr', 'toggle_scr');" />
+                            屏幕截图</h3>
+                        <div class="toggle" id="toggle_scr">
+                            <p>
+                                <img src="images/screen1.png" width="503" height="393" alt="" /></p>
+                            <p>
+                                <img src="images/screen2.png" width="503" height="393" alt="" /></p>
+                        </div>
+                    </div>
+                    <h1>
+                        Modern UI 2.0</h1>
+                    <div>
+                        <p>
+                            新版让自定义页面变得更加容易, 因为&nbsp; 更改 NSIS 的标准页面与 MUI 的扩展页面的方法是一样的。现在还可以用其它的 NSIS 插件来为 MUI 添加新页面。你很快就可以看到这类例子。</p>
+                        <p>
+                            欢迎和完成页面不再需要 InstallOptions - 它已经被新的 nsDialogs 插件代替。你可以在直接脚本中用 nsDialogs 创建自定义页面、个性化内置的页面。</p>
+                        <p>
+                            要升级 Modern UI 1.8 的脚本, 你需要这样处理:</p>
+                        <ul>
+                            <li>插入 MUI2.nsh 头文件代替 MUI.nsh。</li>
+                            <li>与 InstallOptions 相关的宏, 已经被分离在一个与 MUI 无关的独立的头文件中。如果你仍然用 InstallOptions 做自定义页面, 你需要插入 InstallOptions.nsh, 并用 INSTALLOPTIONS_* 替代之前的 MUI_INSTALLOPTIONS_*
+                                宏。这些宏的功用还是和原来的一样。</li>
+                            <li>你需要重写自己的个性化代码, 用 nsDialogs 的指令代替 Modern UI 1.8 欢迎与完成页面中所用的 InstallOptions INI 文件 。</li>
+                            <li>在所有的文本中, 用 NSIS 固有的方法规避一些特殊字符。例如, 
+                                $\r$\n 新建一行。</li>
+                        </ul>
+                    </div>
+                    <h1>
+                        脚本头部</h1>
+                    <div>
+                        <p>
+                            Modern UI 的有关设置应该在脚本文件的开头部分插入。遵守如下的顺序是很重要的, 例如, 
+                            应当在插入 "页面宏" 之前设置 "界面设置", 页面的界面设置将会应用于某一类型的所有页面。看看 <a href="#examples">
+                                范例脚本</a> 对你在实际脚本的中应该如何处理这些, 会很有帮助。</p>
+                        <p>
+                            参数需要指定为这样的格式: <span class="parameter">必须项 (选项1 | 选项2)
+                                [可选项]</span></p>
+                    </div>
+                    <h2>
+                        1. 头文件</h2>
+                    <div>
+                        <p>
+                            首先, 在脚本的开头添加此行来引入 Modern UI:</p>
+                        <pre>
+!include MUI2.nsh
+</pre>
+                    </div>
+                    <h2>
+                        2. 界面设置</h2>
+                    <div>
+                        <p>
+                            然后, 你可能需要通过界面设置来更改安装程序的外观。下面这些设置会在所有的页面中生效。<p>
+                                NSIS 编译器内部提供的界面设置 (如 LicenseText,
+                                Icon, CheckBitmap, InstallColors) , 不应该再用在 Modern UI 代码中，因为 Modern
+                                UI 提供了这些设置的默认或扩展的版本。<p>
+                                    范例:</p>
+                                <pre>
+!define MUI_COMPONENTSPAGE_SMALLDESC ;No value
+!define MUI_UI &quot;myUI.exe&quot; ;Value
+!define MUI_INSTFILESPAGE_COLORS &quot;FFFFFF 000000&quot; ;Two colors
+</pre>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_in" src="images/closed.gif"
+                                        onclick="toggle('trigger_in', 'toggle_in');" />
+                                    界面设置</h3>
+                                <div class="toggle" id="toggle_in">
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_ingen" src="images/closed.gif"
+                                            onclick="toggle('trigger_ingen', 'toggle_ingen');" />
+                                        常规界面设置</h3>
+                                    <div class="toggle" id="toggle_ingen">
+                                        <p>
+                                            <strong>MUI_ICON</strong> <span class="parameter">icon_file</span><br />
+                                            安装程序的图标.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico</em></p>
+                                        <p>
+                                            <strong>MUI_UNICON</strong> <span class="parameter">icon_file</span><br />
+                                            卸载程序的图标.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico</em></p>
+                                        <p>
+                                            <strong>MUI_HEADERIMAGE</strong><br />
+                                            一张显示于页眉的图像.</p>
+                                        <div class="settings">
+                                            <p>
+                                                <strong>MUI_HEADERIMAGE_BITMAP</strong> <span class="parameter">bmp_file</span><br />
+                                                显示于安装程序页眉的位图 (推荐尺寸: 150x57 象素).<br />
+                                                <em>默认: ${NSISDIR}\Contrib\Graphics\Header\nsis.bmp</em></p>
+                                            <div class="settings">
+                                                <p>
+                                                    <strong>MUI_HEADERIMAGE_BITMAP_NOSTRETCH</strong><br />
+                                                    不拉伸安装程序的页眉图像. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                                <p>
+                                                    <strong>MUI_HEADERIMAGE_BITMAP_RTL</strong> <span class="parameter">bmp_file</span><br />
+                                                    当使用 RTL 语言时, 将会显示于安装程序的页面页眉的位图. (推荐尺寸: 150x57 象素).<br />
+                                                    <em>默认: 非 RTL 位图</em></p>
+                                                <div class="settings">
+                                                    <p>
+                                                        <strong>MUI_HEADERIMAGE_BITMAP_RTL_NOSTRETCH</strong><br />
+                                                        当使用 RTL 语言适应区域尺寸时, 不拉伸安装程序的页眉图像. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <strong>MUI_HEADERIMAGE_UNBITMAP</strong> <span class="parameter">bmp_file</span><br />
+                                                显示于卸载程序页眉的位图 (推荐尺寸: 150x57 象素).<br />
+                                                <em>默认: 安装程序页眉位图</em></p>
+                                            <div class="settings">
+                                                <p>
+                                                    <strong>MUI_HEADERIMAGE_UNBITMAP_NOSTRETCH</strong><br />
+                                                    不拉伸卸载程序的页眉图像. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                                <p>
+                                                    <strong>MUI_HEADERIMAGE_UNBITMAP_RTL</strong> <span class="parameter">bmp_file</span><br />
+                                                    当使用 RTL 语言时, 将会显示于卸载程序的页面页眉的位图. (推荐尺寸: 150x57 象素).<br />
+                                                    <em>默认: 安装程序 RTL 页眉位图</em></p>
+                                                <div class="settings">
+                                                    <p>
+                                                        <strong>MUI_HEADERIMAGE_UNBITMAP_RTL_NOSTRETCH</strong><br />
+                                                        当使用 RTL 语言适应区域尺寸时, 不拉伸卸载程序的页眉图像. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <strong>MUI_HEADERIMAGE_RIGHT</strong><br />
+                                                令本应显示于左边的页眉图像显示于右面(当使用 RTL 语言时, 它将会显示于左边而不显示于右边).</p>
+                                        </div>
+                                        <p>
+                                            <strong>MUI_BGCOLOR</strong> <span class="parameter">(color: RRGGBBR hexadecimal)</span><br />
+                                            页眉, 欢迎页面和完成页面的背景颜色.<br />
+                                            <em>默认: FFFFFF</em></p>
+                                        <p>
+                                            <strong>MUI_HEADER_TRANSPARENT_TEXT</strong><br />
+                                            为页眉的 label 控件设置一个透明的背景. 在自定义页面设置了一幅大的页眉图片时有用.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inres" src="images/closed.gif"
+                                            onclick="toggle('trigger_inres', 'toggle_inres');" />
+                                        界面资源设置</h3>
+                                    <div class="toggle" id="toggle_inres">
+                                        <p>
+                                            <strong>MUI_UI</strong> <span class="parameter">ui_file</span><br />
+                                            对话资源的界面文件. 如果你要定制你自己的用户界面, 请更改这里.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\UIs\modern.exe</em></p>
+                                        <p>
+                                            <strong>MUI_UI_HEADERIMAGE</strong> <span class="parameter">ui_file</span><br />
+                                            包含一个位图控件以及置放页眉位图空间的对话资源 IDD_INST 的界面文件.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\UIs\modern_headerbmp.exe</em></p>
+                                        <p>
+                                            <strong>MUI_UI_HEADERIMAGE_RIGHT</strong> <span class="parameter">ui_file</span><br />
+                                            包含一个位图控件以及在右边置放页眉位图空间的对话资源 IDD_INST 的界面文件.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\UIs\modern_headerbmpr.exe</em></p>
+                                        <p>
+                                            <strong>MUI_UI_COMPONENTSPAGE_SMALLDESC</strong> <span class="parameter">ui_file</span><br />
+                                            包含有一个较小描述区域的自定义对话资源 IDD_SELCOM 的界面文件.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\UIs\modern_smalldesc.exe</em></p>
+                                        <p>
+                                            <strong>MUI_UI_COMPONENTSPAGE_NODESC</strong> <span class="parameter">ui_file</span><br />
+                                            包含一个没有描述区域的自定义对话资源 IDD_SELCOM 的界面文件.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\UIs\modern_nodesc.exe</em></p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inwf" src="images/closed.gif"
+                                            onclick="toggle('trigger_inwf', 'toggle_inwf');" />
+                                        欢迎/完成页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_inwf">
+                                        <p>
+                                            <strong>MUI_WELCOMEFINISHPAGE_BITMAP</strong> <span class="parameter">bmp_file</span><br />
+                                            用于欢迎页面和完成页面的位图. (推荐尺寸: 164x314 象素).<br />
+                                            <em>默认: ${NSISDIR}\Contrib\Graphics\Wizard\win.bmp</em></p>
+                                        <div class="settings">
+                                            <p>
+                                                <strong>MUI_WELCOMEFINISHPAGE_BITMAP_NOSTRETCH</strong><br />
+                                                不拉伸用于欢迎页面和完成页面的位图. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                        </div>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inuwf" src="images/closed.gif"
+                                            onclick="toggle('trigger_inuwf', 'toggle_inuwf');" />
+                                        卸载程序的欢迎/完成页面设置</h3>
+                                    <div class="toggle" id="toggle_inuwf">
+                                        <p>
+                                            <strong>MUI_UNWELCOMEFINISHPAGE_BITMAP</strong> <span class="parameter">bmp_file</span><br />
+                                            用于欢迎页面和完成页面的位图. (推荐尺寸: 164x314 象素).<br />
+                                            <em>默认: ${NSISDIR}\Contrib\Graphics\Wizard\win.bmp</em></p>
+                                        <div class="settings">
+                                            <p>
+                                                <strong>MUI_UNWELCOMEFINISHPAGE_BITMAP_NOSTRETCH</strong><br />
+                                                不拉伸用于欢迎页面和完成页面的位图. 只有当你要使用一张不需占用整个空白区域的图像时, 才使用这个选项. 如果你使用了一张匹配推荐尺寸的位图, 则不需使用这个选项, 因为如果用户使用了自定义的 DPI 设置, 那么其置放位图的区域尺寸会有所不同.</p>
+                                        </div>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inl" src="images/closed.gif"
+                                            onclick="toggle('trigger_inl', 'toggle_inl');" />
+                                        License page</h3>
+                                    <div class="toggle" id="toggle_inl">
+                                        <p>
+                                            <strong>MUI_LICENSEPAGE_BGCOLOR</strong> <span class="parameter">(/windows | /grey |
+                                                (color: RRGGBB hexadecimal))</span><br />
+                                            许可文本框的背景颜色. /windows 用于 Windows 的文本背景颜色 (通常为白色). /grey 用于 Window 的背景颜色 (通常为灰色).<br />
+                                            <em>默认: /windows</em></p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inc" src="images/closed.gif"
+                                            onclick="toggle('trigger_inc', 'toggle_inc');" />
+                                        组件页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_inc">
+                                        <p>
+                                            <strong>MUI_COMPONENTSPAGE_CHECKBITMAP</strong> <span class="parameter">bitmap_file</span><br />
+                                            用于组件树形视图的构选框的位图.<br />
+                                            <em>默认: ${NSISDIR}\Contrib\Graphics\Checks\modern.bmp</em></p>
+                                        <p>
+                                            <strong>MUI_COMPONENTSPAGE_SMALLDESC</strong><br />
+                                            较小的页面底部的描述区域. 如果你有许多区段且不需较多的描述, 请使用这个选项.</p>
+                                        <p>
+                                            <strong>MUI_COMPONENTSPAGE_NODESC</strong><br />
+                                            不需描述区域.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_ind" src="images/closed.gif"
+                                            onclick="toggle('trigger_ind', 'toggle_ind');" />
+                                        安装目录选择页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_ind">
+                                        <p>
+                                            <strong>MUI_DIRECTORYPAGE_BGCOLOR</strong> <span class="parameter">(color: RRGGBB hexadecimal)</span><br />
+                                            目录文本框的背景色.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_ins" src="images/closed.gif"
+                                            onclick="toggle('trigger_ins', 'toggle_ins');" />
+                                        开始菜单文件夹页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_ins">
+                                        <p>
+                                            <strong>MUI_STARTMENUPAGE_BGCOLOR</strong> <span class="parameter">(color: RRGGBB hexadecimal)</span><br />
+                                            开始菜单目录列表和文本框的背景色.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_ini" src="images/closed.gif"
+                                            onclick="toggle('trigger_ini', 'toggle_ini');" />
+                                        安装页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_ini">
+                                        <p>
+                                            <strong>MUI_INSTFILESPAGE_COLORS</strong> <span class="parameter">(/windows | &quot;(foreground
+                                                color: RRGGBB hexadecimal) (background color: RRGGBB hexadecimal)&quot;)</span><br />
+                                            详细信息显示屏的颜色. /windows 用于默认的 Windows 颜色.<br />
+                                            <em>默认: /windows</em></p>
+                                        <p>
+                                            <strong>MUI_INSTFILESPAGE_PROGRESSBAR</strong> <span class="parameter">(&quot;&quot;
+                                                | colored | smooth)</span><br />
+                                            进度条的样式. Colored 能令它使用 MUI_INSTALLCOLORS.<br />
+                                            <em>默认: smooth</em></p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inf" src="images/closed.gif"
+                                            onclick="toggle('trigger_inf', 'toggle_inf');" />
+                                        安装程序完成页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_inf">
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_NOAUTOCLOSE</strong><br />
+                                            不自动跳到完成页面, 允许用户检查安装记录.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_uinf" src="images/closed.gif"
+                                            onclick="toggle('trigger_uinf', 'toggle_uinf');" />
+                                        卸载程序完成页面 界面设置</h3>
+                                    <div class="toggle" id="toggle_uinf">
+                                        <p>
+                                            <strong>MUI_UNFINISHPAGE_NOAUTOCLOSE</strong><br />
+                                            不自动跳到完成页面, 允许用户检查卸载记录.</p>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inaw" src="images/closed.gif"
+                                            onclick="toggle('trigger_inaw', 'toggle_inaw');" />
+                                        安装程序终止警告 设置</h3>
+                                    <div class="toggle" id="toggle_inaw">
+                                        <p>
+                                            <strong>MUI_ABORTWARNING</strong><br />
+                                            当用户要关闭安装程序时, 显示一个警告消息框.</p>
+                                        <div class="settings">
+                                            <p>
+                                                <strong>MUI_ABORTWARNING_TEXT</strong> <span class="parameter">text</span><br />
+                                                显示于终止警告消息框的文本.</p>
+                                            <p>
+                                                <strong>MUI_ABORTWARNING_CANCEL_DEFAULT</strong><br />
+                                                设置"取消"按钮为触发该事件时的默认按钮.</p>
+                                        </div>
+                                    </div>
+                                    <h3>
+                                        <img class="trigger" alt="Open/Close section" id="trigger_inuaw" src="images/closed.gif"
+                                            onclick="toggle('trigger_inuaw', 'toggle_inuaw');" />
+                                        卸载程序终止警告 设置</h3>
+                                    <div class="toggle" id="toggle_inuaw">
+                                        <p>
+                                            <strong>MUI_UNABORTWARNING</strong><br />
+                                            当用户要关闭卸载程序时, 显示一个警告消息框.</p>
+                                        <div class="settings">
+                                            <p>
+                                                <strong>MUI_UNABORTWARNING_TEXT</strong> <span class="parameter">text</span><br />
+                                                显示于终止警告消息框的文本.</p>
+                                            <p>
+                                                <strong>MUI_UNABORTWARNING_CANCEL_DEFAULT</strong><br />
+                                                设置"取消"按钮为触发该事件时的默认按钮.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                    <h2>
+                        3. 页面</h2>
+                    <div>
+                        <p>
+                            插入以下宏可以设置你要使用的页面. 这些页面将会按你在脚本中插入的顺序出现. 你也可以在这些宏之间插入自定义的页面命令以添加自定义页面.</p>
+                        <p>
+                            你可以按特定类型添加多个页面 (例如, 如果你想让用户指定多个文件夹).</p>
+                        <p>
+                            范例:</p>
+                        <pre>
+!insertmacro MUI_PAGE_LICENSE &quot;License.rtf&quot;
+!insertmacro MUI_PAGE_COMPONENTS
+
+Var StartMenuFolder
+!insertmacro MUI_PAGE_STARTMENU &quot;应用程序&quot; $StartMenuFolder
+</pre>
+                        <p>
+                            当你使用 "Start Menu Folder" 宏时, 你将需要 "Start Menu Folder" 页面的页面 ID. "Start Menu Folder" 将会被保存于指定的变量中.</p>
+                        <p>
+                            <strong>安装程序页面</strong><br />
+                            MUI_PAGE_WELCOME<br />
+                            MUI_PAGE_LICENSE <span class="parameter">textfile</span><br />
+                            MUI_PAGE_COMPONENTS<br />
+                            MUI_PAGE_DIRECTORY<br />
+                            MUI_PAGE_STARTMENU <span class="parameter">pageid variable</span><br />
+                            MUI_PAGE_INSTFILES<br />
+                            MUI_PAGE_FINISH</p>
+                        <p>
+                            <strong>卸载程序页面</strong><br />
+                            MUI_UNPAGE_WELCOME<br />
+                            MUI_UNPAGE_CONFIRM<br />
+                            MUI_UNPAGE_LICENSE <span class="parameter">textfile</span><br />
+                            MUI_UNPAGE_COMPONENTS<br />
+                            MUI_UNPAGE_DIRECTORY<br />
+                            MUI_UNPAGE_INSTFILES<br />
+                            MUI_UNPAGE_FINISH</p>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_pg" src="images/closed.gif"
+                                onclick="toggle('trigger_pg', 'toggle_pg');" />
+                            页面设置</h3>
+                        <div class="toggle" id="toggle_pg">
+                            <p>
+                                页面设置应用于单个页面且应在插入一个宏之前设置. 如果你有一种类型的多个页面, 并且你想要为它们全体作同一个设置, 那么请在每个页面宏之前进行设置. 范例:</p>
+                            <pre>
+;添加一个让用户指定插件文件夹的目录页面
+;将此文件夹路径存于 $PLUGINS_FOLDER
+
+Var PLUGINS_FOLDER
+!define MUI_DIRECTORYPAGE_VARIABLE $PluginsFolder
+!insertmacro MUI_PAGE_DIRECTORY
+</pre>
+                            <p>
+                                <p>
+                                    用户界面中所有的标准文字都是由语言文件中载入的, 它们对 NSIS 所支持的所有语言中都有效。因此如果需要进行更改，你仅需要重新定义它们就可以了。</p>
+                                <p>
+                                    如果某参数是文字的，并且在各语言中并不一样，用 LangString 定义 "语言字符串"，并用 $(LangStringName) 作为它的值. 至于在多语言中的许可文本，则用 LicenseLangString 。查阅 NSIS 用户手册可得到有关多语言安装程序的更详细的内容。</p>
+                                <p>
+                                    在所有的文本设置中，双引号 (&quot;) 应该做这样的处理避免错误: $\&quot;</p>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgg" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgg', 'toggle_pgg');" />
+                                    常规页面设置</h3>
+                                <div class="toggle" id="toggle_pgg">
+                                    <p>
+                                        <strong>MUI_PAGE_HEADER_TEXT</strong> <span class="parameter">text</span><br />
+                                        显示于页面页眉的文本.</p>
+                                    <p>
+                                        <strong>MUI_PAGE_HEADER_SUBTEXT</strong> <span class="parameter">text</span><br />
+                                        显示于页面页眉的旁白.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgw" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgw', 'toggle_pgw');" />
+                                    欢迎页面设置</h3>
+                                <div class="toggle" id="toggle_pgw">
+                                    <p>
+                                        <strong>MUI_WELCOMEPAGE_TITLE</strong> <span class="parameter">title</span><br />
+                                        显示于页面顶部的标题.</p>
+                                    <p>
+                                        <strong>MUI_WELCOMEPAGE_TITLE_3LINES</strong><br />
+                                        标题区域的额外空区.</p>
+                                    <p>
+                                        <strong>MUI_WELCOMEPAGE_TEXT</strong> <span class="parameter">text</span><br />
+                                        显示于页面的文本. 用 \r\n 换行.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgl" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgl', 'toggle_pgl');" />
+                                    许可页面设置</h3>
+                                <div class="toggle" id="toggle_pgl">
+                                    <p>
+                                        <strong>MUI_LICENSEPAGE_TEXT_TOP</strong> <span class="parameter">text</span><br />
+                                        显示于页面顶部的文本.</p>
+                                    <p>
+                                        <strong>MUI_LICENSEPAGE_TEXT_BOTTOM</strong> <span class="parameter">text</span><br />
+                                        显示于页面底部的文本.</p>
+                                    <p>
+                                        <strong>MUI_LICENSEPAGE_BUTTON</strong> <span class="parameter">button_text</span><br />
+                                        显示于 '我同意' 按钮的文本.</p>
+                                    <p>
+                                        <strong>MUI_LICENSEPAGE_CHECKBOX</strong><br />
+                                        显示一个用于用户选中同意许可条款的复选框.</p>
+                                    <div class="settings">
+                                        <p>
+                                            <strong>MUI_LICENSEPAGE_CHECKBOX_TEXT</strong> <span class="parameter">text</span><br />
+                                            显示在一个用于用户选中同意许可条款的复选框旁的文本.</p>
+                                    </div>
+                                    <p>
+                                        <strong>MUI_LICENSEPAGE_RADIOBUTTONS</strong><br />
+                                        显示两个用于用户是否接受许可条款的单选按钮.</p>
+                                    <div class="settings">
+                                        <p>
+                                            <strong>MUI_LICENSEPAGE_RADIOBUTTONS_TEXT_ACCEPT</strong> <span class="parameter">text</span><br />
+                                            显示在用于用户接受许可条款的单选按钮旁的文本.</p>
+                                        <p>
+                                            <strong>MUI_LICENSEPAGE_RADIOBUTTONS_TEXT_DECLINE</strong> <span class="parameter">text</span><br />
+                                            显示在用于用户拒绝许可条款的单选按钮旁的文本.</p>
+                                    </div>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgc" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgc', 'toggle_pgc');" />
+                                    组件页面设置</h3>
+                                <div class="toggle" id="toggle_pgc">
+                                    <p>
+                                        <strong>MUI_COMPONENTSPAGE_TEXT_TOP</strong> <span class="parameter">text</span><br />
+                                        显示于页面顶部的文本.</p>
+                                    <p>
+                                        <strong>MUI_COMPONENTSPAGE_TEXT_COMPLIST</strong> <span class="parameter">text</span><br />
+                                        显示在组件列表旁的文本.</p>
+                                    <p>
+                                        <strong>MUI_COMPONENTSPAGE_TEXT_INSTTYPE</strong> <span class="parameter">text</span><br />
+                                        显示在安装类型组合框旁的文本.</p>
+                                    <p>
+                                        <strong>MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_TITLE</strong> <span class="parameter">text</span><br />
+                                        显示在描述框标题上的文本.</p>
+                                    <p>
+                                        <strong>MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_INFO</strong> <span class="parameter">text</span><br />
+                                        当没有选择区段时, 显示于描述框中的文本.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgd" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgd', 'toggle_pgd');" />
+                                    目录页面设置</h3>
+                                <div class="toggle" id="toggle_pgd">
+                                    <p>
+                                        <strong>MUI_DIRECTORYPAGE_TEXT_TOP</strong> <span class="parameter">text</span><br />
+                                        显示于页面顶部的文本.</p>
+                                    <p>
+                                        <strong>MUI_DIRECTORYPAGE_TEXT_DESTINATION</strong> <span class="parameter">text</span><br />
+                                        显示于目标文件夹框架的文本.</p>
+                                    <p>
+                                        <strong>MUI_DIRECTORYPAGE_VARIABLE</strong> <span class="parameter">variable</span><br />
+                                        用于存储所选文件夹的变量.<br />
+                                        <em>默认: $INSTDIR</em></p>
+                                    <p>
+                                        <strong>MUI_DIRECTORYPAGE_VERIFYONLEAVE</strong><br />
+                                        当一个文件夹无效时, 不禁用 "下一步" 按钮, 但是允许你使用 GetInstDirError 函数以操作一个无效的文件夹.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgs" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgs', 'toggle_pgs');" />
+                                    开始菜单文件夹页面设置</h3>
+                                <div class="toggle" id="toggle_pgs">
+                                    <p>
+                                        <strong>MUI_STARTMENUPAGE_TEXT_TOP</strong> <span class="parameter">text</span><br />
+                                        显示于页面顶部的文本.</p>
+                                    <p>
+                                        <strong>MUI_STARTMENUPAGE_TEXT_CHECKBOX</strong> <span class="parameter">text</span><br />
+                                        显示于 "禁止创建开始菜单文件夹" 复选框旁的文本.</p>
+                                    <p>
+                                        <strong>MUI_STARTMENUPAGE_DEFAULTFOLDER</strong> <span class="parameter">folder</span><br />
+                                        默认开始菜单文件夹.</p>
+                                    <p>
+                                        <strong>MUI_STARTMENUPAGE_NODISABLE</strong><br />
+                                        不显示 "禁止创建开始菜单文件夹" 复选框.</p>
+                                    <p>
+                                        <strong>MUI_STARTMENUPAGE_REGISTRY_ROOT</strong> <span class="parameter">root</span><br />
+                                        <strong>MUI_STARTMENUPAGE_REGISTRY_KEY</strong> <span class="parameter">key</span><br />
+                                        <strong>MUI_STARTMENUPAGE_REGISTRY_VALUENAME</strong> <span class="parameter">value_name</span><br />
+                                        此注册表项用于存放开始菜单文件夹路径. 此页面将会用它记住用户的首选项. 你也可以将其用于卸载程序移除此开始菜单文件夹. 不要在卸载时忘记移除此注册表项.</p>
+                                    <p>
+                                        对于卸载程序, 可以用宏 MUI_STARTMENU_GETFOLDER 获取开始菜单文件夹路径:</p>
+                                    <pre>
+!insertmacro MUI_STARTMENU_GETFOLDER page_id $R0
+  Delete &quot;$SMPROGRAMS\$R0\Your Shortcut.lnk&quot;
+</pre>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgi" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgi', 'toggle_pgi');" />
+                                    安装页面设置</h3>
+                                <div class="toggle" id="toggle_pgi">
+                                    <p>
+                                        <strong>MUI_INSTFILESPAGE_FINISHHEADER_TEXT</strong> <span class="parameter">text</span><br />
+                                        当安装完成后, 显示于此安装页面页眉的文本(当使用一个未用 MUI_(UN)FINISHPAGE_NOAUTOCLOSE 的完成页面时, 将不会显示这些文本).</p>
+                                    <p>
+                                        <strong>MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT</strong> <span class="parameter">text</span><br />
+                                        当安装完成后, 显示于此安装页面页眉的旁白(当使用一个未用 MUI_(UN)FINISHPAGE_NOAUTOCLOSE 的完成页面时, 将不会显示这些文本).</p>
+                                    <p>
+                                        <strong>MUI_INSTFILESPAGE_ABORTHEADER_TEXT</strong> <span class="parameter">text</span><br />
+                                        当安装被终止后, 显示于此安装页面页眉的文本.</p>
+                                    <p>
+                                        <strong>MUI_INSTFILESPAGE_ABORTHEADER_SUBTEXT</strong> <span class="parameter">text</span><br />
+                                        当安装被终止后, 显示于此安装页面页眉的旁白.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgf" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgf', 'toggle_pgf');" />
+                                    完成页面设置</h3>
+                                <div class="toggle" id="toggle_pgf">
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TITLE</strong> <span class="parameter">title</span><br />
+                                        显示于页面顶部的标题.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TITLE_3LINES</strong><br />
+                                        标题区域的额外空区.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TEXT</strong> <span class="parameter">text</span><br />
+                                        显示于此页面的文本. 用 \r\n 换行.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TEXT_LARGE</strong><br />
+                                        文本区域的额外空区 (如果使用了复选框).</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_BUTTON</strong> <span class="parameter">text</span><br />
+                                        显示于 "完成" 按钮的文本.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_CANCEL_ENABLED</strong><br />
+                                        启用 "取消" 按钮，用户可以点击跳过完成页面显示的任何选项.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TEXT_REBOOT</strong> <span class="parameter">text</span><br />
+                                        当询问是否重启时, 显示于完成页面的文本. 用 \r\n 换行.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TEXT_REBOOTNOW</strong> <span class="parameter">text</span><br />
+                                        显示在 "现在重启" 选择按钮旁的文本.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_TEXT_REBOOTLATER</strong> <span class="parameter">text</span><br />
+                                        显示在 "以后重启" 选择按钮旁的文本.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_REBOOTLATER_DEFAULT</strong><br />
+                                        设置 "以后重启" 作为默认选项.</p>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_RUN</strong> <span class="parameter">exe_file</span><br />
+                                        可以通过复选框决定是否运行的应用程序. 当文件名中有空格时, 你不需用引号将其括起来.</p>
+                                    <div class="settings">
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_RUN_TEXT</strong> <span class="parameter">text</span><br />
+                                            显示在 "运行程序" 复选框旁的文本.</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_RUN_PARAMETERS</strong> <span class="parameter">parameters</span><br />
+                                            运行应用程序所需的参数. 不要在值中直接使用双引号 (用 $\&quot;).</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_RUN_NOTCHECKED</strong><br />
+                                            默认不选中 '运行程序' 复选框</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_RUN_FUNCTION</strong> <span class="parameter">function</span><br />
+                                            用调用一个函数替代执行一个应用程序 (定义 MUI_FINISHPAGE_RUN 而不用参数). 你可以用这个函数执行多个应用程序, 或者你可以更改此复选框的名称并用它做其它事情.</p>
+                                    </div>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_SHOWREADME</strong> <span class="parameter">file/url</span><br />
+                                        可以通过复选框决定是否查看的文件或网站. 当文件名中有空格时, 你不需用引号将其括起来.</p>
+                                    <div class="settings">
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_SHOWREADME_TEXT</strong> <span class="parameter">text</span><br />
+                                            显示在 "显示自述" 复选框旁的文本.</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_SHOWREADME_NOTCHECKED</strong><br />
+                                            默认不选中 '显示自述' 复选框.</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_SHOWREADME_FUNCTION</strong> <span class="parameter">function</span><br />
+                                            用调用一个函数替代显示一个文件 (定义 MUI_FINISHPAGE_SHOWREADME 而不用参数). 你可以用这个函数显示多个文件, 或者你可以更改此复选框的名称并用它做其它事情.</p>
+                                    </div>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_LINK</strong> <span class="parameter">link_text</span><br />
+                                        一个用于用户点击查看一个网站或文件的链接的文本.</p>
+                                    <div class="settings">
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_LINK_LOCATION</strong> <span class="parameter">file/url</span><br />
+                                            可以通过这个链接查看的网站或文件的位置. 当文件名中有空格时, 你不需用引号将其括起来.</p>
+                                        <p>
+                                            <strong>MUI_FINISHPAGE_LINK_COLOR</strong> <span class="parameter">(color: RRGGBB hexadecimal)</span><br />
+                                            完成页面上的链接的文本颜色.<br />
+                                            <em>默认: 000080</em></p>
+                                    </div>
+                                    <p>
+                                        <strong>MUI_FINISHPAGE_NOREBOOTSUPPORT</strong><br />
+                                        禁用支持此页面允许用户重新启动其系统. 如果不使用 /REBOOTOK 位标计或 SetRebootFlag, 那么定义此选项可以节省一些空间.</p>
+                                </div>
+                                <h3>
+                                    <img class="trigger" alt="Open/Close section" id="trigger_pgu" src="images/closed.gif"
+                                        onclick="toggle('trigger_pgu', 'toggle_pgu');" />
+                                    卸载确认页面设置</h3>
+                                <div class="toggle" id="toggle_pgu">
+                                    <p>
+                                        <strong>MUI_UNCONFIRMPAGE_TEXT_TOP</strong> <span class="parameter">text</span><br />
+                                        显示于页面顶部的文本.</p>
+                                    <p>
+                                        <strong>MUI_UNCONFIRMPAGE_TEXT_LOCATION</strong> <span class="parameter">text</span><br />
+                                        显示在卸载位置文本框旁的文本.</p>
+                                </div>
+                        </div>
+                    </div>
+                    <h2>
+                        4. 语言文件</h2>
+                    <div>
+                        <p>
+                            插入与你所要包含的语言相对应的 Modern UI 语言文件.</p>
+                        <pre>
+!insertmacro MUI_LANGUAGE &quot;English&quot;
+</pre>
+                        <p>
+                            Modern UI 语言文件会自动载入 NSIS 语言文件, 因此你不应使用 LoadLanguageFile.</p>
+                    </div>
+                    <h2>
+                        5. 保留文件</h2>
+                    <div>
+                        <p>
+                            如果你要使用固实压缩 (在默认情况下, 启用了 BZIP2 和 LZMA 的固实压缩), 那么很重要的一点是, 在执行init- 或页面函数时被提取的文件在数据块中的定位应先于其它文件, 因为这样会令你的安装程序运行地更快.
+如果在你的区段中有文件命令, 或是在 init- 或页面函数之前有函数, 那么请在你的区段和函数之前添加类似如下的指令:</p>
+                        <pre>
+ReserveFile MyPlugin.dll
+!insertmacro MUI_RESERVEFILE_LANGDLL ;语言选择对话框
+...
+</pre>
+                    </div>
+                    <h1>
+                        页面相关的脚本代码</h1>
+                    <div>
+                        <p>
+                            你可以在一些页面中显示一些附加的信息，或者获取用户的输入。你可以在此找到与此功能相关的脚本代码。</p>
+                        <h2>
+                            区段描述</h2>
+                        <div>
+                            <p>
+                                在 MUI 的组件选择页面中，当用户将鼠标悬浮于一个区段时, 此区段的描述将会显示于此组件页面上. 如果你不想使用描述, 那么请使用 MUI_COMPONENTSPAGE_NODESC 界面设置.</p>
+                            <p>
+                                若要为一个区段设置描述, 你必须向此区段命令添加一个附加参数, 此区段命令有一个用于应当包含此区段号码的定义的名称.</p>
+                            <pre>
+Section &quot;区段名称 1&quot; Section1
+   ...
+SectionEnd
+</pre>
+                            <p>
+                                在这些区段后, 通过这些宏设置描述:</p>
+                            <pre>
+LangString DESC_Section1 ${LANG_ENGLISH} &quot;区段描述 1.&quot;
+LangString DESC_Section2 ${LANG_ENGLISH} &quot;区段描述 2.&quot;
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section1} $(DESC_Section1)
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section2} $(DESC_Section2)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+</pre>
+                            <p>
+                                对于卸载程序, 则应使用宏
+                                MUI_UNFUNCTION_DESCRIPTION_BEGIN 和 MUI_UNFUNCTION_DESCRIPTION_END</p>
+                        </div>
+                        <h2>
+                            开始菜单文件夹</h2>
+                        <div>
+                            <p>
+                                将创建快捷方式的代码 (用 CreateShortcut 指令) 放在 MUI_STARTMENU_WRITE_BEGIN
+                                和 MUI_STARTMENU_WRITE_END 之间:</p>
+                            <pre>
+!insertmacro MUI_STARTMENU_WRITE_BEGIN pageid
+  ...创建快捷方式...
+!insertmacro MUI_STARTMENU_WRITE_END
+</pre>
+                            <p>
+                                ID 应该是用户选择了用于创建快捷方式的文件夹的那个页面</p>
+                            <p>
+                                包含了文件夹和页面 ID 的变量作为页面宏的参数.</p>
+                        </div>
+                    </div>
+                    <h1>
+                        语言选择对话框</h1>
+                    <div>
+                        <p>
+                            如果你想令安装程序显示一个语言选择对话框 (请先看看范例 <a
+                                href="../../Examples/Modern%20UI/MultiLanguage.nsi">MultiLanguage.nsi</a> ), 只需在.onInit 函数中插入 MUI_LANGDLL_DISPLAY 宏:</p>
+                        <pre>
+Function .onInit
+
+  !insertmacro MUI_LANGDLL_DISPLAY
+
+FunctionEnd
+</pre>
+                        <p>
+                            你也可以在卸载程序中使用这个宏, 只需将其插入 un.onInit 函数中.</p>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_lss" src="images/closed.gif"
+                                onclick="toggle('trigger_lss', 'toggle_lss');" />
+                            注册表储存语言首选项设置</h3>
+                        <div class="toggle" id="toggle_lss">
+                            <p>
+                                若要记住用户的首选项, 你可以定义一个注册表项
+                                <b>注意:</b> 这些定义应当在插入安装页面宏之前进行设置.</p>
+                            <p>
+                                <strong>MUI_LANGDLL_REGISTRY_ROOT</strong> <span class="parameter">root</span><br />
+                                <strong>MUI_LANGDLL_REGISTRY_KEY</strong> <span class="parameter">key</span><br />
+                                <strong>MUI_LANGDLL_REGISTRY_VALUENAME</strong> <span class="parameter">value_name</span><br />
+                                此注册表项用于存放语言. 它记住用户的首选项. 你也可以将其用于卸载程序显示正确的语言. 不要在卸载时忘记移除此注册表项</p>
+                            <p>
+                                对于卸载程序, 可以通过向 un.onInit 函数中插入宏 MUI_UNGETLANGUAGE 获取保存的语言首选项:</p>
+                            <pre>
+Function un.onInit
+
+  !insertmacro MUI_UNGETLANGUAGE
+
+FunctionEnd
+</pre>
+                        </div>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_lsin" src="images/closed.gif"
+                                onclick="toggle('trigger_lsin', 'toggle_lsin');" />
+                            语言选择对话框界面设置</h3>
+                        <div class="toggle" id="toggle_lsin">
+                            <p>
+                                若要定制语言选择对话框界面, 请在插入宏 MUI_LANGDLL_DISPLAY 之前使用这些定义.</p>
+                            <p>
+                                <strong>MUI_LANGDLL_WINDOWTITLE</strong> <span class="parameter">text</span><br />
+                                语言选择对话框的标题.</p>
+                            <p>
+                                <strong>MUI_LANGDLL_INFO</strong> <span class="parameter">text</span><br />
+                                显示于语言选择对话框的文本.</p>
+                            <p>
+                                <strong>MUI_LANGDLL_ALWAYSSHOW</strong><br />
+                                总是显示语言选择对话框, 即使一种语言已经保存在了注册表中. 保存于注册表中的语言将会被默认选中.</p>
+                            <p>
+                                <strong>MUI_LANGDLL_ALLLANGUAGES</strong><br />
+                                总是显示所有可用语言，而不经过代码页过滤.</p>
+                        </div>
+                    </div>
+                    <h1>
+                        自定义页面</h1>
+                    <div>
+                        <p>
+                            如果你想向你的安装程序中添加你自定义的页面, 你应当在页面宏之间添加你自己的页面命令.</p>
+                        <pre>
+!insertmacro MUI_PAGE_WELCOME
+Page custom FunctionName ;自定义页面
+!insertmacro MUI_PAGE_COMPONENTS
+ 
+;卸载程序
+!insertmacro MUI_UNPAGE_CONFIRM
+UninstPage custom un.FunctionName ;自定义页面
+!insertmacro MUI_UNPAGE_INSTFILES
+</pre>
+                        <p>
+                            在页面函数中使用宏 MUI_HEADER_TEXT 设置页面页眉的文字:</p>
+                        <pre>
+LangString PAGE_TITLE ${LANG_ENGLISH} &quot;标题&quot;
+LangString PAGE_SUBTITLE ${LANG_ENGLISH} &quot;旁白&quot;
+
+Function CustomPageFunction
+  !insermacro MUI_HEADER_TEXT $(PAGE_TITLE) $(PAGE_SUBTITLE)
+  ...
+FuctionEnd
+</pre>
+                    </div>
+                    <h1>
+                        自定义 MUI 函数</h1>
+                    <div>
+                        <p>
+                            NSIS 的界面函数如 .onGUIInit 函数以及页面函数，已经自动添加到了 MUI 中，并加入了新界面功能的代码。如果你想向由 Modern UI 插入的函数中添加你自己的代码 (例如 .onGUIInit 函数和页面函数), 以及创建你自己的函数并让 Modern UI 函数调用它们. 请用这些定义定义你的函数的名称.</p>
+                        <p>
+                            范例:</p>
+                        <pre class="text">
+!define MUI_CUSTOMFUNCTION_GUIINIT myGuiInit
+
+Function myGUIInit
+  ...你自己的代码...
+FunctionEnd</pre>
+                        <p>
+                            MUI 页面可用自定义函数进行定制.</p>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_cfg" src="images/closed.gif"
+                                onclick="toggle('trigger_cfg', 'toggle_cfg');" />
+                            常规自定义函数</h3>
+                        <div class="toggle" id="toggle_cfg">
+                            <p>
+                                应当在插入语言宏之前设置这些定义.</p>
+                            <p>
+                                <strong>MUI_CUSTOMFUNCTION_GUIINIT</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_CUSTOMFUNCTION_UNGUIINIT</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_CUSTOMFUNCTION_ABORT</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_CUSTOMFUNCTION_UNABORT</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_CUSTOMFUNCTION_MOUSEOVERSECTION</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_CUSTOMFUNCTION_UNMOUSEOVERSECTION</strong> <span class="parameter">function</span></p>
+                        </div>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_cfpg" src="images/closed.gif"
+                                onclick="toggle('trigger_cfpg', 'toggle_cfpg');" />
+                            页面自定义函数</h3>
+                        <div class="toggle" id="toggle_cfpg">
+                            <p>
+                                应当在插入一个页面宏之前设置这些定义.</p>
+                            <p>
+                                <strong>MUI_PAGE_CUSTOMFUNCTION_PRE</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_PAGE_CUSTOMFUNCTION_SHOW</strong> <span class="parameter">function</span><br />
+                                <strong>MUI_PAGE_CUSTOMFUNCTION_LEAVE </strong> <span class="parameter">function</span><br />
+                            </p>
+                            <p>
+                                "Pre" 函数最先调用，你可以在此函数中初始化变量，或者决定是否跳过 (用 Abort 指令) 当前的页面。然后，调用 "Show" 函数，你可以在此函数中定制界面。最后，用户的输入在 "Leave" 函数中生效。用户手册中提供了更详细的相关信息。</p>
+                            <p>
+                                在 "Show" 函数中，当前页面中所有控件的窗口句柄 可从 MUI 中各自的变量中得到。目前这些变量名称还没有全部列出来，你只有通过查阅 MUI2 的源文件获取。所有的这些变量声明都在各自页面的头文件的开头部分。</p>
+                        </div>
+                    </div>
+                    <h1>
+                        <a name="examples" id="examples">范例</a></h1>
+                    <div>
+                        <p>
+                            基本: <a href="../../Examples/Modern%20UI/Basic.nsi">Basic.nsi</a><br />
+                            欢迎/完成页面: <a href="../../Examples/Modern%20UI/WelcomeFinish.nsi">WelcomeFinish.nsi</a><br />
+                            多种语言: <a href="../../Examples/Modern%20UI/MultiLanguage.nsi">MultiLanguage.nsi</a><br />
+                            页眉图像: <a href="../../Examples/Modern%20UI/HeaderBitmap.nsi">HeaderBitmap.nsi</a><br />
+                            开始菜单文件夹页面: <a href="../../Examples/Modern%20UI/StartMenu.nsi">StartMenu.nsi</a></p>
+                    </div>
+                    <h1>
+                        参与名单</h1>
+                    <div>
+                        <p>
+                            由 Joost Verburg 制作.<br />
+                            由 Nikos Adamamas, aka adni18 进行图标设计.<br />
+                            感谢 Amir Szekely, aka KiCHiK, 由于他们的工作才令 NSIS 成为可能.</p>
+                    </div>
+                    <h1>
+                        许可</h1>
+                    <div>
+                        <p>
+                            zlib/libpng 许可将应用于 Modern UI.</p>
+                        <h3>
+                            <img class="trigger" alt="Open/Close section" id="trigger_lic" src="images/closed.gif"
+                                onclick="toggle('trigger_lic', 'toggle_lic');" />
+                            许可条款</h3>
+                        <div class="toggle" id="toggle_lic">
+                            <pre>
+版权所有 &copy; 2002-2009 Joost Verburg
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute
+it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; 
+   you must not claim that you wrote the original software.
+   If you use this software in a product, an acknowledgment in the
+   product documentation would be appreciated but is not required.
+2. Altered versions must be plainly marked as such,
+   and must not be misrepresented as being the original software.
+3. This notice may not be removed or altered from any distribution.
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

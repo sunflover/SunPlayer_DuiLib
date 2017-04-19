@@ -1,0 +1,264 @@
+少轻狂
+http://www.flighty.cn/html/soft/20100429_76.html
+
+————————————————————————
+
+
+22:31 2015-05-08
+更新NSIS图文教程集锦为20150508版。
+
+21:23 2015-04-27
+新增StdUtils.dll及示例、说明文档。
+新增注册表文件转NSIS脚本工具Reg2nsi.exe。
+新增InstallOptions界面配置文件转NSIS脚本工具INI2NSI.exe。
+
+21:05 2015-04-07
+更新Notepad2为4.2.25.945版。
+
+11:38 2015-04-01
+更新NSISDialogDesigner为1.4.0.0。
+
+09:56 2015-03-21
+新增SkinBtn.dll的示例及说明文档。
+
+09:56 2015-03-17
+新增Aero64.dll插件。
+新增Aero.dll插件示例及说明文档。
+新增见与不见同学开发的DLL库StringPlug.dll及示例说明文档。
+
+09:43 2015-03-06
+新增Aero.dll插件。
+新增BHOSetupPlugin.dll插件。
+新增CloseRun2.dll插件。
+新增DlgProc.dll插件。
+新增dumpstate.dll插件。
+新增fxSlideShow.dll插件。
+新增ISSkin.dll插件。
+新增ISSkinEx.dll插件。
+新增isSlideShow.dll插件。
+新增kcheck.dll插件。
+新增KillProc.dll插件。
+新增Loading.dll插件。
+新增minizip.dll插件。
+新增MoveAnywhere.dll插件。
+新增nsCtrl.dll插件。
+新增nsFlash.dll插件。
+新增nsInstallAssist.dll插件。
+新增NsisControlsEx.dll插件。
+新增NsisCrypt.dll插件。
+新增nsisFirewall.dll插件。
+新增nsisSlideshowx.dll插件。
+新增nsPluginInstall.dll插件。
+新增nsTBCIASkinEngine.dll插件。
+新增PictureWindow.dll插件。
+新增PluginInstallEx.dll插件。
+新增PowerPlayer.dll插件。
+新增PPC-registry.dll插件。
+新增PPSSetupIMG.dll插件。
+新增SetupIMG.dll插件。
+新增show_pic.dll插件。
+新增SkinSE.dll插件。
+新增SkinSE_NSIS.dll插件。
+新增titprog.dll插件。
+新增UACTool.dll插件。
+新增w7tbp.dll插件。
+新增XL7InstallUIPlugin.dll插件。
+新增以下头文件：
+CommCtrl.nsh
+DlgProc.nsh
+FontName.nsh
+FontReg.nsh
+FontRegAdv.nsh
+Func.nsh
+Image.nsh
+Macro.nsh
+MoveFileFolder.nsh
+nsCtrl.nsh
+nsDialogs.nsh.bf
+PPC-registry.nsh
+ProcessFunc.nsh
+SpecialGroupsSIDs.nsh
+Uninst.nsh
+Tooltip.nsh
+
+16:35 2015-02-26
+新增nsLink.dll插件及示例。
+
+09:37 2015-02-26
+增加卸载提示及静默卸载参数。
+新增见与不见同学开发的文件(夹)copy与move插件MoveFile.dll。
+
+16:22 2014-12-31
+新增pigger同学新开发的主窗口定时器插件timer.dll。
+
+16:23 2014-12-30
+因昨日发布的版本编译出来安装文件无法通过某些安全软件的检测，故更换为原版本。给大家带来的不便请见谅！
+新增少轻狂重写的脚本切换工具EditorChanger.exe
+
+10:51 2014-12-29
+更换核心程序为有限防解包版本（感谢pigger分享Black Hawk汉化）
+更换makensisw.exe为完全汉化版本
+
+21:04 2014-12-23
+增加访问控制插件AccessControl的说明文档AccessControl.txt
+
+16:47 2014-12-15
+更新NSISDialogDesigner为1.3.2.0版
+
+20:09 2014-12-08
+更换图片轮播插件以减少安装进程挂起问题。
+
+22:28 2014-11-25
+修正描述字符未转码导致的乱码问题
+修正在某些做过字体渲染的系统上窗体过大的问题。
+
+16:53 2014-11-23
+增加EmbedHTML.dll插件
+
+17:38 2014-11-20
+更新NSIS菜单
+
+09:06 2014-11-12
+更换Notepad2为4.2.25.935 32位版本
+
+17:15 2014-10-31
+增加“使用 Notepad2 打开”.nsi文件右键菜单
+修正WebCtrl.dll插件示例文件编译错误
+重新梳理并简化安装类型及各个组件
+
+18:19 2014-10-03
+增加多线程支持插件BgWorker.dll
+
+20:10 2014-09-30
+增加自定义界面设计工具NSISDialogDesigner 1.2，需安装.NET方能运行。
+增加用于创建超级按钮&链接&菜单的头文件ButtonLinkerLib.nsh(其实可用UsefulLib.nsh代替)
+
+15:40 2014-09-24
+增加EBanner.dll插件的另一个示例
+增加inetc.dll插件的修改版inetc(Modify).dll及示例inetc(Modify).nsi，把原版插件中的下载进度条从中间移到了下面，并且隐藏了原来的取消按钮。
+增加驱动管理插件InstDrv.dll的示例及说明
+
+15:25 2014-09-22
+增加WndProc.dll插件的三个示例和说明文件。
+因为此版本并不支持Unicode编码，故去除所有与之相关内容。
+
+00:11 2014-09-01
+去除并不实用的“实用工具”。
+增加“支持轻狂”设置首页，不支持轻狂的可以自行勾除。
+其他一些文字修正。
+
+21:24 2014-08-31
+增加插件SkinBtn.dll
+增加插件SkinProgress.dll
+
+18:04 2014-08-27
+增加安装过程显示图片幻灯的插件nsisSlideshow.dll及示例
+增加头文件LoadRTF.nsh
+
+11:52 2014-05-14
+因NSIS自动升级程序需要读取注册表取得当前版本，而屡被安全软件误报，所以去除自动升级程序。
+以后升级请直接访问轻狂志下载安装。
+
+20:25 2014-05-01
+剔除Cyboma.dll
+
+12:18 2014-02-20
+更新判断操作系统头文件WinVer.nsh，支持win7、2008R2
+
+22:14 2014-01-21
+增加输入法头文件IMEfunc.nsh
+
+21:53 2014-01-15
+增加WebCtrl.dll插件及示例WebCtrl_Test.nsi和说明文件
+
+10:02 2014-01-09
+增加MessageBox.dll插件的另一个示例MessageBox2.nsi
+
+19:35 2014-01-08
+增加在线更新NSIS集成增强版功能，后续版本可以直接点击NSIS菜单中的“更新 NSIS 集成增强版”按钮进行在线更新。
+
+09:30 2014-01-02
+增加贾可同学写的ShellLink.dll插件的示例脚本CheckLink.nsi
+
+16:50 2013-12-26
+因QQ电脑管家误报木马，所以去除Resource Hacker
+
+11:35 2013-12-17
+增加xID.dll插件及示例
+增加HddInfo.dll插件及示例、说明
+[以后新加入的说明都放在Examples目录中的插件名目录中，以便查找。]
+
+20:46 2013-12-16
+增加FileVerInfo.nsh头文件及示例
+增加SkinButton.dll插件及示例
+更新NSIS图文教程集锦为20130518版
+
+11:54 2013-07-16
+增加WndProc.dll
+
+12:06 2013-01-22
+更新Resource Hacker为3.6.0.92
+
+17:33 2012-11-14
+更新为2.4.6版
+
+00:54 2012-11-11
+描述基本整理完毕
+更新NSIS图文教程集锦为20121111版
+
+22:27 2012-11-09
+描述整理到D
+
+19:49 2012-10-04
+描述整理到C
+
+19:36 2012-10-01
+增加DcryptDll.dll
+增加FloatOp.dll
+增加InstDrv.dll
+增加LauncherSplash.dll
+增加NSISdlSmooth.dll
+增加nsisdt.dll
+增加NsisUrlLib.dll
+增加nsMailer.dll
+增加nsPerl.dll
+增加nsPython.dll
+增加Processes.dll
+增加RealProgress.dll
+增加SetCursor.dll
+增加ShutDown.dll
+增加SimpleSC.dll
+增加wansis.dll
+修改完成页链接为轻狂志
+重新制作编译了NSIS菜单
+
+21:33 2012-3-20
+增加nsProcess示例
+增加AccessControl.dll
+增加Cdrom.dll
+增加Cyboma.dll
+
+21:44 2012-3-13
+更新NSIS菜单
+增加INI2NSI.exe
+增加插件processwork.dll
+注释掉Vpatch 3.2 汉化版
+
+0:28 2011-6-15
+更新NSIS图文教程集锦为20110615版
+
+19:52 2011-4-26
+增加插件SkinH.dll
+更新NSIS图文教程集锦为20110323版
+
+10:35 2010-10-7
+注释掉NSIS Form Designer
+
+22:39 2010-10-6
+增加了NSIS Form Designer
+
+22:20 2010-10-4
+更新NSISdl.dll说明文件并加了一个例子
+在头部加了7z压缩包
+
+之前的更新没有进行记录，略。

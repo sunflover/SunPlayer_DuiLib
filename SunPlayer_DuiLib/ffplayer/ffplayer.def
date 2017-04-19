@@ -1,0 +1,11 @@
+EXPORTS
+
+player_open
+player_close
+player_play
+player_pause
+player_seek
+player_setrect
+player_snapshot
+player_setparam
+player_getparam

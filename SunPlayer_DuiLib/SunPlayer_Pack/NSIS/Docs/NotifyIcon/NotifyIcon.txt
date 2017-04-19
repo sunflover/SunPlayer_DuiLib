@@ -1,0 +1,101 @@
+
+    Notify Icon Plugin v0.2 by brainsucker and Afrow UK
+    ```````````````````````````````````````````````````
+
+Allows you to add your icon to taskbar notification area (sometimes erroneously 
+called the "tray." (c) MSDN). Also could remove installer caption from taskbar
+on minimizing and more...
+
+Two examples exist under Examples\NotifyIcon (if you installed the plugin Zip
+correctly :) )
+
+To use:
+
+NotifyIcon::Icon Flags Arguments
+
+Flags is a string of letters with special meaning. Some of such flags need 
+some arguments to be passed, in this case they must follow flags specification
+in the order flags describe them. :) I never was the master of explaining how
+any of my plugins works ;)
+
+So, the flags:
+        a       -       add icon*   
+        m       -       modify icon*
+        r       -       remove icon
+                * - these flags will be autodetected, but could be overrided
+
+The following 4 flags could be inverted with '!' char before them (to reset them
+to the default state). In this case ('!p') the p flag requires no argument.
+
+        x       -       show taskbar item in minimized state (by default no)
+        y       -       show NotifyIcon in normal state (by default no)
+        z       -       hide NotifyIcon in minimized state (by default no)
+
+        p       -       indicate progress as tip (requires argument, tip format.
+                        Should look like "it's a progress tip %d%%" or something
+                        like that. %% adds % sign, and %d places progress value.
+
+        .       - by default icon is loaded as 16x16 icon, by specifing this
+                  flag you are stimulating windows to use it internal 
+                  mechanics to select right icon. Should be used before
+                  (i, s, or f) flags
+
+        i       - icon as integer (installer resource icon) (1 arg integer)
+        s       - icon as integer (system icon) (1 arg integer)
+        f       - icon as file (1 arg file name)
+        h       - icon as handle (1 arg handle - integer)
+
+        t       - tip (1 arg - string)
+
+        b       - balloon tooltip without marks (2 args, Title and Tip itself)
+        n       - balloon tooltip with INFO mark (2 args, Title and Tip itself)
+        w       - balloon tooltip with WARNING mark (2 args, Title and Tip itself)
+        e       - balloon tooltip with ERROR mark (2 args, Title and Tip itself)
+
+        o       - set the baloon tooltip timeout (1 arg integer timeout in ms)
+                  windows allows values between 10 and 30.
+
+The following 2 flags are for catching mouse click on the icon to execute NSIS
+code. See Examples\NotifyIcon\NotifyIconClick.nsi for a complete example.
+
+        c       - add click event for the icon. This makes the installer go to
+                  the next NSIS page when the icon is clicked, allowing the
+                  leave function to be called.
+        d       - Use Pop $Var after plugin call to return click value.
+                  Possible values of $Var:
+                    0 - Icon was not clicked (i.e. Next button was clicked instead)
+                    1 - Icon clicked, installer is in minimized state
+                    2 - Icon clicked, installer is in restored state
+
+Tip 1. Ballon tooltips are available only at version 5.0 of shell controls.
+At lower versions they will be ignored.
+Tip 2. Don't forget using /NOUNLOAD on plugin calls (beside last call, usually
+with "r" flag).
+
+Example:
+1)   NotifyIcon::Icon /NOUNLOAD "yitb" 103 "Just a tip" "Balloon!" "Cool!" 
+
+     Create notify icon (will always be at tray), with default installer icon.   
+
+2)   NotifyIcon::Icon /NOUNLOAD "fbp" "icon.ico" "Cool Installer" "Installation started" "Completed %d%%"
+
+     Create notify icon from icon.ico, show startup balloon, and use progress
+     as icon tip.
+
+3)   NotifyIcon::Icon /NOUNLOAD "!pt" "Tip is back!"
+
+     Remove progress tips and redefine your tip.
+
+4)   NotifyIcon::Icon "r"
+        
+     Remove icon from tray.
+     Can cause crashes if called in the wrong place in your script.
+     Ideally should be called in .onGUIEnd, but works in other places.
+
+v0.2 - 15th April 2006
+    Code added for click event
+    by Afrow UK
+
+v0.1 - 19th September 2003
+    First release
+    by Nik Medved (brainsucker)

@@ -1,0 +1,15 @@
+注意:
+所有的php和html文件都是用来测试Inetc的,需要将他们放在一个支持PHP的网站服务器里面.
+
+如果没有服务器,可以安装在本机安装
+IIS+PHP或者Apache+PHP
+搭建服务器环境,然后将php和html文件放到网站根目录
+即保证
+http://localhost/post.php
+http://localhost/put.php
+http://localhost/redirect.php
+http://localhost/headers.php
+之类的网址能够正常解析访问.
+
+			Ansifa
+			2008-12-13

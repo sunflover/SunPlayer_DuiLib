@@ -1,0 +1,13 @@
+!define SG_ADMINISTRATORS                                               "S-1-5-32-544"
+!define SG_USERS                                                                 "S-1-5-32-545"
+!define SG_POWERUSERS                                                    "S-1-5-32-547"
+!define SG_GUESTS                                                               "S-1-5-32-546"
+
+!define SG_EVERYONE				"S-1-1-0"
+!define SG_CREATOROWNER			"S-1-3-0"
+!define SG_NTAUTHORITY_NETWORK			"S-1-5-2"
+!define SG_NTAUTHORITY_INTERACTIVE		"S-1-5-4"
+!define SG_NTAUTHORITY_SYSTEM			"S-1-5-18"
+!define SG_NTAUTHORITY_AUTHENTICATEDUSERS	"S-1-5-11"
+!define SG_NTAUTHORITY_LOCALSERVICE		"S-1-5-19"
+!define SG_NTAUTHORITY_NETWORKSERVICE		"S-1-5-20"

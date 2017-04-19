@@ -1,0 +1,62 @@
+SkinBtn 
+--------
+可以给指定按钮设置皮肤及点击事件
+
+用法
+--------
+1. 必须先在.onInit或.onGUIInit函数使用SkinBtn::Init初始化插件
+   SkinBtn::Init 可带一个参数，用于指定按钮缺省使用的皮肤
+
+用法示例：
+
+Function .onInit
+  InitPluginsDir
+  File /oname=$PLUGINSDIR\button.bmp button.bmp
+  SkinBtn::Init "$PLUGINSDIR\button.bmp"
+FunctionEnd
+
+
+2. 使用SkinBtn::Set给指定按钮应用皮肤：
+
+SkinBtn::Set [/IMGID=皮肤位图] 按钮句柄
+
+/IMGID=皮肤位图 为可选项，若不指定，则使用SkinBtn::Init所指定的皮肤位图
+
+皮肤位图可以指定为#位图资源ID(可使用!packhdr和ResHacker添加位图资源)
+当然，也可以指定为位图文件的完整路径，例如：
+SkinBtn::Set /IMGID=$PLUGINSDIR\button.bmp $0
+
+按钮文字颜色可用SetCtlColors更改
+
+用法示例：
+
+Function .onGUIInit
+  ${For} $1 1 3
+    GetDlgItem $0 $HWNDPARENT $1
+    SetCtlColors $0 0x0C4E7C transparent
+    SkinBtn::Set $0
+  ${Next}
+FunctionEnd
+
+
+3. 使用SkinBtn::onClick给按钮添加点击事件
+
+SkinBtn::onClick 按钮句柄 回调函数地址
+
+使用 GetFunctionAddress 获取期望的回调函数地址。
+
+例子详见：Examples\SkinBtn.nsi
+
+
+备注
+--------
+皮肤位图要求说明：
+位图必须包含5种状态图像：Normal、MouseOver、Pushed、Disabled、Focus
+位图宽度和高度都没限制，但最好要适合按钮大小，并且高度必须是5的倍数
+
+按钮贴图是用系统API函数TransparentBlt实现的，透明色为粉色(0xFF00FF)
+
+
+版权信息
+--------------
+版权所有 (c) 2011 gfm688

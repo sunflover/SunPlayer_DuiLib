@@ -1,0 +1,875 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<HTML><HEAD><TITLE>nsWindows</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<STYLE>BODY {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-WEIGHT: normal; FONT-SIZE: 12px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px; FONT-FAMILY: Tahoma, Arial; BACKGROUND-COLOR: #f0f0f0; TEXT-ALIGN: left
+}
+P {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+LI {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+H1 {
+	MARGIN-TOP: 20px; FONT-WEIGHT: normal; FONT-SIZE: 30px; COLOR: #333333; TEXT-ALIGN: center
+}
+H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 21px; COLOR: #7a7272
+}
+H3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 18px; COLOR: #303030
+}
+PRE {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+B {
+	COLOR: red
+}
+TABLE {
+	FONT-SIZE: 12px; MARGIN: auto; BACKGROUND-COLOR: #ffffff
+}
+DIV {
+	MARGIN: 21px
+}
+.maintable {
+	BORDER-RIGHT: #376eab 2px solid; BORDER-TOP: #376eab 2px solid; BORDER-LEFT: #376eab 2px solid; BORDER-BOTTOM: #376eab 2px solid
+}
+CODE {
+	PADDING-RIGHT: 7px; PADDING-LEFT: 7px; PADDING-BOTTOM: 7px; MARGIN-LEFT: 20px; PADDING-TOP: 7px; BACKGROUND-COLOR: rgb(240,240,240)
+}
+</STYLE>
+
+<META content="MSHTML 6.00.6000.20861" name=GENERATOR></HEAD>
+<BODY>
+<TABLE class=maintable cellSpacing=0 cellPadding=0 width=750 align=center>
+  <TBODY>
+  <TR>
+    <TD>
+      <H1>NSIS nsWindows 插件</H1>
+      <DIV>
+      <CENTER>新生代的用户界面设计工具</CENTER>
+      <P>
+      <H2>目录表</H2>
+      <UL>
+        <LI><A 
+        href="Readme.html#intro">介绍</A> 
+
+        <LI><A 
+        href="Readme.html#step">脚本指南，从零开始</A> 
+
+        <UL>
+          <LI><A 
+          href="Readme.html#step-basic">基本脚本</A> 
+
+          <LI><A 
+          href="Readme.html#step-page">自定义窗口</A> 
+
+          <LI><A 
+          href="Readme.html#step-create">创建窗口</A> 
+
+          <LI><A 
+          href="Readme.html#step-show">显示窗口</A> 
+
+          <LI><A 
+          href="Readme.html#step-add">添加控件</A> 
+
+          <LI><A 
+          href="Readme.html#step-state">控件状态</A> 
+
+          <LI><A 
+          href="Readme.html#step-notify">实时通告</A> 
+
+          <LI><A 
+          href="Readme.html#step-memory">储存数据</A> 
+          </LI></UL>
+        <LI><A 
+        href="Readme.html#ref">函数参考</A> 
+
+        <UL>
+          <LI><A 
+          href="Readme.html#ref-create">Create</A> 
+
+          <LI><A 
+          href="Readme.html#ref-createcontrol">CreateControl</A> 
+
+          <LI><A 
+          href="Readme.html#ref-show">Show</A> 
+
+          <LI><A 
+          href="Readme.html#ref-selectfiledialog">SelectFileDialog</A> 
+
+          <LI><A 
+          href="Readme.html#ref-selectfolderdialog">SelectFolderDialog</A> 
+
+          <LI><A 
+          href="Readme.html#ref-setrtl">SetRTL</A> 
+
+          <LI><A 
+          href="Readme.html#ref-getuserdata">GetUserData</A> 
+
+          <LI><A 
+          href="Readme.html#ref-setuserdata">SetUserData</A> 
+
+          <LI><A 
+          href="Readme.html#ref-SetTransParent">SetTransParent</A> 
+          
+          <LI><A 
+          href="Readme.html#ref-onback">OnBack</A> 
+
+          <LI><A 
+          href="Readme.html#ref-onchange">OnChange</A> 
+
+          <LI><A 
+          href="Readme.html#ref-onclick">OnClick</A> 
+
+          <LI><A 
+          href="Readme.html#ref-onnotify">OnNotify</A> 
+          </LI></UL>
+        <LI><A 
+        href="Readme.html#mref">宏参考</A> 
+
+        <UL>
+          <LI><A 
+          href="Readme.html#mref-create">NSW_Create*</A> 
+
+          <LI><A 
+          href="Readme.html#mref-onback">NSW_OnBack</A> 
+
+          <LI><A 
+          href="Readme.html#mref-onchange">NSW_OnChange</A> 
+
+          <LI><A 
+          href="Readme.html#mref-onclick">NSW_OnClick</A> 
+
+          <LI><A 
+          href="Readme.html#mref-onnotify">NSW_OnNotify</A> 
+
+          <LI><A 
+          href="Readme.html#mref-addstyle">NSW_AddStyle</A> 
+
+          <LI><A 
+          href="Readme.html#mref-addexstyle">NSW_AddExStyle</A> 
+
+          <LI><A 
+          href="Readme.html#mref-gettext">NSW_GetText</A> 
+
+          <LI><A 
+          href="Readme.html#mref-settext">NSW_SetText</A> 
+
+          <LI><A 
+          href="Readme.html#mref-settextlimit">NSW_SetTextLimit</A> 
+
+          <LI><A 
+          href="Readme.html#mref-getstate">NSW_GetState</A> 
+
+          <LI><A 
+          href="Readme.html#mref-setstate">NSW_SetState</A> 
+
+          <LI><A 
+          href="Readme.html#mref-check">NSW_Check</A> 
+
+          <LI><A 
+          href="Readme.html#mref-uncheck">NSW_Uncheck</A> 
+
+          <LI><A 
+          href="Readme.html#mref-cbaddstring">NSW_CB_AddString</A> 
+
+          <LI><A 
+          href="Readme.html#mref-cbselectstring">NSW_CB_SelectString</A> 
+
+          <LI><A 
+          href="Readme.html#mref-lbaddstring">NSW_LB_AddString</A> 
+
+          <LI><A 
+          href="Readme.html#mref-lbselectstring">NSW_LB_SelectString</A> 
+
+          <LI><A 
+          href="Readme.html#mref-setfocus">NSW_SetFocus</A> 
+
+          <LI><A 
+          href="Readme.html#mref-setimage">NSW_SetImage</A> 
+
+          <LI><A 
+          href="Readme.html#mref-setsimage">NSW_SetStretchedImage</A> 
+
+          <LI><A 
+          href="Readme.html#mref-clearimage">NSW_ClearImage</A> 
+
+          <LI><A 
+          href="Readme.html#mref-freeimage">NSW_FreeImage</A> 
+          </LI></UL>
+        <LI><A 
+        href="Readme.html#faq">常见问题</A> 
+        </LI></UL>
+      <H2><A name=intro></A>介绍</H2>
+      <UL>
+        <P>nsWindows nsWindows 允许在安装程序中创建自定义窗口。居于内置的窗口之上，nsWindows 
+        能够创建包含任何类型的以任意形式排列的控件的窗口。它能够创建简至仅一个控件的窗口，也能创建满足用户需求的版面。</P>
+        <P>nsWindows 是一个新的 NSIS 插件，自版本 NSIS 2.42 被引入。nsWindows 不使用 INI 文件，因此执行速度要比 InstallOptions 
+        快得多。与脚本的整合度更紧密也更自然了棗创建控件是通过使用插件的功能实现的，而通告则是直接在脚本中调用一个函数来实现的。不象 
+        InstallOptions 那样，它没有预先定义的可能用到的控件类型并实现较低层次的 Windows API 
+        访问，每一种类型的控件均能被创建并且窗口的定制具有更高的自由度。</P>
+        <P>使用 nsWindows 越灵活的同时，没有 Win32 API 
+        知识的用户就会觉得越复杂。这可通过创建预定义函数库解决。函数库在脚本中定义，可允许进行控件的创建和处理。这样，新手可以简易地体会其易用性，而高级用户仍可通过修改函数库来体会其核心功能的强大。</P></UL>
+      <H2><A name=step></A>脚本指南，从零开始</H2>
+      <UL>
+        <H3><A name=step-basic></A>基本脚本</H3>
+        <UL>
+          <P>在使用之初，让我们先创建一个基本的脚本作为我们的骨架。</P>
+          <BLOCKQUOTE><PRE>Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Page instfiles
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL>
+        <H3><A name=step-page></A>自定义窗口</H3>
+        <UL>
+          <P>现在轮廓已基本搞定，该让我们的 nsWindows 上场了！第一个调用必须总是 
+          nsWindows::Create。它将在该窗口中创建一个对话框，并在堆栈中返回其 <I>HWND</I> 
+          值。其结果必须从堆栈中被弹出以免堆栈出错。若结果为 <I>error</I>，对话框将不会被创建。</P>
+          <P>nsWindows::Create 接受5个参数。它有一个特殊的功能，但为了保持此教程的简易性，最后一个参数值一般规定为 1018。 </P>
+          <P><I>HWND</I> 是一个标识当前窗口唯一性的数字，可用于 SendMessage、SetCtlColors 和 Win32 
+          API。</P>
+          <BLOCKQUOTE><PRE><B>!include nsWindows.nsh</B>
+          
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+<B>Var hWindow
+
+Page custom nsWindowsPage</B>
+Page instfiles
+
+<B>Function nsWindowsPage
+	nsWindows::Create $hwndparent ${dwExStyle} ${dwStyle} "hello world" 1018
+	Pop $hWindow
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+FunctionEnd
+</B>
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL>
+        <H3><A name=step-show></A>显示窗口</H3>
+        <UL>
+          <P>现在窗口已经创建，该让她露脸了！这次使用的是 
+          ${NSW_Show}。此函数直至用户点击<STRONG>关闭</STRONG>按钮后才会返回。</P>
+          <BLOCKQUOTE><PRE>!include nsWindows.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Var hWindow
+
+Page custom nsWindowsPage
+Page instfiles
+
+Function nsWindowsPage
+	nsWindows::Create $hwndparent ${dwExStyle} ${dwStyle} "hello world" 1018
+	Pop $hWindow
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+	<B>nsWindows::Show</B>
+FunctionEnd
+
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL>
+        <H3><A name=step-add></A>添加控件</H3>
+        <UL>
+          <P>此时编译并运行最后修改的脚本得到的将只是一个没有用处的空白窗口。因此我们也应当在该窗口上添加一些控件。要实现此目的，我们可使用头文件 
+          nsWindows.nsh 中的宏 <A 
+          href="Readme.html#mref-create">${NSW_Create*}</A>。这些宏，每个都带有 
+          5 个参数 - x, y, width, height 和 text. 每个宏也都会返回一个值到堆栈，那就是新控件的 HWND。如同对话框的 
+          HWND，它必须从堆栈中被弹出并保存下来。</P>
+          <P>宏使用的所有尺寸单位均可使用以下三种单位类型中的任一种棗像素、对话框单位 或 
+          对话框尺寸的百分比。你可以指定负值，这表示距离是从右端或底部算起。要使用对话框单位，数值后面必须加上后缀符 
+          <I>u</I>。要使用百分比单位，数值后面必须加上百分符 - <I>%</I>。此外，有无其它的后缀符均表示像素。</P>
+          <P>使用对话框单位作为尺寸单位，能够保证在用户不同的字体或 DPI 设置下均能完美地显示对话框。</P>
+          <BLOCKQUOTE><PRE><B>!include nsWindows.nsh</B>
+!include LogicLib.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Var hWindow
+<B>Var Label
+Var Text</B>
+
+Page custom nsWindowsPage
+Page instfiles
+
+Function nsWindowsPage
+
+	${NSW_CreateWindow} $hWindow "hello world" 1018
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+<B>
+	${NSW_CreateLabel} 0 0 100% 12u "Hello, welcome to nsWindows!"
+	Pop $Label
+
+	${NSW_CreateText} 0 13u 100% -13u "Type something here..."
+	Pop $Text
+</B>
+	${NSW_Show}
+
+FunctionEnd
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE>
+          <P>有效的能用 <A 
+          href="Readme.html#mref-create">${NSW_Create*}</A> 
+          来创建的控件类型为:</P>
+          <UL>
+            <LI>HLine 
+            <LI>VLine 
+            <LI>Label 
+            <LI>Icon 
+            <LI>Bitmap 
+            <LI>BrowseButton 
+            <LI>Link 
+            <LI>Button 
+            <LI>GroupBox 
+            <LI>CheckBox 
+            <LI>RadioButton 
+            <LI>Text 
+            <LI>Memo 
+            <LI>Password 
+            <LI>FileRequest 
+            <LI>DirRequest 
+            <LI>ComboBox 
+            <LI>DropList 
+            <LI>ListBox </LI></UL></UL>
+        <H3><A name=step-state></A>控件状态</H3>
+        <UL>
+          <P>现在我们有了一些用户可以参与互动的控件，那么让我们看看用户到底对她们都干了些什么吧。要实现此目的，我们首先要添加一个<STRONG>离开回调</STRONG> 
+          (<I>leave callback</I>) 函数到我们的窗口。在该函数中，我们需要知道我们所创建并显现在用户面前的 Text 
+          控件的状态。要实现此目的，我们要使用宏 <A 
+          href="Readme.html#mref-gettext">${NSW_GetText}</A>。对于 
+          RadioButton 和 CheckBox 控件则要使用宏 <A 
+          href="Readme.html#mref-getstate">${NSW_GetState}</A>。</P>
+          <P>注意并非所有的控件都支持 <A 
+          href="Readme.html#mref-gettext">${NSW_GetText}</A>，一些控件需要使用特定讯息（在 
+          WinMessages.nsh 中定义）来进行特殊的处理。例如 ListBox 控件需要使用 <I>LB_GETCURSEL</I> 和 
+          <I>LB_GETTEXT</I>。nsWindows.nsh 中的宏集将会及时地补充许许多多的宏来处理更多的此类事情。</P>
+          <BLOCKQUOTE><PRE>!include nsWindows.nsh
+!include LogicLib.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Var hWindow
+Var Label
+Var Text
+
+Page custom nsWindowsPage
+Page instfiles
+
+Function nsWindowsPage
+
+	${NSW_CreateWindow} $hWindow "hello world" 1018
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+
+	${NSW_CreateLabel} 0 0 100% 12u "Hello, welcome to nsWindows!"
+	Pop $Label
+
+	${NSW_CreateText} 0 13u 100% -13u "Type something here..."
+	Pop $Text
+	
+	<B>GetFunctionAddress $0 nsWindowsPageLeave
+	nsWindows::OnBack $0</B>
+
+	${NSW_Show}
+
+FunctionEnd
+
+<B>Function nsWindowsPageLeave
+
+	${NSW_GetText} $Text $0
+	MessageBox MB_OK "You typed:$\n$\n$0"
+
+FunctionEnd</B>
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL>
+        <H3><A name=step-notify></A>实时通告</H3>
+        <UL>
+          <P>nsWindows 让人兴奋的新功能之一就是对话框状态改变时的回调函数通告。nsWindows 
+          能够调用脚本中定义的一个函数以响应诸如文本区段的改变和某按钮的点击等用户行为。需求。要使得 nsWindows 
+          通告我们事件的发生，我们可以使用 <A 
+          href="Readme.html#mref-onclick">${NSW_OnClick}</A> 
+          和 <A 
+          href="Readme.html#mref-onchange">${NSW_OnChange}</A>。并非所有的控件都支持事件通告。例如 
+          label 控件没有任何的通告。</P>
+          <P>当回调函数被调用时，将在堆栈中返回控件的 HWND 
+          值，其结果必须从堆栈中被弹出以免堆栈出错。在这个简易的脚本中似乎看不出有多大用处。但是在一个大型的脚本中几个控件关联到相同的回调函数，HWND 
+          值能够区分出哪个控件触发了该事件。</P>
+          <P>下面的例子将在用户输入 <I>hello</I> 到文本框中时通知用户。</P>
+          <BLOCKQUOTE><PRE>!include nsWindows.nsh
+!include LogicLib.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Var hWindow
+Var Label
+Var Text
+
+Page custom nsWindowsPage
+Page instfiles
+
+Function nsWindowsPage
+
+	${NSW_CreateWindow} $hWindow "hello world" 1018
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+
+	${NSW_CreateLabel} 0 0 100% 12u "Hello, welcome to nsWindows!"
+	Pop $Label
+
+	${NSW_CreateText} 0 13u 100% -13u "Type something here..."
+	Pop $Text
+	<B>${NSW_OnChange} $Text nsWindowsPageTextChange</B>
+
+	GetFunctionAddress $0 nsWindowsPageLeave
+	nsWindows::OnBack $0
+
+	${NSW_Show}
+
+FunctionEnd
+
+Function nsWindowsPageLeave
+
+	${NSW_GetText} $Text $0
+	MessageBox MB_OK "You typed:$\n$\n$0"
+
+FunctionEnd
+
+<B>Function nsWindowsPageTextChange
+
+	Pop $1 # $1 == $ Text
+
+	${NSW_GetText} $Text $0
+
+	${If} $0 == "hello"
+
+		MessageBox MB_OK "right back at ya!"
+
+	${EndIf}
+
+FunctionEnd</B>
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL>
+        <H3><A name=step-memory></A>储存数据</H3>
+        <UL>
+          <P>到目前为止，我们有了一个具备一些基本输入控件的窗口。但是，当用户关闭窗口再重建时会发生什么情况呢？按照现有的代码，用户的输入将不会被储存下来。要储存它们，我们可以使用已有的离开回调函数来储存用户对的选择到变量并在下一次创建该控件时传递这些变量。更好的一个例子，我们也可以添加一个 
+          Checkbox 控件到窗口，并使用 <A 
+          href="Readme.html#mref-getstate">${NSW_GetState}</A> 
+          和 <A 
+          href="Readme.html#mref-setstate">${NSW_SetState}</A> 
+          来获取和设置其状态。</P>
+          <P>为了更直观一些，我们将要删除先前步骤中的一些通告。</P>
+          <BLOCKQUOTE><PRE>!include nsWindows.nsh
+!include LogicLib.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Var hWindow
+Var Label
+Var Text
+<B>Var Text_State
+Var Checkbox
+Var Checkbox_State</B>
+
+Page custom nsWindowsPage
+<B>Page license</B>
+Page instfiles
+
+<B>Function .onInit
+
+	StrCpy $Text_State "Type something here..."
+
+FunctionEnd</B>
+
+Function nsWindowsPage
+
+	${NSW_CreateWindow} $hWindow "hello world" 1018
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+
+	${NSW_CreateLabel} 0 0 100% 12u "Hello, welcome to nsWindows!"
+	Pop $Label
+
+	${NSW_CreateText} 0 13u 100% <B>12u $Text_State</B>
+	Pop $Text
+
+	<B>${NSW_CreateCheckbox} 0 30u 100% 10u "&amp;Something"
+	Pop $Checkbox
+
+	${If} $Checkbox_State == ${BST_CHECKED}
+		${NSW_Check} $Checkbox
+	${EndIf}
+	
+	# alternative for the above ${If}:
+	#${NSW_SetState} $Checkbox_State</B>
+
+	GetFunctionAddress $0 nsWindowsPageLeave
+	nsWindows::OnBack $0
+
+	${NSW_Show}
+
+FunctionEnd
+
+Function nsWindowsPageLeave
+
+	${NSW_GetText} $Text <B>$Text_State</B>
+	<B>${NSW_GetState} $Checkbox $Checkbox_State
+	
+	StrCpy $R9 $hWindow
+	Call nsWindowsPage
+	
+	IsWindow $R9 0 +2
+		System::Call 'user32::DestroyWindow(i $R9)'</B>
+
+FunctionEnd
+
+Section
+
+	DetailPrint "hello world"
+
+SectionEnd</PRE></BLOCKQUOTE></UL></UL>
+      <H2><A name=ref></A>函数参考</H2>
+      <UL>
+        <H3><A name=ref-create></A>Create</H3>
+        <P><CODE>nsWindows::Create <I>HWND dwExStyle dwStyle Title rect</I></CODE></P>
+        <P><CODE>${NSW_CreateWindow} <I>$hWindow</I> <I>Title rect</I></CODE></P>
+        <P><CODE>${NSW_CreateWindowEx} <I>$hWindow</I> <I>HWND dwExStyle dwStyle Title rect</I></CODE></P>
+        <P>新建一个窗口。</P>
+        <I>$hWindow</I> 用于保存新建窗口句柄的变量 。</P>
+        <I>HWND</I> 指定了新创建窗口的父窗口，通常是 $HWNDPARENT 。</P>
+        <I>dwExStyle</I> 指定了新创建窗口的扩展风格 。</P>
+        <I>dwStyle</I> 指定了新创建窗口的窗口风格 。</P>
+        <I>Title</I> 指定了新创建窗口的窗口名称。</P>
+        <P><I>rect</I> 指定了位置将被模仿的控件的标识符。此处通常使用 1018，用其模仿内建页面的创建。</P>
+        <P>返回新对话框的 HWND 值到堆栈或 <I>error</I>。</P>
+        <H3><A name=ref-createcontrol></A>CreateControl</H3>
+        <P><CODE>nsWindows::CreateControl <I>class</I> <I>style</I> 
+        <I>extended_style</I> <I>x</I> <I>y</I> <I>width</I> <I>height</I> 
+        <I>text</I> </CODE></P>
+        <P><CODE>${NSW_Create*} <I>left</I> <I>top</I> 
+        <I>width</I> <I>height</I> 
+        <I>text</I> </CODE></P>
+        <P>在当前对话框中新建一个控件。此函数正常工作的前提条件是对话框必须存在，故 nsWindows::Create 
+必须在此函数之前调用。</P>
+        <P>返回新控件的 HWND 值到堆栈或 <I>error</I>。</P>
+        <H3><A name=ref-show></A>Show</H3>
+        <P><CODE>nsWindows::SHow</CODE></P>
+        <P><CODE>${NSW_Show}</CODE></P>
+        <P>显示窗口。一旦调用它将结束 nsWindows::Create、nsWindows::CreateControl 及其它 
+        nsWindows 函数。</P>
+        <P>无返回值。</P>
+        <H3><A name=ref-selectfiledialog></A>SelectFileDialog</H3>
+        <P><CODE>nsWindows::SelectFileDialog <I>mode</I> 
+        <I>initial_selection</I> <I>filter</I></CODE></P>
+        <P>显示一个文件选择对话框。若 <I>mode</I> 设置为 <I>save</I>，将显示一个保存文件对话框，若 <I>mode</I> 
+        设置为 <I>open</I>，将显示一个打开文件对话框。<I>filter</I> 为有效的文件过滤器列表，用 | 
+        分隔。如果没有指定，则使用默认的 <I>所有文件|*.*</I>。</P>
+        <P>返回所选中的文件到堆栈，或当用户取消操作时返回空字串。</P>
+        <H3><A name=ref-selectfolderdialog></A>SelectFolderDialog</H3>
+        <P><CODE>nsWindows::SelectFolderDialog <I>title</I> 
+        <I>initial_selection</I></CODE></P>
+        <P>显示一个文件夹选择对话框。</P>
+        <P>返回所选中的文件夹到堆栈，或当用户取消操作时返回空字串。</P>
+        <H3><A name=ref-setrtl></A>SetRTL</H3>
+        <P><CODE>nsWindows::SetRTL <I>rtl_setting</I></CODE></P>
+        <P>打开/关闭 从右到左 模式。若 <I>rtl_setting</I> = 0，关闭。若 <I>rtl_setting</I> = 
+        1，打开。此函数必须在任何的 nsWindows::CreateControl 之前调用。</P>
+        <P>无返回值。</P>
+        <H3><A name=ref-getuserdata></A>GetUserData</H3>
+        <P><CODE>nsWindows::GetUserData <I>control_HWND</I></CODE></P>
+        <P>返回与控件相关联的用户数据到堆栈。使用 nsWindows::SetUserData 设置此数据。</P>
+        <H3><A name=ref-setuserdata></A>SetUserData</H3>
+        <P><CODE>nsWindows::SetUserData <I>control_HWND</I> 
+        <I>data</I></CODE></P>
+        <P>关联<STRONG>数据</STRONG>到控件。使用 nsWindows::GetUserData 获取此数据。</P>
+        <P>无返回值。</P>
+        
+        <H3><A name=ref-SetTransParent></A>SetTransParent</H3>
+        <P><CODE>nsWindows::SetTransparent <I>control_HWND</I> 
+        <I>Transparency</I></CODE></P>
+        <P>设置窗口的百分比透明度。<b>注意：此函数仅能在 2K 或者以上系统中使用！</b></P>
+        <P>无返回值。</P>
+        <P>Transparency 为不透明度百分比，取值范围为0～100</P>        
+        
+        <H3><A name=ref-onback></A>OnBack</H3>
+        <P><CODE>nsWindows::OnBack <I>function_address</I></CODE></P>
+        <P>设置<STRONG>关闭</STRONG>按钮的回调函数。此函数在用户点击<STRONG>关闭</STRONG>按钮时调用。在此函数中调用 
+        Abort 能阻止用户回关闭该窗口。</P>
+        <P>使用 GetFunctionAddress 获取期望的回调函数地址。</P>
+        <P>无返回值。</P>
+        <H3><A name=ref-onchange></A>OnChange</H3>
+        <P><CODE>nsWindows::OnChange <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>设置一个更改通告回调函数到所指定的控件。当控件状态被更改时，该函数将被调用，并返回控件的 HWND 值到堆栈。</P>
+        <P>使用 GetFunctionAddress 获取期望的回调函数地址。</P>
+        <P>无返回值。</P>
+        <H3><A name=ref-onclick></A>OnClick</H3>
+        <P><CODE>nsWindows::OnClick <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>设置一个点击通告回调函数到所指定的控件。当控件被点击时，该函数将被调用，并返回控件的 HWND 值到堆栈。</P>
+        <P>使用 GetFunctionAddress 获取期望的回调函数地址。</P>
+        <P>无返回值。</P>
+        <H3><A name=ref-onnotify></A>OnNotify</H3>
+        <P><CODE>nsWindows::OnNotify <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>设置一个通告回调函数到所指定的控件。当控件接收到 WM_NOTIFY 讯息时，该函数将被调用，并返回控件的 HWND 值、通告代码和 
+        MNHDR 结构指针到堆栈。</P>
+        <P>使用 GetFunctionAddress 获取期望的回调函数地址。</P>
+        <P>无返回值。</P></UL>
+      <H2><A name=mref></A>宏参考</H2>
+      <UL>
+        <P>nsWindows.nsh 包含了一系列的宏，这将使得 nsWindows 
+        的使用变得更简单一些。下面是有关这些宏的用途、语法、输入和输出的简要介绍。</P>
+        <H3><A name=mref-create></A>NSW_Create*</H3>
+        <P><CODE>${NSW_Create*} <I>x</I> <I>y</I> <I>width</I> <I>height</I> 
+        <I>text</I></CODE></P>
+        <P>在当前对话框中新建一个控件。此函数正常工作的前提条件是对话框必须存在，故 nsWindows::Create 
+必须在此函数之前调用。</P>
+        <P>有效的变量:</P>
+        <UL>
+          <LI>${NSW_CreateHLine} 
+          <LI>${NSW_CreateVLine} 
+          <LI>${NSW_CreateLabel} 
+          <LI>${NSW_CreateIcon} 
+          <LI>${NSW_CreateBitmap} 
+          <LI>${NSW_CreateBrowseButton} 
+          <LI>${NSW_CreateLink} 
+          <LI>${NSW_CreateButton} 
+          <LI>${NSW_CreateGroupBox} 
+          <LI>${NSW_CreateCheckBox} 
+          <LI>${NSW_CreateRadioButton} 
+          <LI>${NSW_CreateText} 
+          <LI>${NSW_CreateMemo} 
+          <LI>${NSW_CreatePassword} 
+          <LI>${NSW_CreateNumber} 
+          <LI>${NSW_CreateFileRequest} 
+          <LI>${NSW_CreateDirRequest} 
+          <LI>${NSW_CreateComboBox} 
+          <LI>${NSW_CreateDropList} 
+          <LI>${NSW_CreateListBox} </LI></UL>
+        <P>返回新对话框的 HWND 值到堆栈或 error。</P>
+        <H3><A name=mref-onback></A>NSW_OnBack</H3>
+        <P><CODE>${NSW_OnBack} <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>参阅 <A 
+        href="Readme.html#ref-onback">OnBack</A> 
+        了解更多资料。</P>
+        <P></P>
+        <H3><A name=mref-onchange></A>NSW_OnChange</H3>
+        <P><CODE>${NSW_OnChange} <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>参阅 <A 
+        href="Readme.html#ref-onchange">OnChange</A> 
+        了解更多资料。</P>
+        <P>参阅 <A 
+        href="Readme.html#step-notify">Real-time 
+        Notification</A> 了解使用实例。</P>
+        <H3><A name=mref-onclick></A>NSW_OnClick</H3>
+        <P><CODE>${NSW_OnClick} <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>参阅 <A 
+        href="Readme.html#ref-onclick">OnClick</A> 
+        了解更多资料。</P>
+        <H3><A name=mref-onnotify></A>NSW_OnNotify</H3>
+        <P><CODE>${NSW_OnNotify} <I>control_HWND</I> 
+        <I>function_address</I></CODE></P>
+        <P>参阅 <A 
+        href="Readme.html#ref-onnotify">OnNotify</A> 
+        了解更多资料。</P>
+        <H3><A name=mref-addstyle></A>NSW_AddStyle</H3>
+        <P><CODE>${NSW_AddStyle} <I>control_HWND</I> <I>style</I></CODE></P>
+        <P>添加一个或多个窗口外观样式到控件。多个外观样式用分隔符 `|' 隔开。</P>
+        <P>请到 MSDN 获取样式资料。</P>
+        <H3><A name=mref-addexstyle></A>NSW_AddExStyle</H3>
+        <P><CODE>${NSW_AddExStyle} <I>control_HWND</I> <I>style</I></CODE></P>
+        <P>添加一个或多个窗口外观样式到控件。多个外观样式用分隔符 `|' 隔开。</P>
+        <P>请到 MSDN 获取样式资料。</P>
+        <H3><A name=mref-gettext></A>NSW_GetText</H3>
+        <P><CODE>${NSW_GetText} <I>control_HWND</I> 
+        <I>output_variable</I></CODE></P>
+        <P>返回某个控件的 text 状态并储存到 <I>output_variable</I>。尤其适用于 Text 控件。</P>
+        <P>参阅 <A 
+        href="Readme.html#step-state">Control 
+        State</A> 了解使用实例。</P>
+        <H3><A name=mref-settext></A>NSW_SetText</H3>
+        <P><CODE>${NSW_SetText} <I>control_HWND</I> <I>text</I></CODE></P>
+        <P>设置某个控件的 text 状态。</P>
+        <H3><A name=mref-settextlimit></A>NSW_SetTextLimit</H3>
+        <P><CODE>${NSW_SetTextLimit} <I>control_HWND</I> <I>limit</I></CODE></P>
+        <P>设置 Text 控件的输入长度限制。</P>
+        <H3><A name=mref-getstate></A>NSW_GetState</H3>
+        <P><CODE>${NSW_GetState} <I>control_HWND</I> 
+        <I>output_variable</I></CODE></P>
+        <P>返回 CheckBox 和 RadioButton 控件的状态。可能的输出值为 ${BST_CHECKED} 和 
+        ${BST_UNCHECKED}。</P>
+        <P>参阅 <A 
+        href="Readme.html#step-memory">Memory</A> 
+        了解使用实例。</P>
+        <H3><A name=mref-setstate></A>NSW_SetState</H3>
+        <P><CODE>${NSW_SetState} <I>control_HWND</I> <I>state</I></CODE></P>
+        <P>设置 CheckBox 和 RadioButton 控件的状态。可能的 <I>state</I> 参数数据为 ${BST_CHECKED} 
+        和 ${BST_UNCHECKED}。</P>
+        <P>参阅 <A 
+        href="Readme.html#step-memory">Memory</A> 
+        了解使用实例。</P>
+        <H3><A name=mref-check></A>NSW_Check</H3>
+        <P><CODE>${NSW_Check} <I>control_HWND</I></CODE></P>
+        <P>勾选一个 CheckBox 和 RadioButton 控件。等同于带 ${BST_CHECKED} 参数调用 
+        ${NSW_SetState}。</P>
+        <H3><A name=mref-uncheck></A>NSW_Uncheck</H3>
+        <P><CODE>${NSW_Uncheck} <I>control_HWND</I></CODE></P>
+        <P>取消勾选一个 CheckBox 和 RadioButton 控件。等同于带 ${BST_UNCHECKED} 参数调用 
+        ${NSW_SetState}。</P>
+        <P>参阅 <A 
+        href="Readme.html#step-memory">Memory</A> 
+        了解使用实例。</P>
+        <H3><A name=mref-cbaddstring></A>NSW_CB_AddString</H3>
+        <P><CODE>${NSW_CB_AddString} <I>combo_HWND</I> <I>string</I></CODE></P>
+        <P>添加一个字符串到组合框(ComboBox)。</P>
+        <H3><A name=mref-cbselectstring></A>NSW_CB_SelectString</H3>
+        <P><CODE>${NSW_CB_SelectString} <I>combo_HWND</I> 
+        <I>string</I></CODE></P>
+        <P>选择组合框(ComboBox)中的一个字符串。</P>
+        <H3><A name=mref-lbaddstring></A>NSW_LB_AddString</H3>
+        <P><CODE>${NSW_LB_AddString} <I>combo_HWND</I> <I>string</I></CODE></P>
+        <P>添加一个字符串到列表框(ListBox)。</P>
+        <H3><A name=mref-lbselectstring></A>NSW_LB_SelectString</H3>
+        <P><CODE>${NSW_LB_SelectString} <I>combo_HWND</I> 
+        <I>string</I></CODE></P>
+        <P>选择列表框(ListBox)中的一个字符串。</P>
+        <H3><A name=mref-setfocus></A>NSW_SetFocus</H3>
+        <P><CODE>${NSW_SetFocus} <I>control_HWND</I></CODE></P>
+        <P>将控件设置为焦点。</P>
+        <H3><A name=mref-setimage></A>NSW_SetImage</H3>
+        <P><CODE>${NSW_SetImage} <I>control_HWND</I> <I>image_path</I> 
+        <I>output_variable</I></CODE></P>
+        <P>自 <I>image_path</I> 载入一个图像并显示在已使用 <A 
+        href="Readme.html#mref-create">${NSW_CreateBitmap}</A> 
+        创建的 <I>control_HWND</I> 位置上。图像句柄储存在 <I>output_variable</I> 中，一旦不需要时可使用 
+        <A 
+        href="Readme.html#mref-freeimage">${NSW_FreeImage}</A> 
+        释放。</P>
+        <P>必须在图像被释放到用户系统之后才能调用此宏。推荐释放图像到 $PLUGINSDIR 。</P>
+        <BLOCKQUOTE><PRE>!include nsWindows.nsh
+
+Name nsWindows
+OutFile nsWindows.exe
+
+XPStyle on
+
+Page instfiles nsWindowsImage
+
+Var hWindow
+Var Image
+Var ImageHandle
+
+Function .onInit
+
+	InitPluginsDir
+	File /oname=$PLUGINSDIR\image.bmp "${NSISDIR}\Contrib\Graphics\Header\nsis-r.bmp"
+
+FunctionEnd
+
+Function nsWindowsImage
+
+	${NSW_CreateWindow} $hWindow "nsWindowsImage" 1018
+
+	${If} $hWindow == error
+		Abort
+	${EndIf}
+
+	${NSW_CreateBitmap} 0 0 100% 100% ""
+	Pop $Image
+	${NSW_SetImage} $Image $PLUGINSDIR\image.bmp $ImageHandle
+
+	${NSW_Show}
+
+;	${NSW_FreeImage} $ImageHandle
+
+FunctionEnd
+
+Section
+SectionEnd</PRE></BLOCKQUOTE>
+        <H3><A name=mref-setsimage></A>NSW_SetStretchedImage</H3>
+        <P><CODE>${NSW_SetStretchedImage} <I>control_HWND</I> <I>image_path</I> 
+        <I>output_variable</I></CODE></P>
+        <P>载入并显示一个图像，有点类似 <A 
+        href="Readme.html#mref-setimage">${NSW_SetImage}</A>，但它能拉伸图像以填充控件的位置范围。</P>
+        <H3><A name=mref-clearimage></A>NSW_ClearImage</H3>
+        <P><CODE>${NSW_ClearImage} <I>control_HWND</I></CODE></P>
+        <P>清除控件图像。</P>
+        <H3><A name=mref-freeimage></A>NSW_FreeImage</H3>
+        <P><CODE>${NSW_FreeImage} <I>image_handle</I></CODE></P>
+        <P>释放一个先前使用 <A 
+        href="Readme.html#mref-setimage">${NSW_SetImage}</A> 
+        或 <A 
+        href="Readme.html#mref-setsimage">${NSW_SetStretchedImage}</A> 
+        加载的图像句柄。</P></UL>
+      <H2><A name=faq></A>常见问题</H2>
+      <DIV>
+      <UL>
+        <LI><B>Q:</B> nsWindows 能否处理 InstallOptions INI 文件？ 
+        <BLOCKQUOTE>
+          <P><B>A:</B> nsWindows.nsh 中包含的一个名为 <I>CreateWindowFromINI</I> 的函数能够根据 
+          INI 文件创建 nsWindows 对话框。它能处理 InstallOptions 支持的各种控件类型，但暂不会处理 flags 
+          标记或通告。<I>Examples\nsWindows\InstallOptions.nsi</I> 显现了此函数的使用方法。</P>
+          <P>未来将也会有一个函数来创建脚本自身。 
+</P></BLOCKQUOTE></LI></UL></DIV></DIV></TD></TR></TBODY></TABLE></BODY></HTML>

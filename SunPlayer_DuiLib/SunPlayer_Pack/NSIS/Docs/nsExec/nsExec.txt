@@ -1,0 +1,38 @@
+﻿nsExec
+------
+nsExec 可以执行基于命令行的程序并捕获输出而不需要打开一个 DOS 窗口。
+
+
+用法
+-----
+nsExec::Exec [/OEM] [/TIMEOUT=x] 路径
+
+-或-
+
+nsExec::ExecToLog [/OEM] [/TIMEOUT=x] 路径
+
+-或-
+
+nsExec::ExecToStack [/OEM] [/TIMEOUT=x] 路径
+
+上面的函数都是相同的，但是 ExecToLog 会把信息输出到信息窗口而 ExecToStack 会把返回值的最多为 ${NSIS_MAX_STRLEN} 个字符压入堆栈。
+
+使用 /OEM 参数把输出文本从 OEM 转换为 ANSI
+
+超时值为可选项。超时单位为毫秒，用来限制输出等待时间。如果执行后的输出已经接收到则超时值会被重置并使用该超时值来作为下一次等待输出的超时值。如何检测超时请参考“返回值”。
+
+要确保在所有的 Windows 版本上无问题的执行推荐使用下面的语法:
+
+   nsExec::ExecToStack [选项] '"路径" 参数1 参数2 参数N'
+
+在这里应用程序路径可以包含非 8.3 格式路径 (带空格)
+
+返回值
+------------
+如果 nsExec 不能启动进程，则会返回 error 到堆栈顶，如果超时则返回 timeout，否则返回执行进程的返回代码。
+
+
+版权信息
+--------------
+版权所有 (c) 2002 Robert Rainwater
+感谢 Justin Frankel 和 Amir Szekely

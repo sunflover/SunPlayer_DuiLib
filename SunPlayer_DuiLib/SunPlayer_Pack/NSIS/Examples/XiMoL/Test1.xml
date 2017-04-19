@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<AtelierDev>
+<DevKits>
+    <Kit Name="Scite" Description="Editeur de text">
+        <Package key="scite1" version="last"/>
+        <Package key="scite2" version="last"/>
+        <Package key="scite3" version="last"/>
+    </Kit>
+    <Kit Name="Java" Description="JDK">
+        <Package key="java13" version="last"/>
+    </Kit>
+</DevKits>
+<ToolKits>
+    <Kit Name="" Description="">
+        <Package key="scite" version="last"/>
+        <Package key="scite1" version="last"/>
+        <Package key="scite2" version="last"/>
+        <Package key="scite3" version="last"/>
+    </Kit>
+</ToolKits>
+</AtelierDev>

@@ -1,0 +1,642 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0039)http://nsis.sourceforge.net/System.html -->
+<HTML><HEAD><TITLE>NSIS System 插件</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content="MSHTML 6.00.3790.186" name=GENERATOR>
+<link rel="stylesheet" href="style.css" type='text/css' />
+</HEAD>
+<BODY>
+<H1>NSIS System 插件</H1>
+<P><I>(C) brainsucker (Nik Medved), 2002</I></P>
+<H2>内容表</H2>
+<UL>
+  <LI><A href="System.html#intro">简介</A> 
+  <LI><A href="System.html#funcs">有效函数</A> 
+    <UL>
+    <LI><A href="System.html#memfuncs">内存相关函数</A> 
+    <LI><A href="System.html#callfuncs">调用函数</A> 
+    <LI><A href="System.html#64bitfuncs">64 位函数 </A> </LI>
+    </UL>
+  <LI><A href="System.html#faq">FAQ</A> </LI>
+</UL>
+<H2><A name=intro></A>简介</H2>
+<P>System 插件给开发者提供了从外部 DLL 调用任何函数的功能。例如，你可以用它来调用 <A 
+href="http://msdn.microsoft.com/library/en-us/fileio/base/getlogicaldrivestrings.asp">GetLogicalDriveStrings</A> 来获取用户电脑里的驱动器列表。</P>
+<P>System 插件也允许开发者来分配、释放、复制内存；与 COM 对象相配合并执行 64 位整数数学操作。</P>
+<P>为了理解 System 插件强烈推荐首先有程序方面的知识。</P>
+<P>System 插件的几个函数 (Call, Get 和 Debug) 用 GCC 编译是无效的。要使用这些函数，您需要下载一个 MSVC 编译器编译的 System 插件，或者自己编写相关功能的插件。</P>
+<H4>档案里的一些使用例子</H4>
+<UL>
+<li><a href="http://nsis.sourceforge.net/wiki/Get_Local_Time">Get local time</a></li>
+<li><a href="http://nsis.sourceforge.net/wiki/Registering_a_Palm_Com_Conduit">Register conduits with Palm HotSync</a></li>
+<li><a href="http://nsis.sourceforge.net/wiki/Determining_free_memory_using_the_System_plugin">Get free memory</a></li>
+<li><a href="http://nsis.sourceforge.net/wiki/REG_MULTI_SZ_Reader">Read REG_MULTI_SZ</a></li>
+<li><a href="http://nsis.sourceforge.net/wiki/Get_Disk_Volume_Serial_Number">Get disk serial number</a></li>
+<li><i><a href="http://nsis.sourceforge.net/Special:Search?search=System%3A%3ACall">全部搜索...</a></i></li>
+<H2><A name=funcs></A>有效函数</H2>
+<H3><A name=memfuncs></A>内存相关函数</H3>
+<DIV>
+<UL>
+  <LI><B>Alloc</B> <I>SIZE</I> 
+  <BLOCKQUOTE>
+    <P>分配 <I>SIZE</I> 字节并返回一个内存地址到堆栈上。</P>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE><PRE>System::<B>Alloc</B> 64
+Pop $0
+DetailPrint "64 字节分配在 $0"
+System::Free $0
+</PRE>
+    </BLOCKQUOTE></BLOCKQUOTE>
+  <LI><B>Copy</B> [/<I>SIZE</I>] <I>DESTINATION</I> <I>SOURCE</I> 
+  <BLOCKQUOTE>
+    <P>从 <I>SOURCE</I> 复制 <I>SIZE</I> 字节到 <I>DESTINATION</I>。如果不指定 <I>SIZE</I>，<I>SOURCE </I>的大小必须使用 GlobalSize。这意味着如果你不使用 System::Alloc，System::Call 或 GlobalAllocCopies 来分配<I> SOURCE</I>，你就必须指定 <I>SIZE</I>。</P>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE>
+      <PRE># 分配一个缓冲区并把‘测试字串'压入
+System::Call "*(&amp;t1024 '测试字串', i 5) i .s"
+Pop $0
+# 复制到一个自动创建的缓冲区
+System::<B>Copy</B> 0 $0
+Pop $1
+# 在 $1 缓冲区获取字串和整数
+System::Call "*$1(&amp;t1024 .r2, i .r3)"
+# 释放缓冲区
+System::Free $1
+# 输出结果
+DetailPrint $2
+DetailPrint $3
+# 复制到我们自己的缓冲区
+System::Alloc 1028
+Pop $1
+System::<B>Copy</B> $1 $0
+# 在 $1 缓冲区获取字串和整数
+System::Call "*$1(&amp;t1024 .r2, i .r3)"
+# 释放
+System::Free $0
+System::Free $1
+# 输出结果
+DetailPrint $2
+DetailPrint $3
+</PRE>
+    </BLOCKQUOTE></BLOCKQUOTE>
+  <LI><B>Free</B> <I>ADDRESS</I> 
+  <BLOCKQUOTE>
+    <P>释放<I>ADDRESS</I>.</P>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE><PRE>System::Alloc 64
+Pop $0
+DetailPrint "64 字节分配在 $0"
+System::<B>Free</B> $0
+</PRE>
+    </BLOCKQUOTE></BLOCKQUOTE>
+  <LI><B>Store</B> "<I>OPERATION</I> [<I>OPERATION</I> [<I>OPERATION</I> ...]]" 
+  <BLOCKQUOTE>
+    <P>执行堆栈操作。一个操作可以从 NSIS 堆栈压入或弹出一个已注册的变量或者压入弹出所有系统已注册的变量 ($0 - $9 和 $R0 - $R9)。操作可以由任何字符分割。</P>
+    <H4>有效的操作</H4>
+    <UL>
+      <LI>要压入 $<I>#</I>，使用 p<I>#</I>，<I>#</I> 是一个从 0 到 9 的数字。
+      <LI>要弹出 $<I>#</I>，使用 r<I>#</I>，<I>#</I> 是一个从 0 到 9 的数字。
+      <LI>要压入 $R<I>#</I>，使用 P<I>#</I>，<I>#</I> 是一个从 0 到 9 的数字。
+      <LI>要弹出 $R<I>#</I>，使用 R<I>#</I>，<I>#</I> 是一个从 0 到 9 的数字。
+      <LI>要压入 $0-$9 和 $R0-$R9 到系统私有的堆栈，使用 s 或 S。
+      <LI>要从系统私有的堆栈弹出 $0-$9 和 $R0-$R9 使用 l 或 L。</LI>
+      </UL>
+    <P>注意系统私有堆栈当 System 插件从 NSIS 卸载后将会丢失。如果你想使用它，你就必须保持 System 插件一直载入。你可以在你的脚本里使用 SetPluginUnload 或加 /NOUNLOAD 参数来使得插件不卸载。</P>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE><PRE>StrCpy $0 "test"
+System::<B>Store</B> "p0"
+Pop $1
+DetailPrint "$0 = $1"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>StrCpy $2 "test"
+System::<B>Store</B> "p2 R2"
+DetailPrint "$2 = $R2"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>StrCpy $3 "test"
+System::<B>Store</B> /NOUNLOAD "s"
+StrCpy $3 "another test"
+System::<B>Store</B> "l"
+DetailPrint $3
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Store</B> "r4" "test"
+DetailPrint $4
+</PRE></BLOCKQUOTE></BLOCKQUOTE></LI></UL>
+</DIV>
+<H3><A name=callfuncs></A>调用函数</H3>
+<DIV>
+<UL>
+  <LI><B>Call</B> <I>PROC</I> [( <I>PARAMS</I> ) [<I>RETURN</I> [? 
+  <I>OPTIONS</I>]]] 
+  <LI><B>Get</B> <I>PROC</I> [( <I>PARAMS</I> ) [<I>RETURN</I> [? 
+  <I>OPTIONS</I>]]] 
+  <BLOCKQUOTE>
+    <P>调用和获取都是共用一个语法。就如名称所述， Call 就是调用 Get 就是获取。它要调用什么或获取什么？由 <I>PROC</I> 的值决定。</P>
+    <P><I>PARAMS</I> 是一个参数列表和要和他们做什么。你可以在参数里传递数据并且也可以从它们那里获取数据。这些参数列表由逗号分隔。每个参数由三个值组合而成: 类型、源、目标。类型可以是一个整数，一个字串，等等。源，就是参数值的源，可以是一个 NSIS 变量($0、$1、$INSTDIR)，NSIS 堆栈，一个具体的值(5、&quot;test&quot;，等等)或空(NULL)。目标，就是调用返回后的参数值，可以是 NSIS 变量，NSIS 堆栈或空(意味着该输出不需要)。如果不需要源或目标的话可以用一个句点表示(.)。</P>
+    <P><I>RETURN</I> 像一个单一参数的定义，但当创建回调函数时仅使用到源。通常源是一个句点。</P>
+    <P><I>OPTIONS</I> 是一个 System 插件行为控制方法的选项列表。每一个选项可以由一个感叹号前缀关闭。例如: <B>?!e</B>。</P>
+    <P><I>PARAMS</I>，<I>RETURN</I> 和 <I>OPTIONS</I> 在一个 Get/Call 行里可以重复多次。当重复时，可以省略很多，而只需要使用你需要改变的。类型，源 和/或目标可以省略每一个参数，即使返回值。选项可以添加或移除。这允许你来定义函数原型并保存为一些类型。<A 
+    href="System.html#callback">最后的两个例子</A> 作了演示。</P>
+    <P><I>PROC</I> 也可以重复但必须带井号前缀(#)。</P>
+    <H4>可能的 <I>PROC</I> 值和意义</H4>
+    <BLOCKQUOTE>
+      <TABLE>
+        <TBODY>
+          <TR>
+            <TH>值</TH>
+            <TH>意义</TH>
+            <TH>例子</TH>
+          </TR>
+          <TR>
+            <TH><I>DLL</I>::<I>FUNC</I></TH>
+            <TD>DLL 输出的函数</TD>
+            <TD><A 
+            href="System.html#func">user32::MessageBox</A></TD>
+          </TR>
+          <TR>
+            <TH>::<I>ADDR</I></TH>
+            <TD>地址为 ADDR 的函数</TD>
+            <TD><A href="System.html#funcaddr">看下面</A></TD>
+          </TR>
+          <TR>
+            <TH>*<I>ADDR</I></TH>
+            <TD>地址为 ADDR 的结构</TD>
+            <TD><A href="System.html#structaddr">看下面</A></TD>
+          </TR>
+          <TR>
+            <TH>*</TH>
+            <TD>新结构</TD>
+            <TD><A href="System.html#newstruct">看下面</A></TD>
+          </TR>
+          <TR>
+            <TH><I>IPTR</I>-&gt;<I>IDX</I></TH>
+            <TD>成员索引 IDX 从界面由 IPTR 指向</TD>
+            <TD><A href="System.html#com">看下面</A></TD>
+          </TR>
+          <TR>
+            <TH>&lt;nothing&gt;</TH>
+            <TD>新的回调函数</TD>
+            <TD><A href="System.html#callback">看下面</A></TD>
+          </TR>
+          <TR>
+            <TH><I>PROC</I></TH>
+            <TD> 由 Get 返回的 <I>PROC</I></TD>
+            <TD><A href="System.html#get">看下面</A></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+    </BLOCKQUOTE>
+    <H4>有效的参数类型</H4>
+    <BLOCKQUOTE>
+      <TABLE>
+        <TBODY>
+        <TR>
+          <TH>类型</TH>
+          <TH>意义</TH>
+        </TR>
+        <TR>
+          <TH>v</TH>
+          <TD>void (常用于返回)</TD>
+          <TD></TD></TR>
+        <TR>
+          <TH>i</TH>
+          <TD>int (包括 char、byte、short、句柄、指针 等)</TD>
+        </TR>
+        <TR>
+          <TH>l</TH>
+          <TD>长整数、int64</TD>
+        </TR>
+        <TR>
+          <TH>t</TH>
+          <TD>文本，字串(指向第一个字符)</TD>
+        </TR>
+        <TR>
+          <TH>w</TH>
+          <TD>WCHAR 文本，Unicode 字串</TD>
+        </TR>
+        <TR>
+          <TH>g</TH>
+          <TD>GUID</TD></TR>
+        <TR>
+          <TH>k</TH>
+          <TD>回调</TD>
+        </TR>
+        <TR>
+          <TH>&amp;v<I>N</I></TH>
+          <TD><I>N</I> 字节填充 (仅结构)</TD>
+        </TR>
+        <TR>
+          <TH>&amp;i<I>N</I></TH>
+          <TD><I>N</I> 字节整数 (仅结构)</TD>
+        </TR>
+        <TR>
+          <TH>&amp;l</TH>
+          <TD>结构大小 (仅结构)</TD>
+        </TR>
+        <TR>
+          <TH>&amp;t<I>N</I></TH>
+          <TD><I>N</I> 字节文本 (仅结构)</TD>
+        </TR>
+        <TR>
+          <TH>&amp;w<I>N</I></TH>
+          <TD><I>N</I> 字节 Unicode 文本 (仅结构)</TD>
+        </TR>
+        <TR>
+          <TH>&amp;g<I>N</I></TH>
+          <TD><I>N</I> 字节 GUID (仅结构)</TD>
+        </TR></TBODY></TABLE>
+      <P>另外，每一种类型可以加一个星号表示指针。当使用一个星号时，System 插件仍然认为是参数的值，而不是指针地址。要传递直接的地址，使用没有星号的 i。一个<a href="System.html#pointer">使用例子</a>。<A 
+      href="System.html#memfuncs">Alloc</A> 返回地址并且它的返回值因此被用于 i，不带星号。</P>
+    </BLOCKQUOTE>
+    <H4>有效的源和目标</H4>
+    <BLOCKQUOTE>
+      <TABLE>
+        <TBODY>
+        <TR>
+          <TH>类型</TH>
+          <TH>意义</TH>
+        </TR>
+        <TR>
+          <TH>.</TH>
+          <TD>忽略</TD>
+          <TD></TD></TR>
+        <TR>
+          <TH><I>number</I></TH>
+          <TD>十六进制、十进制或八进制整数值。许多整数可以使用 | 来执行或操作。</TD>
+        </TR>
+        <TR>
+          <TH>'<I>string</I>'<BR>"<I>string</I>"<BR>`<I>string</I>`</TH>
+          <TD>字串值</TD>
+        </TR>
+        <TR>
+          <TH><I>r0</I> 到 <I>r9</I></TH>
+          <TD>分别是 $0 到 $9</TD>
+        </TR>
+        <TR>
+          <TH><I>r10</I> 到<I>r19</I><BR>
+            <I>R0</I> 到<I>R9</I></TH>
+          <TD>分别是 $R0 到 $R9</TD>
+        </TR>
+        <TR>
+          <TH>c</TH>
+          <TD>$CMDLINE</TD></TR>
+        <TR>
+          <TH>d</TH>
+          <TD>$INSTDIR</TD></TR>
+        <TR>
+          <TH>o</TH>
+          <TD>$OUTDIR</TD></TR>
+        <TR>
+          <TH>e</TH>
+          <TD>$EXEDIR</TD></TR>
+        <TR>
+          <TH>a</TH>
+          <TD>$LANGUAGE</TD></TR>
+        <TR>
+          <TH>s</TH>
+          <TD>NSIS 堆栈</TD>
+        </TR>
+        <TR>
+          <TH>n</TH>
+          <TD>空的源，目标不需要输出</TD>
+        </TR></TBODY></TABLE></BLOCKQUOTE>
+    <H4>回调</H4>
+    <BLOCKQUOTE>
+      <P>回调函数是一个被传递到一个函数并被它本身回调的简单的函数。它们常用于一项接一项传递一个可能的大量数据设置。例如: <A 
+      href="http://msdn.microsoft.com/library/en-us/winui/WinUI/WindowsUserInterface/Windowing/Windows/WindowReference/WindowFunctions/EnumChildWindows.asp">EnumChildWindows</A> 使用一个<a href="http://msdn.microsoft.com/library/en-us/winui/WinUI/WindowsUserInterface/Windowing/Windows/WindowReference/WindowFunctions/EnumChildProc.asp">回调函数</a>。像 NSIS 函数不是完全正规的函数一样，System 插件提供它自己的机制来支持回调函数。它允许你来创建回调函数并当一个回调函数被调用时通知你。</P>
+      <P>回调函数的创建使用 <A 
+      href="System.html#callfuncs">Get</A> 和回调的语法。就像你不能调用回调本身一样，参数的源应该使用一个句点来忽略。当回调被调用时，目标参数将使用回调传递的参数来填充。回调将要返回的值由源返回参数设置。目标的返回参数应总是设为当 System 通知回调被调用时。</P>
+      <BLOCKQUOTE><PRE>System::Get "(i .r0, i .r1) iss"</PRE></BLOCKQUOTE>
+      <P>要传递回调到一个函数，请使用 k 类型。</P>
+      <BLOCKQUOTE><PRE>System::Get "(i .r0, i .r1) isR0"
+Pop $0
+System::Call "dll::UseCallback(k r0)"</PRE></BLOCKQUOTE>
+      <P>每次回调被调用时，字串 callback# (这里 # 代表回调的次数) 将会被在返回 “参数” 的目标里被替换，第一次创建的为 1，第二次为 2，第三次为 3 等等。就如 System 为单线程一样，回调也只能在调用另一个参数时被调用。例如，EnumChildWindows 的回调也只能在 EnumChildWindows 被调用时被调用。因此你应该在每次可能会调用回调的函数调用后检测 callback#。</P>
+      <BLOCKQUOTE>
+        <PRE>System::Get"(i .r0, i .r1) isR0"
+Pop $0
+System::Call "dll::UseCallback(k r0)"
+StrCmp $R0 "callback1" 0 +2
+DetailPrint "UseCallback passed ($0, $1) to the callback"
+</PRE>
+      </BLOCKQUOTE>
+      <P>在你处理回调的调用后，你应该使用 <A 
+      href="http://nsis.sourceforge.net/System.html#callfuncs">Call</A>，把 <A 
+      href="http://nsis.sourceforge.net/System.html#callfuncs">Get</A> - 回调 返回的值传给它。这将告诉 System 从回调里返回。在调用函数之前目标的返回”参数“必须清除以免回调失败。如果当回调创建时为返回的参数指定了源，你应当把返回值赋给源。因为回调不能自动的释放，所以当你使用完之后不要忘了释放它。</P>
+      <BLOCKQUOTE>
+        <PRE>SetPluginUnload alwaysoff
+System::Get"(i .r0, i .r1) isR0"
+Pop $0
+System::Call "dll::UseCallback(k r0)"
+loop:
+	StrCmp $R0 "callback1" 0 done
+	DetailPrint "UseCallback passed ($0, $1) to the callback"
+	Push 1 # return value of the callback
+	StrCpy $R0 "" # clear $R0 in case there are no more callback calls
+	System::Call $0 # tell system to return from the callback
+	Goto loop
+done:
+SetPluginUnload manual
+System::Free $0
+</PRE>
+      </BLOCKQUOTE>
+      <P>一个完整的<A 
+      href="System.html#callback">例子</A>。</P>
+    </BLOCKQUOTE>
+    <H4>注意事项</H4>
+    <BLOCKQUOTE>
+      <UL>
+        <LI>要查找一个 COM 界面的成员索引，你需要查找 Visual C/C++ 或平台 SDK 里的 COM 界面头文件定义。记住索引从零开始。
+        <LI>记住当使用回调时记得使用 NSIS 的 /NOUNLOAD 开关或 SetPluginUnload。因为如果插件被卸载了它就不能被正常调用了。
+        <LI>如果找不到函数则会把一个 A 附加在函数名的后面，然后再次查找函数。这是因为许多的 Windows 
+        API 函数都有两个版本，一个是 ANSI 版本另一个是 Unicode 版本，ANSI 版本标记为 A 而 Unicode 版本标记为 W。例如: lstrcpyA 和 
+        lstrcpyW。</LI>
+      </UL>
+    </BLOCKQUOTE>
+    <H4>有效的选项</H4>
+    <BLOCKQUOTE>
+      <TABLE>
+        <TBODY>
+        <TR>
+          <TH width="41">选项</TH>
+          <TH width="491">意义</TH>
+        </TR>
+        <TR>
+          <TH>c</TH>
+          <TD>cdecl 调用约定 (堆栈由 caller 重建)。默认情况下使用 stdcall (堆栈由 
+            callee重建)。</TD>
+          <TD width="7"></TD></TR>
+        <TR>
+          <TH>r</TH>
+          <TD>总是返回 (对于 GET 来说意味着你应该弹出结果并处理，对于 CALL 来说应该至少弹出结果)。默认情况下仅对错误返回 (对于 GET 来说你可以弹出错误结果和正确的处理，而对于 CALL 来说你将获得返回或定义的地方的结果)。</TD>
+        </TR>
+        <TR>
+          <TH>n</TH>
+          <TD>不重新定义。无论过程如何都不会用 GET 或 CALL 来重新定义。该选项不会继承到子项。</TD>
+        </TR>
+        <TR>
+          <TH>s</TH>
+          <TD>使用常规堆栈。对于函数调用无论何时第一次回调定义的系统都优先使用临时堆栈。</TD>
+        </TR>
+        <TR>
+          <TH>e</TH>
+          <TD>在程序结束后调用Call GetLastError() 并把结果压入堆栈。</TD>
+        </TR>
+        <TR>
+          <TH>u</TH>
+          <TD>调用后卸载 DLL (使用 FreeLibrary，使你可以删除它本身)。</TD>
+        </TR></TBODY></TABLE></BLOCKQUOTE>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE><PRE><A name=func></A>System::<B>Call</B> "user32::MessageBox(i $HWNDPARENT, t 'NSIS System Plug-in', t 'Test', i 0)"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=funcaddr></A>System::<B>Call</B> "kernel32::GetModuleHandle(t 'user32.dll') i .s"
+System::<B>Call</B> "kernel32::GetProcAddress(i s, t 'MessageBoxA') i .r0"
+System::<B>Call</B> "::$0(i $HWNDPARENT, t 'GetProcAddress test', t 'NSIS System Plug-in', i 0)"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=get></A>System::<B>Get</B> "user32::MessageBox(i $HWNDPARENT, t 'This is a default text', t 'Default', i 0)"
+Pop $0
+System::<B>Call</B> "$0"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Get</B> "user32::MessageBox(i $HWNDPARENT, t 'This is a default text', \
+	t 'Default', i 0x1|0x10)"
+Pop $0
+System::<B>Call</B> "$0(, 'This is a System::Get test', 'NSIS System Plug-in',)"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=pointer></A>System::<B>Call</B> "advapi32::GetUserName(t .r0, *i ${NSIS_MAX_STRLEN} r1) i.r2"
+DetailPrint "User name - $0"
+DetailPrint "String length - $1"
+DetailPrint "Return value - $2"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=structaddr></A>System::Alloc 4
+Pop $0
+System::<B>Call</B> "*$0(i 5)"
+System::<B>Call</B> "*$0(i .r1)"
+DetailPrint $1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=newstruct></A>System::<B>Call</B> "*(i 5) i .r0"
+System::<B>Call</B> "*$0(i .r1)"
+DetailPrint $1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=com></A># defines
+!define CLSCTX_INPROC_SERVER 1
+!define CLSID_ActiveDesktop {75048700-EF1F-11D0-9888-006097DEACF9}
+!define IID_IActiveDesktop {F490EB00-1240-11D1-9888-006097DEACF9}
+# create IActiveDesktop interface
+System::<B>Call</B> "ole32::CoCreateInstance( \
+	g '${CLSID_ActiveDesktop}', i 0, \
+	i ${CLSCTX_INPROC_SERVER}, \
+	g '${IID_IActiveDesktop}', *i .r0) i.r1"
+StrCmp $1 0 0 end
+# call IActiveDesktop-&gt;GetWallpaper
+System::<B>Call</B> "$0-&gt;4(w .r2, i ${NSIS_MAX_STRLEN}, i 0)"
+# call IActiveDesktop-&gt;Release
+System::<B>Call</B> "$0-&gt;2()"
+# print result
+DetailPrint $2
+end:
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>InitPluginsDir
+SetOutPath $PLUGINSDIR
+File MyDLL.dll
+System::<B>Call</B> "MyDLL::MyFunc(i 5) ? u"
+Delete $PLUGINSDIR\MyDLL.dll
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=callback></A>SetPluginUnload alwaysoff
+System::<B>Get</B> "(i.r1, i) iss"
+Pop $R0
+System::<B>Call</B> "user32::EnumChildWindows(i $HWNDPARENT, k R0, i) i.s"
+loop:
+	Pop $0
+	StrCmp $0 "callback1" 0 done
+	System::<B>Call</B> "user32::GetWindowText(ir1,t.r2,i${NSIS_MAX_STRLEN})"
+	System::<B>Call</B> "user32::GetClassName(ir1,t.r3,i${NSIS_MAX_STRLEN})"
+	IntFmt $1 "0x%X" $1
+	DetailPrint "$1 - [$3] $2"
+	Push 1 # callback's return value
+	System::<B>Call</B> "$R0"
+	Goto loop
+done:
+SetPluginUnload manual
+System::Free $R0
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE><A name=repeat></A>!define MB "user32::MessageBox(i$HWNDPARENT,t,t'NSIS System Plug-in',i0)"
+System::<B>Call</B> "${MB}(,'my message',,)"
+System::<B>Call</B> "${MB}(,'another message',,) i.r0"
+MessageBox MB_OK "last call returned $0"
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Call</B> "user32::SendMessage(i $HWNDPARENT, t 'test', t 'test', i 0) i.s ? \
+	e (,t'test replacement',,) i.r0 ? !e #user32::MessageBox"
+DetailPrint $0
+ClearErrors
+Pop $0
+IfErrors good
+MessageBox MB_OK "this message box will never be reached"
+good:
+</PRE></BLOCKQUOTE></BLOCKQUOTE></LI></UL></DIV>
+<H3><A name=64bitfuncs></A>64 位函数</H3>
+<DIV>
+<UL>
+  <LI><B>Int64Op</B> <I>ARG1</I> <I>OP</I> [<I>ARG2</I>] 
+  <BLOCKQUOTE>
+    <P>执行 <I>ARG1</I> 和选项 <I>ARG2 </I>之间的 <I>OP</I> 操作，返回值到堆栈顶。<I>ARG1</I> 和 <I>ARG2</I> 都是 64 位整数，这意味着它们可以处理从 -2^63 到 2^63 - 1 的整数。</P>
+    <H4>有效的运算符</H4>
+    <UL>
+      <LI>加法 -- <B>+</B> 
+      <LI>减法 -- <B>-</B> 
+      <LI>乘法 -- <B>*</B> 
+      <LI>除法 -- <B>/</B> 
+      <LI>取模 -- <B>%</B> 
+      <LI>位或 -- <B>|</B> 
+      <LI>位与 -- <B>&amp;</B> 
+      <LI>位异或 -- <B>^</B> 
+      <LI>逻辑或 -- <B>||</B> 
+      <LI>逻辑与 -- <B>&amp;&amp;</B> 
+      <LI>小于 -- <B>&lt;</B> 
+      <LI>大于 -- <B>&gt;</B> 
+      <LI>等于 -- <B>=</B> 
+      <LI>位非 (单变量) -- <B>~</B> 
+      <LI>逻辑非 (单变量) -- <B>!</B> </LI>
+    </UL>
+    <H4>使用例子</H4>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 5 + 5
+Pop $0
+DetailPrint "5 + 5 = $0" # 10
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 64 - 25
+Pop $0
+DetailPrint "64 - 25 = $0" # 39
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 526355 * 1565487
+Pop $0
+DetailPrint "526355 * 1565487 = $0" # 824001909885
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 5498449498849818 / 3
+Pop $0
+DetailPrint "5498449498849818 / 3 = $0" # 1832816499616606
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 0x89498A198E4566C % 157
+Pop $0
+DetailPrint "0x89498A198E4566C % 157 = $0" # 118
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 0xF0F0F0F | 0xF0F0FFF
+Pop $0
+# IntFmt is 32-bit, this is just for the example
+IntFmt $0 "0x%X" $0
+DetailPrint "0xF0F0F0F | 0xF0F0FFF = $0" # 0xF0F0FFF
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 0x12345678 &amp; 0xF0F0F0F0
+Pop $0
+# IntFmt is 32-bit, this is just for the example
+IntFmt $0 "0x%X" $0
+DetailPrint "0x12345678 &amp; 0xF0F0F0F0 = $0" # 0x10305070
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 1 ^ 0
+Pop $0
+DetailPrint "1 ^ 0 = $0" # 1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 1 || 0
+Pop $0
+DetailPrint "1 || 0 = $0" # 1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 1 &amp;&amp; 0
+Pop $0
+DetailPrint "1 &amp;&amp; 0 = $0" # 0
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 9302157012375 &lt; 570197509190760
+Pop $0
+DetailPrint "9302157012375 &lt; 570197509190760 = $0" # 1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 5168 &gt; 89873
+Pop $0
+DetailPrint "5168 &gt; 89873 = $0" # 0
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 189189 = 189189
+Pop $0
+DetailPrint "189189 = 189189 = $0" # 1
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 156545668489 ~
+Pop $0
+DetailPrint "1 ~ = $0" # -156545668490
+</PRE></BLOCKQUOTE>
+    <BLOCKQUOTE><PRE>System::<B>Int64Op</B> 1 !
+Pop $0
+DetailPrint "1 ! = $0" # 0
+</PRE></BLOCKQUOTE></BLOCKQUOTE>
+  </LI></UL></DIV>
+<H2><A name=faq></A>FAQ</H2>
+<DIV>
+<UL>
+  <LI><B>Q:</B> 如何把一个结构传递到函数？
+    <BLOCKQUOTE>
+    <P><B>A:</B> 首先，你必须先为结构分配内存。有两种方法: 使用 <A 
+    href="http://nsis.sourceforge.net/System.html#memfuncs">Alloc</A> 或带有特殊结构分配语法的 <A 
+    href="http://nsis.sourceforge.net/System.html#callfuncs">Call</A>。然后，如果你要在结构传递数据，你首先要把数据填入结构体。然后你才可以用一个指向结构的指针来调用函数。最后，调用函数后如果你想从结构体里取出数据，你必须使用带有结构指针的 <A 
+    href="http://nsis.sourceforge.net/System.html#callfuncs">Call</A>。上面这些都做完了之后别忘了释放结构体。</P>
+    <H4>分配内存</H4>
+    <BLOCKQUOTE>
+      <P>要分配内存给结构体请使用<A 
+      href="http://nsis.sourceforge.net/System.html#memfuncs">Alloc</A>，但是你必须知道结构体的大小。当然你也可以用<A 
+      href="http://nsis.sourceforge.net/System.html#callfuncs">Call</A>。在这个例子里可以很明显地看出这个结构体的大小是 16 字节，但是在其他的例子可能就不是这样子了。在所有的例子里，结构体的地址都被保存在堆栈顶部，你需要用 Pop 来把它弹出到变量。</P>
+      <BLOCKQUOTE><PRE>System::Alloc 16
+</PRE></BLOCKQUOTE>
+      <BLOCKQUOTE><PRE>System::Call "*(i, i, i, t)i.s"
+</PRE></BLOCKQUOTE></BLOCKQUOTE>
+    <H4>设置数据</H4>
+    <BLOCKQUOTE>
+      <P>写入数据可以使用<A 
+      href="http://nsis.sourceforge.net/System.html#callfuncs">Call</A>。可以在分配内存时就进行，或者用其它方法分配后使用带结构指针的语法。</P>
+      <BLOCKQUOTE><PRE>System::Call "*(i 5, i 2, i 513, t 'test')i.s"
+</PRE></BLOCKQUOTE>
+      <BLOCKQUOTE>
+        <PRE># 假设结构体的内存地址保存在 $0 里
+System::Call "*$0(i 5, i 2, i 513, t 'test')"
+</PRE>
+      </BLOCKQUOTE></BLOCKQUOTE>
+    <H4>把结构体传递到函数</H4>
+    <BLOCKQUOTE>
+      <P>就像一些分配方法返回一个地址一样，这里要传递的数据类型应该是一个整数 - 一个保存了结构体地址的整数。</P>
+      <BLOCKQUOTE><PRE># 假设结构体的内存地址保存在 $0 里
+System::Call "dll::func(i r0)"
+</PRE>
+      </BLOCKQUOTE></BLOCKQUOTE>
+    <H4>读取数据</H4>
+    <BLOCKQUOTE>
+      <P>读取数据可以使用和写入数据相同的语法。说不同的是要有输出变量而输入部分用一个句点来表示。</P>
+      <BLOCKQUOTE>
+        <PRE># 假设结构体的内存地址保存在 $0 里
+System::Call "*$0(i .r0, i .r1, i .r2, t .r3)"
+DetailPrint "第一个整数 = $0"
+DetailPrint "第二个整数 = $1"
+DetailPrint "第三个整数 = $2"
+DetailPrint "字串 = $3"
+</PRE>
+      </BLOCKQUOTE></BLOCKQUOTE>
+    <H4>释放内存</H4>
+    <BLOCKQUOTE>
+      <P>使用<A 
+      href="http://nsis.sourceforge.net/System.html#memfuncs">Free</A> 来释放内存。</P>
+      <BLOCKQUOTE><PRE># 假设结构体的内存地址保存在 $0 里
+System::Free $0
+</PRE>
+      </BLOCKQUOTE></BLOCKQUOTE>
+    <H4>一个完整的例子</H4>
+    <BLOCKQUOTE>
+      <PRE># 分配
+System::Alloc 32
+Pop $1
+# 调用
+System::Call "Kernel32::GlobalMemoryStatus(i r1)"
+# 获取
+System::Call "*$1(i.r2, i.r3, i.r4, i.r5, i.r6, i.r7, i.r8, i.r9)"
+# 释放
+System::Free $1
+# 输出
+DetailPrint "Structure size: $2 字节"
+DetailPrint "Memory load: $3%"
+DetailPrint "Total physical memory: $4 字节"
+DetailPrint "Free physical memory: $5 字节"
+DetailPrint "Total page file: $6 字节"
+DetailPrint "Free page file: $7 字节"
+DetailPrint "Total virtual: $8 字节"
+DetailPrint "Free virtual: $9 v"
+</PRE>
+    </BLOCKQUOTE></BLOCKQUOTE></LI></UL></DIV></BODY></HTML>

@@ -1,0 +1,172 @@
+=====================
+NSIS Dialog Designer
+Version history
+=====================
+
+v.1.4.0 - 2015-03-17
+NEW: Dialog has a new property "DialogUI" which allows user to set custom
+     DialogID and Size (i.e.: using a different UI like sdbarker_tiny.exe)
+FIX: HLine and VLine controls don't pop their handle from stack.
+
+v.1.3.3 - 2015-03-09
+FIX: Readonly and TextLimit properties of Number control do not work.
+
+v.1.3.2 - 2014-11-10
+FIX: Fixed DialogID and Size management, form Size is now readonly
+     unless DialogID is set to a custom value.
+
+v.1.3.1 - 2014-10-27
+FIX: Can't set custom dialog size, it always revert back to default.
+FIX: Style and ExStyle dialog properties were serialized even of not necessary.
+FIX: Removed useless Visible and Enabled dialog properties.
+
+v.1.3.0 - 2014-08-12
+NEW: TabIndex property of each control is now synchronized with control order
+     into its parent child controls collection. Changing TabIndex (directly or
+     through the "Set TabOrder..." menu command will also change the scripting
+     order of the control into the generated NSIS script.
+NEW: A warning is now emitted into .nsdinc file to warn the user about manually editing the file.
+FIX: When dragging a control over another, the dragged control disappeared making it
+     difficult to place two overlapping controls (think about a background bitmap).
+FIX: Show a custom error message when setting Dialog BackColor property to Transparent.
+FIX: Fixed properties exposed by HLine and VLine special controls.
+FIX: Generated script for DirRequest/FileRequest controls is missing some properties
+     (Enabled, Visible, onChange, onClick, Style, ExStyle, ControlCustomScript).
+
+v.1.2.0 - 2014-07-11
+NEW: CoordinateSystem conversions are now done with higher precision.
+     (thanks to shadowpoa for feedback: http://forums.winamp.com/showpost.php?p=3001224)
+NEW: Control sizes are now written with up to 2 decimals in NSIS generated script.
+NEW: Added a new "All" subproperty to controls CoordinateSystem property;
+     it can be used to change X,Y,Width,Height subproperties all together.
+FIX: Wrong vertical CoordinateSystem conversion "Pixel --> DialogUnits".
+
+v.1.1.3 - 2013-12-16
+FIX: Fixed generated script for DirRequest and FileRequest controls, not respecting CoordinateSystem.
+
+v.1.1.2 - 2013-01-11
+FIX: Removed non-working color properties on ComboBox, CheckBox and RadioButton.
+     See here for workarounds:
+     ComboBox: http://forums.winamp.com/showpost.php?p=2174815
+     CheckBox: http://forums.winamp.com/showpost.php?p=2354612
+     RadioButton: http://forums.winamp.com/showpost.php?p=1974758
+FIX: Multiline TextBox coordinates were always in pixels
+FIX: TextBox creation script styles when Multiline=True
+
+v.1.1.1 - 2012-10-01
+FIX: Fixed generated script for FileRequest control (wrong test on returned string).
+
+v.1.1.0 - 2012-09-14
+NEW: Improved support for DialogIDs other than the default one (1018).
+     User can now select 1044 (Welcome & Finish pages) and designer will change dialog size accordingly.
+NEW: Added RichText control support. It does not support RTF text loading, it must be customized by
+     the user (see here: http://forums.winamp.com/showthread.php?t=288129)
+
+v.1.0.0 - 2012-08-25
+After a long time from latest one, it's now time to release the first stable version.
+FIX: Text property of Number control now accepts numeric values and variable nalems (like $abc).
+FIX: Minor cosmetic fixes.
+
+v.0.9.16 - 2012-04-20
+FIX: SelectedItem property of ListBox, ComboBox and DropList controls now accepts any value (like $abc).
+
+v.0.9.15 - 2012-04-13
+FIX: NullReference exception thrown when adding an HLine or VLine control.
+
+v.0.9.14 - 2012-03-20
+NEW: Panel control, which is only a container for other controls
+     (useful to create more than one RadioButtons group).
+     It has no corresponding NSIS control, so no NSIS script if generated for it.
+NEW: Added property "Checked" to RadioButton control.
+     Only one RadioButton can be selected at once; if you need to create two (or more) different groups,
+     you must include RadioButtons into a GroupBox or Panel control.
+
+v.0.9.13 - 2012-03-09
+FIX: Wrong code generated for MaxLength property of TextBox control (thanks to fabpolli for bug report).
+
+v.0.9.12 - 2012-02-27
+NEW: Added "Percentage" to the available NSIS coordinate systems.
+NEW: Selection of NSIS coordinate system is now possible at control level, and for each
+     component (X, Y, Width, Height). So now is possible to have different coordinate
+     systems for different controls.
+     Controls coordinate system default value is "Inherit"; this means that by default
+     each control is rendered using the same coordinate system as the containing dialog.
+
+v.0.9.11 - 2012-02-11
+NEW: NSIS scripts (*.nsdinc files) controls position and size values can now be selected
+     between DU (Dialog units, the new default mode) and Pixels.
+     The default coordinate system mode can be set into Options dialog.
+NEW: Added 2 new controls: DirRequest and FileRequest.
+
+v.0.9.10 - 2011-11-23
+FIX: Fixed bug that prevents opening forms where SetupType property is different from default value (Install).
+FIX: IDE layout was not saved correctly and lost between version upgrades.
+     Please reset layout (View | Reset layout), customize it then restart IDE to save correctly.
+
+v.0.9.9 - 2011-11-21
+NEW: Added new "check updates" features: it periodically checks for new releases on CoolSoft website.
+NEW: Script preview editor now preserves selection and cursor position after script changes and
+     when switching between multiple opened dialogs.
+NEW: TabIndex property can now be used to customize focus path through controls.
+NEW: Added context menu to dialog designer, it shows Edit menu items.
+NEW: Dialog .nsddef files are now created with UTF-8 encoding.
+NEW: .nsddef and .nsdinc files now include NSISDialogDesigner version into header comments.
+NEW: Duplicate font definitions are merged, generating only a single variable.
+NEW: .nsddef files can now be opened by drag&drop from Windows Explorer.
+NEW: IDE layout can now be reset through View menu item "Reset layout".
+FIX: Property are now stored into .nsddef only if value is different from default.
+FIX: Fixed issue on copy/paste controls (duplicate control name).
+FIX: User custom scripts won't be generated during debug, avoiding compile error due to missing functions.
+
+v.0.9.8 - 2011-09-12
+NEW: Script editor/preview now has NSIS syntax highlighting and code folding, thanks to FastColoredTextBox
+     (LGPL3 control, see here: http://www.codeproject.com/KB/edit/FastColoredTextBox_.aspx)
+FIX: Styles property wrongly uses the value of ExStyles property.
+
+v.0.9.7 - 2011-09-11
+NEW: Added support for Unicode into generated .nsdinc scripts (needs an Unicode version of NSIS).
+NEW: New (self explaining) control properties: Visible and Enabled.
+NEW: Dialog name (and so the corresponding NSIS variable) can now be set independently
+     from its .nsddef filename. It could be set through the new "Name" dialog property.
+FIX: Generated test script (the one compiled with F5) now checks user
+     custom scripts to avoid redefining an already defined function.
+     (thanks to Benjamin Richardson for reporting bug)
+FIX: Fixed broken uninstall test script.
+FIX: Some properties appear in bold into Property Grid, even if their
+     value is the default one. This caused the generate script to be longer than required.
+FIX: Custom script editor now accepts TAB key.
+FIX: Script preview is cleared when closing the last dialog editor.
+FIX: Fixed focus management issues that prevents DEL key to work into PropertyGrid.
+
+v.0.9.6 - 2011-06-28
+NEW: Added new property SetupType to dialog, allowing the generated script to be used
+     in both Install and Uninstall scripts.
+NEW: Debugger code to debug Uninstaller dialogs.
+FIX: Cleaned up the debug scripts.
+
+v.0.9.5 - 2011-06-16
+BUG: Fixed key management preventing DEL key to be used inside PropertyGrid (thanks to Jovet for bug report)
+NEW: Edit menu items now are enabled according to active content (designer, property, toolbox, ...)
+NEW: DialogID and Size now are public properties (deedsmedia request)
+     (can be reset to default values by right-clicking on PropertyGrid item)
+
+v.0.9.4 - 2011-05-29
+BUG: Fixed permission issues on UAC enabled systems.
+
+v.0.9.3 - 2011-04-20
+NEW: Added new properties ForeColor and BackColor
+     (not working for: Button, ComboBox, DropList, GroupBox, HLine, VLine, ProgressBar)
+NEW: Added new property Font
+NEW: Designer now can show a grid (see Tools | Options menu)
+BUG: Editor does not save dialogs when exiting with close button.
+BUG: Script preview not updated when a new control is added
+
+v.0.9.2 - 2011-04-20
+BUG: Missing property "Name" is now shown
+     (Dialog does not have it because name is the same as its definition filename)
+
+v.0.9.1 - 2011-04-20
+NEW: New dockable content with realtime NSIS generated script preview
+
+v.0.9.0 - 2011-04-18
+First public release

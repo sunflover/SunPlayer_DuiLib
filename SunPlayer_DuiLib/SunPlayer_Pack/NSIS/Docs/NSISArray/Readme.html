@@ -1,0 +1,1834 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>NSISArray - Documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+
+ body {
+	padding: 10px;
+	background-color: #F0F0F0;
+	font-size: 13px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	text-align: left;
+ }
+
+ p, li {
+	font-size: 13px;
+ }
+
+ table {
+	margin: auto;
+	background-color: #FFFFFF;
+ }
+
+ .main {
+	margin-bottom: 20px;
+	width: 750px;
+	border: 2px solid #376EAB;
+ }
+
+ .param {
+	color: #6586AC;
+ }
+
+ .ident {
+	color: #004687;
+ }
+
+ .example {
+    border: 1px solid #376EAB;
+    padding: 8px;
+ }
+
+ .code, .example {
+	font-family: Courier New, Lucida Console, sans-serif;
+ }
+
+ .cmd {
+	color: #7A7272;
+ }
+
+ .top {
+	text-align: right;
+	font-size: smaller;
+    margin: 0px !important;
+ }
+
+ #footer {
+	font-size: 10px;
+	text-align: right;
+	color: #909090;
+	margin: 5px;
+ }
+
+ td, th {
+	padding: 2px;
+ }
+
+ h1 {
+	text-align: center;
+	font-size: 28px;
+	color: #004687;
+ }
+
+ h2 {
+	font-size: 20px;
+	font-weight: normal;
+ }
+
+ h3 {
+	font-size: 17px;
+	font-weight: normal;
+ }
+
+ h4 {
+	font-size: 13px;
+	font-weight: bold;
+	padding-top: 10px;
+ }
+
+ h2, h3, h4 {
+    margin-top: 20px;
+	color: #7A7272;
+	border-top: 1px solid #E0E0E0;
+ }
+
+ div {
+	margin: 20px;
+ }
+
+ li a:link, li a:visited, li a:active {
+	text-decoration: none;
+ }
+
+ li a:hover {
+	text-decoration: underline;
+ }
+
+ a:link, a:visited, a:active {
+	color: #294F75;
+	text-decoration: underline;
+ }
+
+ a:hover {
+	color: #182634;
+	text-decoration: none;
+ }
+
+</style>
+</head>
+<body>
+
+<div style="text-align: center">
+ [ <a href="#t1">NSISArray Script Header Documentation</a>
+ | <a href="#t2">NSISArray Plug-in Documentation</a>
+ | <a href="#t3">NSISArray Credits, Changelog &amp; License</a>
+ ]
+</div>
+
+<table class="main" id="t1"><tr><td>
+
+ <h1>NSISArray Script Header Documentation</h1>
+
+ <div>
+
+  <h2>1.0 Script header documentation contents</h2>
+
+   <ul>
+    <li><a href="#h1_1">1.1 Introduction</a>
+     <ul>
+      <li><a href="#h1_1_1">1.1.1 What is an array?</a></li>
+      <li><a href="#h1_1_2">1.1.2 NSISArray vs Afrow UK's Array.nsh script header</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_2">1.2 Include the script header</a>
+     <ul>
+      <li><a href="#h1_2_1">1.2.1 Special settings</a>
+       <ul>
+        <li><a href="#h1_2_1_1">1.2.1.1 !define ArrayPlugin</a></li>
+        <li><a href="#h1_2_1_2">1.2.1.2 !define ArrayCallInstDLL</a></li>
+        <li><a href="#h1_2_1_3">1.2.1.3 !define ArrayValVar $Var</a></li>
+        <li><a href="#h1_2_1_4">1.2.1.4 !define ArrayErrVar $Var</a></li>
+        <li><a href="#h1_2_1_5">1.2.1.5 !define ArraySetErrors</a></li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li><a href="#h1_3">1.3 Creating an array</a>
+     <ul>
+      <li><a href="#h1_3_1">1.3.1 Changing the object delimiter</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_4">1.4 Initialising an array for run-time use</a>
+     <ul>
+      <li><a href="#h1_4_1">1.4.1 Check if an array has been initialised</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_5">1.5 Declaring array functions</a></li>
+    <li><a href="#h1_6">1.6 Array functions</a>
+     <ul>
+      <li><a href="#h1_6_1">1.6.1 ${myArray-&gt;Write}</a></li>
+      <li><a href="#h1_6_2">1.6.2 ${myArray-&gt;WriteList}</a>
+       <ul>
+        <li><a href="#h1_6_2_1">1.6.2.1 ${myArray-&gt;WriteList} &amp; ArrayCallInstDLL</a></li>
+       </ul>
+      </li>
+      <li><a href="#h1_6_3">1.6.3 ${myArray-&gt;WriteListC}</a></li>
+      <li><a href="#h1_6_4">1.6.4 ${myArray-&gt;Put}</a></li>
+      <li><a href="#h1_6_5">1.6.5 ${myArray-&gt;Read}</a></li>
+      <li><a href="#h1_6_6">1.6.6 ${myArray-&gt;ReadToStack}</a></li>
+      <li><a href="#h1_6_7">1.6.7 ${myArray-&gt;Cut}</a></li>
+      <li><a href="#h1_6_8">1.6.8 ${myArray-&gt;Push}</a></li>
+      <li><a href="#h1_6_9">1.6.9 ${myArray-&gt;Pop}</a></li>
+      <li><a href="#h1_6_10">1.6.10 ${myArray-&gt;Shift}</a></li>
+      <li><a href="#h1_6_11">1.6.11 ${myArray-&gt;Unshift}</a></li>
+      <li><a href="#h1_6_12">1.6.12 ${myArray-&gt;Reverse}</a></li>
+      <li><a href="#h1_6_13">1.6.13 ${myArray-&gt;Sort}</a></li>
+      <li><a href="#h1_6_14">1.6.14 ${myArray-&gt;Clear}</a></li>
+      <li><a href="#h1_6_15">1.6.15 ${myArray-&gt;Splice}</a>
+       <ul>
+        <li><a href="#h1_6_15_1">1.6.15.1 ${myArray-&gt;Splice} &amp; ArrayCallInstDLL</a></li>
+       </ul>
+      </li>
+      <li><a href="#h1_6_16">1.6.16 ${myArray-&gt;Swap}</a></li>
+      <li><a href="#h1_6_17">1.6.17 ${myArray-&gt;Copy}</a></li>
+      <li><a href="#h1_6_18">1.6.18 ${myArray-&gt;Join}</a></li>
+      <li><a href="#h1_6_19">1.6.19 ${myArray-&gt;Concat}</a></li>
+      <li><a href="#h1_6_20">1.6.20 ${myArray-&gt;Exists} &amp; ${myArray-&gt;ExistsI}</a></li>
+      <li><a href="#h1_6_21">1.6.21 ${myArray-&gt;Search} &amp; ${myArray-&gt;SearchI}</a></li>
+      <li><a href="#h1_6_22">1.6.22 ${myArray-&gt;SizeOf}</a></li>
+      <li><a href="#h1_6_23">1.6.23 ${myArray-&gt;SetSize}</a></li>
+      <li><a href="#h1_6_24">1.6.24 ${myArray-&gt;ReadFirst}, ${myArray-&gt;ReadNext} &amp; ${myArray-&gt;ReadClose}</a></li>
+      <li><a href="#h1_6_25">1.6.25 ${myArray-&gt;ReDim}</a></li>
+      <li><a href="#h1_6_26">1.6.26 ${myArray-&gt;FreeUnusedMem}</a></li>
+      <li><a href="#h1_6_27">1.6.27 ${myArray-&gt;Subtract}</a></li>
+      <li><a href="#h1_6_28">1.6.28 ${myArray-&gt;SetAutoRedim}</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_7">1.7 Deleting an array object</a>
+     <ul>
+      <li><a href="#h1_7_1">1.7.1 Unloading the NSISArray plug-in</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_8">1.8 Array auto-redimensioning</a></li>
+    <li><a href="#h1_9">1.9 Array debugging</a>
+     <ul>
+      <li><a href="#h1_9_1">1.9.1 Catching plug-in errors</a>
+       <ul>
+        <li><a href="#h1_9_1_1">1.9.1.1 Enabling internal plug-in error messages</a></li>
+        <li><a href="#h1_9_1_2">1.9.1.2 Checking the $ArrayErr variable</a></li>
+        <li><a href="#h1_9_1_3">1.9.1.3 Checking for errors with the NSIS IfErrors function</a></li>
+       </ul>
+      </li>
+      <li><a href="#h1_9_2">1.9.2 Error messages and codes</a></li>
+      <li><a href="#h1_9_3">1.9.3 NSIS compiler errors</a></li>
+      <li><a href="#h1_9_4">1.9.4 Enabling error messages with ${ArrayErrorStyle}</a></li>
+      <li><a href="#h1_9_5">1.9.5 Special array debugging functions</a>
+       <ul>
+        <li><a href="#h1_9_5_1">1.9.5.1 ${myArray-&gt;Debug}</a></li>
+        <li><a href="#h1_9_5_2">1.9.5.2 ${myArray-&gt;Print}</a></li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li><a href="#h1_10">1.10 Examples</a>
+     <ul>
+      <li><a href="#h1_10_1">1.10.1 Example 1</a></li>
+      <li><a href="#h1_10_2">1.10.2 Example 2</a></li>
+      <li><a href="#h1_10_3">1.10.3 More working examples</a></li>
+     </ul>
+    </li>
+    <li><a href="#h1_11">1.11 Jumping over NSISArray functions</a></li>
+    <li><a href="#h1_12">1.12 Calculating memory usage</a></li>
+   </ul>
+
+  <h2 id="h1_1">1.1 Introduction</h2>
+
+  <div>
+
+   <p>The NSISArray script header is a macro system for the NSISArray plug-in by <span style="font-style: italic">Afrow UK</span>.</p>
+   <p>The NSISArray script header masks the plug-in calls with a more friendly scripting language syntax. Everything else is managed on the plug-in side.</p>
+   <p>Information about the NSISArray plug-in is under the <a href="#t2">NSISArray Plug-in Documentation</a> section.</p>
+   <p>Before you write any code, you might want to read section <a href="#h1_11">1.11 Jumping over NSISArray instructions</a>.</p>
+
+   <h3 id="h1_1_1">1.1.1 What is an <span style="font-style: italic">array</span>?</h3>
+
+   <div>
+    <p>Arrays allow you to hold masses of data under a single 'object'.</p>
+    <p>Arrays are very useful when we'd like to store an unknown amount of data. With NSISArray the arrays expand in size when more data is added.</p>
+   </div>
+
+   <h3 id="h1_1_2">1.1.2 NSISArray vs Afrow UK's Array.nsh script header</h3>
+
+   <div>
+    <p>The first array script header by <span style="font-style: italic">Afrow UK</span> uses INI files to store the data.
+       It has many of the same functions, but all of the code is written in NSIS and reading and writing to text files makes it much much slower.</p>
+    <p>The original array script header is still available here; <a href="javascript:void(window.open('http://nsis.sf.net/wiki/File:Array.zip', '_blank'))">http://nsis.sf.net/wiki/File:Array.zip</a>, although development and support has discontinued.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_2">1.2 Include the script header</h2>
+
+  <div>
+
+   <p>Place <span class="code" style="font-weight: bold">!include NSISArray.nsh</span> at the top of your script to start using the script header.</p>
+   <p>Any array instructions and special settings must be used afterwards and not before.</p>
+
+   <h3 id="h1_2.1">1.2.1 Special settings</h3>
+
+   <div>
+
+    <p>Some <span style="font-weight: bold">optional</span> special settings can be <span class="code">!define</span>d before the first <span class="cmd">${Array}</span> instruction. These include:</p>
+
+    <h4 id="h1_2_1_1">1.2.1.1 &nbsp; &nbsp; !define ArrayPlugin <span class="param">[plugin_name]</span></h4>
+    <div>
+     <p>Specifies that the script header should use the <span class="param">[plugin_name]</span> plug-in name. By default, the script header uses "<span class="ident">NSISArray</span>".</p>
+    </div>
+
+    <h4 id="h1_2_1_2">1.2.1.2 &nbsp; &nbsp; !define ArrayCallInstDLL <span class="param">[dll_path]</span></h4>
+    <div>
+     <p>Specifies that the script header should call the plug-in with <span class="cmd">CallInstDLL</span>, and call a DLL file at <span class="param">[dll_path]</span>.</p>
+     <p>Note: <span class="param">[dll_path]</span> is the full path to the NSISArray plug-in DLL file at run time. This could be for example, <span class="param">"$EXEDIR\dllcache\Arrays.dll"</span>.<br />
+        Please also note that the <a href="#h1_6_2_1">${myArray-&gt;WriteList}</a> and <a href="#h1_6_15_1">${myArray-&gt;Splice}</a> functions change when using this special setting.</p>
+    </div>
+
+    <h4 id="h1_2_1_3">1.2.1.3 &nbsp; &nbsp; !define ArrayValVar &nbsp; <span class="param">$Var</span></h4>
+    <div>
+     <p>Specifies the variable to use within the script header macros for certain purposes. If not defined, the variable <span class="ident">$ArrayVal</span> will be declared.</p>
+    </div>
+
+    <h4 id="h1_2_1_4">1.2.1.4 &nbsp; &nbsp; !define ArrayErrVar &nbsp; <span class="param">$Var</span></h4>
+    <div>
+     <p>Specifies the variable to use for error reporting. If not defined, the variable <span class="ident">$ArrayErr</span> will be declared.</p>
+     <p>The <span class="ident">$ArrayErr</span> variable will contain the error code when a array function fails. See section <a href="#h1_9_1_2">1.9.1.2 Checking the $ArrayErr variable</a> for more information.</p>
+    </div>
+
+    <h4 id="h1_2_1_5">1.2.1.5 &nbsp; &nbsp; !define ArraySetErrors</h4>
+    <div>
+     <p>This causes the NSISArray script header to set the NSIS error flag when a call to a plug-in function fails. For more information, see section <a href="#h1_9_1_3">1.9.1.3 Checking for errors with the NSIS IfErrors function</a>.</p>
+    </div>
+
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_3">1.3 Creating an array</h2>
+
+  <div>
+
+   <p>To create an array, use:</p>
+   <p class="code">${Array} <span class="param">myArray [x] [y]</span></p>
+   <p>Where <span class="ident">myArray</span> is any custom name for an array object.<br />This function must be used outside <span style="font-style: italic">Sections</span> and <span style="font-style: italic">Functions</span>, preferably near the top of your script (but after <span class="code">!include NSISArray.nsh</span>).</p>
+   <p>The <span class="param">[x]</span> and <span class="param">[y]</span> parameters specify the initial array dimensions. <span class="param">[x]</span> being the number of empty indexes initially allocated to the array and <span class="param">[y]</span> being the initial buffer length of all the array's items.</p>
+   <p>Both the array's number of allocated indexes and buffer lengths can be changed manually at run time with the <a href="#h1_6_25">${myArray-&gt;ReDim}</a> function.</p>
+   <p>The minimum value of <span class="param">[x]</span> can be 1 and the minimum value of <span class="param">[y]</span> can be 2.</p>
+   <p>Please note that the value for buffer lengths (<span class="param">[y]</span>) must always allow for the NULL escaping character on the end of strings to prevent buffer overflows. For example, if you're only putting single characters in the array, the <span class="param">[y]</span> value must be 2 and not 1.</p>
+
+   <h3 id="h1_3_1">1.3.1 Changing the object delimiter</h3>
+
+   <div>
+    <p>By default, the array delimiter used for object functions is <span class="ident">-&gt;</span>. This can be changed using:</p>
+    <p class="code">${ArrayObj} <span class="param">[new_delimiter]</span></p>
+    <p>The <span class="param">[new_delimiter]</span> parameter specifies the delimiter to use, which could be any character or characters of your choice. Some of the script examples under the <span style="font-style: italic">Examples</span> folder use a dot (.).</p>
+    <p>This function can only be used just after array creation with the <span class="cmd">${Array}</span> function and applies to that array object only. It also cannot be used after using the <a href="#h1_5">${ArrayFunc}</a> function.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_4">1.4 Initialising an array for run-time use</h2>
+
+  <div>
+
+   <p>Even after declaring an array with <span class="cmd">${Array}</span>, the array still needs to be initialised for use at run-time.
+      This could be in <span style="font-style: italic">Function .onInit</span> or perhaps just before using the array in a <span style="font-style: italic">Section</span>.</p>
+   <p>To initialise an array use:</p>
+   <p class="code">${myArray-&gt;Init}</p>
+   <p>You must <span style="font-weight: bold">always</span> initialise an array before use.<br />
+      Note: This is necessarily just before you use the array in your NSIS script, but before the array is used at <span style="font-weight: bold">run-time</span>.</p>
+   <p>There are error messages specific to the NSISArray script header for this function which are listen under section <a href="#h1_9_3">1.9.3 NSIS compiler errors</a>.</p>
+
+   <h3 id="h1_4_1">1.4.1 Check if an array has already been initialised</h3>
+
+   <div>
+    <p>To check if an array has been initialised, use:</p>
+    <p class="code">${myArray-&gt;Inited} <span class="param">[jump_if_initialised] [jump_if_not_initialised]</span></p>
+    <p>Both <span class="param">[jump_if_initialised]</span> and <span class="param">[jump_if_not_initialised]</span> can be relative jumps, e.g. +2 or label jumps.</p>
+    <p>Note: As the NSISArray script header is macro based, the two parameters are not optional. Use 0 or "" for either parameter for a non jump.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Inited.nsi</span>.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_5">1.5 Declaring array functions</h2>
+
+  <div>
+   <p>To use any of the array functions available, you must declare them at the top of your script first with the <span class="ident">${ArrayFunc}</span> function:</p>
+   <p class="code">
+    ${Array} myArray1<br />
+    ${ArrayFunc} Read<br />
+    ${ArrayFunc} Write<br />
+    ${ArrayFunc} Splice<br />
+    <br />
+    ${Array} myArray2<br />
+    ${ArrayFunc} Cut<br />
+    ${ArrayFunc} Debug<br />
+   </p>
+   <p>etc...</p>
+   <p>With the above example the <span class="ident">Read</span>, <span class="ident">Write</span> and <span class="ident">Splice</span> functions will be declared for <span class="ident">myArray1</span>; and the <span class="ident">Cut</span> and <span class="ident">Debug</span> functions will be declared for <span class="ident">myArray2</span>.</p>
+   <p>Failure to declare a function for an individual array will result in the compile error:<br />'Invalid command: ${myArray->FuncName}'</p>
+   <p>Please note that you do not need to declare the <a href="#h1_4">Init</a> and <a href="#h1_7">Delete</a> array functions as they are not optional.</p>
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_6">1.6 Array functions</h2>
+
+  <div>
+
+   <p>NSISArray comes with plenty of functions for managing your arrays.</p>
+   <p>Please note that much like in many programming languages, we refer to array items with an index number. This index number is also zero base, which means the first item in an array will be at index 0 and not 1.</p>
+
+   <h4 id="h1_6_1">1.6.1 &nbsp; &nbsp; ${myArray-&gt;Write} &nbsp; <span class="param">[index] &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Writes <span class="param">"string"</span> to <span class="param">[index]</span> in <span class="ident">myArray</span>, overwriting any existing items or adding an item if the specified index is one greater than the current highest item index.</p>
+    <p class="example">${myArray-&gt;Write} 0 "A string to save!"</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Write.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_2">1.6.2 &nbsp; &nbsp; ${myArray-&gt;WriteList} &nbsp; <span class="param">'"string 1" &nbsp; "string 2" &nbsp; "string 3" ... '</span></h4>
+
+   <div>
+
+    <p>Writes a list of strings to <span class="ident">myArray</span>. Each separate string in quotes will become a separate array item. Any existing <span class="ident">myArray</span> array items that are inside the range of the item list will be overwritten.</p>
+    <p class="example">${myArray-&gt;WriteList} '"One string" "Another string" "One more"'</p>
+
+    <h4 id="h1_6_2_1">1.6.2.1 &nbsp; &nbsp; ${myArray-&gt;WriteList} &amp; ArrayCallInstDLL</h4>
+
+    <div>
+     <p>If you're using the <a href="#h1_2_1_2">ArrayCallInstDLL special setting</a> then you will find that you cannot use the standard <span class="cmd">${myArray-&gt;WriteList}</span> function.
+        A new format is introduced to deal with passing multiple items to the plug-in.</p>
+     <p><span style="font-weight: bold">New format:</span><br />
+        <span class="code">${myArray-&gt;WriteListBegin}<br />
+        ${myArray-&gt;WriteListItem} "string 1"<br />
+        ${myArray-&gt;WriteListItem} "string 2"<br />
+        ${myArray-&gt;WriteListItem} "string 3"<br />
+        ${myArray-&gt;WriteListEnd}</span></p>
+     <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\WriteList.nsi</span>.</p>
+    </div>
+
+   </div>
+
+   <h4 id="h1_6_3">1.6.3 &nbsp; &nbsp; ${myArray-&gt;WriteListC} &nbsp; <span class="param">"string 1[char]string 2[char]..." &nbsp; "[char]"</span></h4>
+
+   <div>
+    <p>Writes a list of strings to <span class="ident">myArray</span> separated by single <span class="param">[char]</span>'s. Each separate string will become a separate array item. Any existing <span class="ident">myArray</span> array items that are inside the range of the item list will be overwritten.<br />
+       Note: <span class="param">[char]</span> must be a single character. A string is not allowed.</p>
+    <p class="example">${myArray-&gt;WriteListC} "One string|Another string|One more" "|"</p>
+    <p>This is ideal for working with <span style="font-style: italic">InstallOptions ListBox</span> controls.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\WriteListC.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_4">1.6.4 &nbsp; &nbsp; ${myArray-&gt;Put} &nbsp; <span class="param">[index] &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Puts <span class="param">"string"</span> into <span class="ident">myArray</span> at <span class="param">[index]</span>. No existing items are overwritten, but moved up by one.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Put.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_5">1.6.5 &nbsp; &nbsp; ${myArray-&gt;Read} &nbsp; <span class="param">$Var &nbsp; [index]</span></h4>
+
+   <div>
+    <p>Reads a string from <span class="param">[index]</span> in <span class="ident">myArray</span> and places the string into <span class="param">$Var</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Read.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_6">1.6.6 &nbsp; &nbsp; ${myArray-&gt;ReadToStack} &nbsp; <span class="param">[index_start] &nbsp; [index_end]</span></h4>
+
+   <div>
+    <p>Reads strings from item at <span class="ident">[index_start]</span> to <span class="ident">[index_end]</span> in <span class="ident">myArray</span> and places all strings onto the stack. The strings on the stack can then be looped through via <span style="font-style: italic">Pop</span> until a specific string is reached.<br />
+       Note: If <span class="ident">[index_end]</span> is a negative number, the end range will be up to the end of the array minus <span class="ident">[index_end]</span> inclusive, and so <span class="code">-1</span> will be up to and including the last item in the array.</p>
+    <p class="example">Push "stop_popping"<br />${myArray-&gt;ReadToStack} 0 -1<br />Loop:<br />&nbsp;Pop $R0<br />&nbsp;StrCmp $R0 "stop_popping" Done<br />&nbsp;...do something here...<br />Goto Loop<br />Done:</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\ReadToStack.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_7">1.6.7 &nbsp; &nbsp; ${myArray-&gt;Cut} &nbsp; <span class="param">$Var &nbsp; [index]</span></h4>
+
+   <div>
+    <p>Cuts a string from <span class="ident">myArray</span> at <span class="param">[index]</span>. The string is placed into <span class="param">$Var</span>. Any proceeding array items are moved down by one.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Cut.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_8">1.6.8 &nbsp; &nbsp; ${myArray-&gt;Push} &nbsp; <span class="param">"string"</span></h4>
+
+   <div>
+    <p>Pushes <span class="param">"string"</span> to the front of <span class="ident">myArray</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Push.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_9">1.6.9 &nbsp; &nbsp; ${myArray-&gt;Pop} &nbsp; <span class="param">$Var</span></h4>
+
+   <div>
+    <p>Pops a string from the front of <span class="ident">myArray</span> into <span class="param">$Var</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Pop.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_10">1.6.10 &nbsp; &nbsp; ${myArray-&gt;Shift} &nbsp; <span class="param">"string"</span></h4>
+
+   <div>
+    <p>Pushes a string to the end of <span class="ident">myArray</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Shift.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_11">1.6.11 &nbsp; &nbsp; ${myArray-&gt;Unshift} &nbsp; <span class="param">$Var</span></h4>
+
+   <div>
+    <p>Pops a string from the end of <span class="ident">myArray</span> and places the string into <span class="param">$Var</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Unshift.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_12">1.6.12 &nbsp; &nbsp; ${myArray-&gt;Reverse}</h4>
+
+   <div>
+    <p>Reverses the contents of <span class="ident">myArray</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Reverse.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_13">1.6.13 &nbsp; &nbsp; ${myArray-&gt;Sort} &nbsp; <span class="param">myArray2</span></h4>
+
+   <div>
+    <p>Sorts the contents of <span class="ident">myArray</span> alphabetically or numerically, also rearranging the contents of <span class="ident">myArray2</span> into the same order.<br />
+       The <span class="ident">myArray2</span> parameter is optional (it can be left empty "").</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Sort.nsi</span>, <span style="font-style: italic">Examples\NSISArray\Sort2Arrays.nsi</span> and <span style="font-style: italic">Examples\NSISArray\MakeFileList.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_14">1.6.14 &nbsp; &nbsp; ${myArray-&gt;Clear}</h4>
+
+   <div>
+    <p>Clears the contents of <span class="ident">myArray</span>. All items are removed and the array size is reset to 0.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Clear.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_15">1.6.15 &nbsp; &nbsp; ${myArray-&gt;Splice} &nbsp; <span class="param">[index_start] &nbsp; [index_end] &nbsp; '"string 1" &nbsp; "string 2" ... '</span></h4>
+
+   <div>
+
+    <p>Places a list of strings at <span class="param">[index_start]</span> replacing existing array items up to and including <span class="param">[index_end]</span>.
+       If <span class="param">[index_start]</span> and <span class="param">[index_end]</span> are equal, no existing array items are overwritten.</p>
+    <p>Specifying no list of strings ('') will result in items from <span class="param">[index_start]</span> up to <span class="param">[index_end]</span> inclusive being deleted.</p>
+    <p>If <span class="ident">[index_end]</span> is a negative number, the end range will be up to the end of the array minus <span class="ident">[index_end]</span> inclusive, and so <span class="code">-1</span> will be up to and including the last item in the array.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Splice.nsi</span>.</p>
+
+    <h4 id="h1_6_15_1">1.6.15.1 &nbsp; &nbsp; ${myArray-&gt;Splice} &amp; ArrayCallInstDLL</h4>
+
+    <div>
+     <p>If you're using the <a href="#h1_2_1_2">ArrayCallInstDLL special setting</a> then you will find that you cannot use the standard <span class="cmd">${myArray-&gt;Splice}</span> function.
+        A new format is introduced to deal with passing multiple items to the plug-in.</p>
+     <p><span style="font-weight: bold">New format:</span><br />
+        <span class="code">${myArray-&gt;SpliceBegin} [index_start] [index_end]<br />
+        ${myArray-&gt;SpliceItem} "string 1"<br />
+        ${myArray-&gt;SpliceItem} "string 2"<br />
+        ${myArray-&gt;SpliceEnd}</span></p>
+     <p>The <span class="param">[index_start]</span> and <span class="param">[index_end]</span> parameters are explained under section <a href="#h1_6_15">1.6.15 ${myArray->Splice}</a> (above).</p>
+    </div>
+
+   </div>
+
+   <h4 id="h1_6_16">1.6.16 &nbsp; &nbsp; ${myArray-&gt;Swap} &nbsp; <span class="param">[index_1] &nbsp; [index_2]</span></h4>
+
+   <div>
+    <p>Swaps the strings in the two indexes in <span class="ident">myArray</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Swap.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_17">1.6.17 &nbsp; &nbsp; ${myArray-&gt;Copy} &nbsp; <span class="param">myArray2</span></h4>
+
+   <div>
+    <p>Copies the contents of <span class="ident">myArray</span> to <span class="ident">myArray2</span>, overwriting any existing items.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Copy.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_18">1.6.18 &nbsp; &nbsp; ${myArray-&gt;Join} &nbsp; <span class="param">myArray2</span></h4>
+
+   <div>
+    <p>Copies the contents of <span class="ident">myArray</span> onto the end of <span class="ident">myArray2</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Join.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_19">1.6.19 &nbsp; &nbsp; ${myArray-&gt;Concat} &nbsp; <span class="param">$Var &nbsp; [join_char(s)]</span></h4>
+
+   <div>
+    <p>Joins all strings in <span class="ident">myArray</span> together with <span class="param">[join_char(s)]</span> and places the output in <span class="param">$Var</span>.</p>
+    <p class="example">${myArray-&gt;Join} $R0 " "</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Concat.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_20">1.6.20 &nbsp; &nbsp; ${myArray-&gt;Exists} &nbsp; <span class="param">$Var &nbsp; "string" &nbsp; [index]</span></h4>
+
+   <div>
+    <p>Finds the index of an item that is exactly equal to <span class="param">"string"</span> case sensitively in <span class="ident">myArray</span> after <span class="ident">[index]</span>.<br />
+       <span class="param">$Var</span> will contain the item index, or -1 if not found.</p>
+    <p>Note: To search non case sensitively, use <span class="cmd">${myArray-&gt;ExistsI}</span> (that's a capital i) instead of <span class="cmd">${myArray-&gt;Exists}</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Exists.nsi</span> and <span style="font-style: italic">Examples\NSISArray\ExistsI.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_21">1.6.21 &nbsp; &nbsp; ${myArray-&gt;Search} &nbsp; <span class="param">$Var &nbsp; "string" &nbsp; [index]</span></h4>
+
+   <div>
+    <p>Searches through all items after <span class="ident">[index]</span> in <span class="ident">myArray</span> for <span class="param">"string"</span> case insensitively.<br />
+       <span class="param">$Var</span> will contain the item index containing the first match, or -1 if not found.</p>
+    <p>Note: To search non case sensitively, use <span class="cmd">${myArray-&gt;SearchI}</span> (that's a capital i) instead of <span class="cmd">${myArray-&gt;Search}</span>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Search.nsi</span> and <span style="font-style: italic">Examples\NSISArray\SearchI.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_22">1.6.22 &nbsp; &nbsp; ${myArray-&gt;SizeOf} &nbsp; <span class="param">$Var1 &nbsp; $Var2 &nbsp; $Var3</span></h4>
+
+   <div>
+    <p>For <span class="ident">myArray</span>, <span class="param">$Var1</span> will now contain the allocated buffer length for all items in the array.<br />
+       <span class="param">$Var2</span> will contain the number of allocated array indexes.<br />
+       <span class="param">$Var3</span> will contain the number of items (used indexes) in the array.</p>
+   </div>
+
+   <h4 id="h1_6_23">1.6.23 &nbsp; &nbsp; ${myArray-&gt;SetSize} &nbsp; <span class="param">[size]</span></h4>
+
+   <div>
+    <p>Sets the new size of <span class="ident">myArray</span> to <span class="param">[size]</span>. If the array is currently smaller than <span class="param">[size]</span>, new empty "" items are added. If the array is currently larger than <span class="param">[size]</span>, items are removed until it becomes that size.</p>
+    <p>Note: This does not allocated more memory for more items to be added. To do so, use <a href="#h1_6_25">${myArray-&gt;ReDim}</a>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\SetSize.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_24">1.6.24 &nbsp; &nbsp; ${myArray-&gt;ReadFirst} &nbsp; <span class="param">$Handle &nbsp; $OutVar</span><br /> &nbsp; &nbsp; &nbsp;&nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${myArray-&gt;ReadNext} &nbsp; <span class="param">$Handle &nbsp; $OutVar</span><br /> &nbsp; &nbsp; &nbsp;&nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${myArray-&gt;ReadClose} &nbsp; <span class="param">$Handle</span></h4>
+
+   <div>
+    <p>These functions are used to loop through an array, and work in a similar fashion to NSIS's <span class="cmd">FindFirst</span>, <span class="cmd">FindNext</span> and <span class="cmd">FindClose</span>.</p>
+    <p><span class="cmd">${myArray-&gt;ReadFirst}</span> opens a loop for <span class="ident">myArray</span> using the <span class="ident">$Handle</span> variable for the handle. The first read value will be in <span class="ident">$Var</span>. The error flag will be set if this command fails (which can be checked with <span class="cmd">IfErrors</span>.) Always use <span class="cmd">ClearErrors</span> first!</p>
+    <p><span class="cmd">${myArray-&gt;ReadNext}</span> reads the next value in the array using the <span class="ident">$Handle</span> handle, where the value will be placed into <span class="ident">$Var</span>. This also sets the error flag.</p>
+    <p><span class="cmd">${myArray-&gt;ReadClose}</span> simply closes the array reading. This isn't really necessary, but it's there to keep in with the style of the other NSIS commands.</p>
+    <p class="example">ClearErrors<br />${myArray-&gt;ReadFirst} $R0 $R1<br />Loop:<br />IfErrors Done<br />&nbsp;DetailPrint $R1<br />&nbsp;ClearErrors<br />&nbsp;${myArray-&gt;ReadNext} $R0 $R1<br />Goto Loop<br />Done:<br />${myArray-&gt;ReadClose} $R0</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\ReadFirst.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_25">1.6.25 &nbsp; &nbsp; ${myArray-&gt;ReDim} &nbsp; <span class="param">[x] &nbsp; [y]</span></h4>
+
+   <div>
+    <p>Redimensions <span class="ident">myArray</span> to <span class="param">[x]</span> item indexes and <span class="param">[y]</span> buffer lengths.
+       No existing items will be deleted. If the number of new indexes allocated is less than the number of currently allocated indexes, the excess indexes are deleted. If the new allocated buffer length is less than the currently allocated buffer length, strings of a greater length are truncated.</p>
+    <p>The minimum value of <span class="param">[x]</span> can be 1 and the minimum value of <span class="param">[y]</span> can be 2.</p>
+    <p>Please note that the value for buffer lengths (<span class="param">[y]</span>) must always allow for the NULL escaping character on the end of strings to prevent buffer overflows. For example, if you're only putting single characters in the array, the <span class="param">[y]</span> value must be 2 and not 1.</p>
+    <p>There are error messages specific to the NSISArray script header for this function which are listen under section <a href="#h1_9_3">1.9.3 NSIS compiler errors</a>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\ReDim.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_26">1.6.26 &nbsp; &nbsp; ${myArray-&gt;FreeUnusedMem}</h4>
+
+   <div>
+    <p>Frees unused memory in <span class="ident">myArray</span> by deleting empty item indexes and by decreasing the buffer length for all array items to fit the largest string in the array. Ideally you should call this after you've finished writing to the array.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\FreeUnusedMem.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_27">1.6.27 &nbsp; &nbsp; ${myArray-&gt;Subtract} &nbsp; <span class="param">myArray2</span></h4>
+
+   <div>
+    <p>Removes items from <span class="ident">myArray</span> that are also in <span class="ident">myArray2</span>. Items are matched case sensitively.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\Subtract.nsi</span>.</p>
+   </div>
+
+   <h4 id="h1_6_28">1.6.28 &nbsp; &nbsp; ${myArray-&gt;SetAutoRedim} &nbsp; <span class="param">[indexes] &nbsp; [str_len]</span></h4>
+
+   <div>
+    <p>Sets the number of indexes and characters to be increased by when the array is to be auto-redimensioned (for extra memory allocation).</p>
+    <p>If adding lots of items at a time, you should set <span class="param">[indexes]</span> to a larger number than default.</p>
+    <p>For default values (before or without using this function) and more information on array auto-redimensioning, see section <a href="#h2_7">2.7 Array auto-redimensioning</a>.</p>
+    <p>There are error messages specific to the NSISArray script header for this function which are listen under section <a href="#h1_9_3">1.9.3 NSIS compiler errors</a>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\SetAutoRedim.nsi</span>.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_7">1.7 Deleting an array object</h2>
+
+  <div>
+
+   <p>Deleting an array is not optional. <span style="font-weight: bold">You must always delete an array when you have finished using it.</span> If you don't, the memory allocated for use may not be freed when the installer is closed.</p>
+   <p>When you are ready to delete an array, use:</p>
+   <p class="code">${myArray-&gt;Delete}</p>
+   <p>Deleting an array will remove it from memory, <span style="font-weight: bold">but you can still reference that array in your NSIS script</span>. If you do, however, an error will be thrown by the NSISArray plug-in at run time.</p>
+
+   <p>For a compilable NSIS script example which demonstrates how an array object may still be referenced after calling the <span class="ident">Delete</span> instrction, see <span style="font-style: italic">Examples\NSISArray\Delete.nsi</span>.</p>
+
+   <h3 id="h1_7_1">1.7.1 Unloading the NSISArray plug-in</h3>
+   <div>
+    <p>Once all arrays have been deleted with the <span class="cmd">${myArray-&gt;Delete}</span> function, the plug-in will automatically be unloaded, allowing the plug-in to be deleted from the <span class="ident">$PLUGINSDIR</span> folder.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_8">1.8 Array auto-redimensioning</h2>
+
+  <div>
+   <p>From NSISArray v1.1 and upwards, arrays are now fully dynamic in both item indexes and buffer lengths.</p>
+   <p>For a complete extended description, see section <a href="#h2_7">2.7 Array auto-redimensioning</a>.</p>
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h1_9">1.9 Array debugging</h2>
+
+  <div>
+
+   <h3 id="h1_9_1">1.9.1 Catching plug-in errors</h3>
+
+   <div>
+    <p>Sometimes errors can occur when calling a plug-in function. Usually they are caused by passing bad parameter values, but there are also a few other reasons.</p>
+    <p>There are a few methods to check for errors, which are listed below...</p>
+
+    <div>
+
+     <h4 id="h1_9_1_1">1.9.1.1 Enabling plug-in error messages</h4>
+
+     <div>
+      <p>The NSISArray plug-in can display error message boxes or display errors in the NSIS <span class="ident">InstFiles Page</span> log window when an error occurs, except this feature is disabled by default. See section <a href="#h1_9_4">1.9.4 Enabling error messages with ${ArrayErrorStyle}</a>.</p>
+     </div>
+
+     <h4 id="h1_9_1_2">1.9.1.2 Checking the $ArrayErr variable</h4>
+
+     <div>
+      <p>When errors occur in plug-in function calls, the <span class="ident">$ArrayErr</span> variable will always contain the error code, or 0 if no error occured after a plug-in function call.</p>
+      <p>You can easily check the value of <span class="ident">$ArrayErr</span> with straight through functions such as <span class="cmd">DetailPrint</span> or <span class="cmd">MessageBox</span>, or with flow control functions such as <span class="cmd">StrCmp</span>.</p>
+      <p>You can also force the NSISArray script header to use a different variable for error codes. See section <a href="#h1_2_1_4">1.2.1.4 !define ArrayErrVar $Var</a>.</p>
+     </div>
+
+     <h4 id="h1_9_1_3">1.9.1.3 Checking for errors with the NSIS IfErrors function</h4>
+
+     <div>
+
+      <p>By default, the NSISArray script header does not set the NSIS error flag (with <span class="cmd">SetErrors</span>). However, there is a setting to enable this which you'll find under section <a href="#h1_2_1_5">1.2.1.5 !define ArraySetErrors</a>.</p>
+      <p>An example of using this feature may be:</p>
+
+      <p class="code">
+       ClearErrors<br />
+       ${myArray-&gt;Read} $R0 1<br />
+       IfErrors 0 +2<br />
+       &nbsp; MessageBox MB_OK|MB_ICONEXCLAMATION \<br />
+       &nbsp; "Could not read from myArray!"
+      </p>
+
+      <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\ArrayIfErrors.nsi</span>.</p>
+
+     </div>
+
+    </div>
+
+   </div>
+
+   <h3 id="h1_9_2">1.9.2 Error messages and codes</h3>
+
+   <div>
+    <p>Error codes are placed in the <span class="ident">$ArrayErr</span> after a plug-in function call which you can check yourself with <span class="cmd">DetailPrint</span> or <span class="cmd">MessageBox</span>.
+       For a list of error codes and the error messages that they refer to, see plug-in section <a href="#h2_8_3">2.8.3 Error messages</a>.</p>
+    <p>Sometimes compiler errors can occur. Those that relate to NSISArray are listed in the section below...</p>
+   </div>
+
+   <h3 id="h1_9_3">1.9.3 NSIS compiler errors</h3>
+
+   <div>
+
+    <h4>'Invalid command: ${myArray-&gt;Init}'</h4>
+    <div>
+     <p>You must declare at least one function for an array (with <a href="#h1_5">${ArrayFunc}</a>) before using the <span class="cmd">Init</span> function.</p>
+    </div>
+
+    <h4>'Invalid command: ${myArray-&gt;FuncName}'</h4>
+    <div>
+     <p>You're trying to call <span class="ident">${myArray-&gt;FuncName}</span> but you haven't declared it for that array with <a href="#h1_5">${ArrayFunc}</a> first.</p>
+    </div>
+
+    <h4>'!insertmacro: macro "Array_FuncName" requires [X] parameter(s), passed [y]!'</h4>
+    <div>
+     <p>You're calling <span class="cmd">${myArray-&gt;FuncName}</span> with too many or too little parameters required by the macro.</p>
+    </div>
+
+    <h4>'NSISArray: Please declare an array before declaring functions.'</h4>
+    <div>
+     <p>You're trying to use <a href="#h1_5">${ArrayFunc}</a> before declaring an array with <span class="cmd">${Array}</span>.</p>
+    </div>
+
+    <h4>'NSISArray: You cannot declare a function more than once.'</h4>
+    <div>
+     <p>You're trying to declare the same function with <a href="#h1_5">${ArrayFunc}</a> more than once for the same array.</p>
+    </div>
+
+    <h4>'NSISArray: You do not need to declare the Init and Delete functions.'</h4>
+    <div>
+     <p>The <span class="cmd">Init</span> and <span class="cmd">Delete</span> array functions need not be declared with <a href="#h1_5">${ArrayFunc}</a>.</p>
+    </div>
+
+    <h4>'NSISArray: An invalid function name has been declared.'</h4>
+    <div>
+     <p>You've passed an incorrect array function name to the <a href="#h1_5">${ArrayFunc}</a> function. Check your spelling.</p>
+    </div>
+
+    <h4>'NSISArray: You can only set the array object style once.'</h4>
+    <div>
+     <p>You can only change the object delimiter once for an array object.</p>
+    </div>
+
+    <h4>'NSISArray: You cannot declare more than one array with the same name.'</h4>
+    <div>
+     <p>You've already declared an array of the same name with <span class="cmd">${Array}</span>.</p>
+    </div>
+
+    <h4>'NSISArray: An array can only be initialised once.'</h4>
+    <div>
+     <p>You're calling <a href="#h1_4">${myArray-&gt;Init}</a> more than once (for <span class="ident">myArray</span>).</p>
+    </div>
+
+    <h4>'NSISArray: The minimum index count is 1.'</h4>
+    <div>
+     <p>The <span style="font-weight: bold">first</span> parameter for <a href="#h1_4">${myArray-&gt;Init}</a> or <a href="#h1_6_25">${myArray-&gt;ReDim}</a> must be greater than or equal to 1.</p>
+    </div>
+
+    <h4>'NSISArray: The minimum buffer length is 2.'</h4>
+    <div>
+     <p>The <span style="font-weight: bold">second</span> parameter for <a href="#h1_4">${myArray-&gt;Init}</a> or <a href="#h1_6_25">${myArray-&gt;ReDim}</a> must be greater than or equal to 2.
+        This is because the null escaping character that ends a string must be taken into account.</p>
+    </div>
+
+    <h4>'NSISArray: You must add at least 8 index reallocation.'</h4>
+    <div>
+     <p>The <span style="font-weight: bold">first</span> parameter for <a href="#h1_6_28">${myArray-&gt;SetAutoReDim}</a> must be greater than or equal to 8.</p>
+    </div>
+
+    <h4>'NSISArray: You must add at least 8 bytes for buffer reallocation.'</h4>
+    <div>
+     <p>The <span style="font-weight: bold">second</span> parameter for <a href="#h1_6_28">${myArray-&gt;SetAutoReDim}</a> must be greater than or equal to 8.</p>
+    </div>
+
+   </div>
+
+   <h3 id="h1_9_4">1.9.4 Enabling error messages with ${ArrayErrorStyle}</h3>
+
+   <div>
+
+    <p>By default just the <span class="ident">$ArrayErr</span> variable will contain the error code when an array function call fails.
+       However, we can use the following function to enable more debugging features:</p>
+
+    <p class="code">${ArrayErrorStyle} <span class="param">[MsgBox|LogWin|Off]</span></p>
+
+    <p>With <span class="param">MsgBox</span>, an error message box will be displayed. With <span class="param">LogWin</span>, the error messages will appear on the NSIS <span class="ident">InstFiles Page</span> log window. The error messages will display the caller function name, the error code and the error message that is associated with it.</p>
+    <p>Use <span class="param">Off</span> to disable the extra error reporting feature.</p>
+    <p>This instruction can only be used inside <span class="ident">Function</span>s and <span class="ident">Section</span>s. Using <span class="param">LogWin</span> will only work in <span class="ident">Section</span>s.</p>
+
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\ArrayErrorStyle.nsi</span>.</p>
+
+   </div>
+
+   <h3 id="h1_9_5">1.9.5 Special array debugging functions</h3>
+
+   <div>
+
+    <h4 id="h1_9_5_1">1.9.5.1 &nbsp; &nbsp; ${myArray-&gt;Debug}</h4>
+
+    <div>
+     <p>This will display a debug screen with a list-box containing the array items in <span class="ident">myArray</span>, including some general statistics.</p>
+     <p style="text-align: center"><img src="Debug.png" width="330" height="326" alt="NSISArray Debug" title="NSISArray Debug" /></p>
+     <p>There are also buttons to navigate between arrays that are currently in use.</p>
+    </div>
+
+    <h4 id="h1_9_5_2">1.9.5.2 &nbsp; &nbsp; ${myArray-&gt;Print} &nbsp; <span class="param">[index]</span></h4>
+
+    <div>
+
+     <p>This will print the value of the item at <span class="param">[index]</span> in the <span style="font-style: italic">InstFiles</span> page log window (uses <span class="cmd">DetailPrint</span>).
+        Obviously you need to call this from within a Section (or a Function being called from a Section).</p>
+
+     <p class="example">Section "-dummy"<br />&nbsp;${myArray-&gt;Write} 0 "hello"<br />&nbsp;${myArray-&gt;Print} 0 ## Outputs "hello"<br />SectionEnd</p>
+
+    </div>
+
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_10">1.10 Examples</h2>
+
+  <div>
+
+   <h3 id="h1_10_1">1.10.1 Example 1</h3>
+   <div>
+    <p class="code">
+
+     Name "NSISArray-Example1"<br />
+     OutFile "NSISArray-Example1.exe"<br />
+     !include "NSISArray.nsh"<br />
+     <br />
+     ${Array} Array1 5 11<br />
+     ${ArrayFunc} WriteList<br />
+     ${ArrayFunc} Cut<br />
+     ${ArrayFunc} Swap<br />
+     ${ArrayFunc} Concat<br />
+     <br />
+     Section<br />
+     <br />
+     &nbsp;## Initialise array for use<br />
+     &nbsp;${Array1-&gt;Init}<br />
+     <br />
+     &nbsp;## Write a new array<br />
+     &nbsp;${Array1-&gt;WriteList} '"Hi" "I am" "Afrow UK." "My name is" "Stuart!"'<br />
+     <br />
+     &nbsp;## Cut out 2nd item<br />
+     &nbsp;${Array1-&gt;Cut} $R0 1<br />
+     &nbsp; DetailPrint $R0 ; == "I am"<br />
+     <br />
+     &nbsp;## Swap "Afrow UK!" and "Stuart!"<br />
+     &nbsp;${Array1-&gt;Swap} 1 3<br />
+     <br />
+     &nbsp;## Join strings together with " "<br />
+     &nbsp;${Array1-&gt;Concat} $R0 " "<br />
+     &nbsp; DetailPrint $R0 ; == "Hi Stuart! My name is Afrow UK."<br />
+     <br />
+     &nbsp;## Don't need the array anymore<br />
+     &nbsp;${Array1-&gt;Delete}<br />
+     <br />
+     SectionEnd
+
+    </p>
+   </div>
+
+   <h3 id="h1_10_2">1.10.2 Example 2</h3>
+   <div>
+    <p class="code">
+
+     Name "NSISArray-Example2"<br />
+     OutFile "NSISArray-Example2.exe"<br />
+     !include "NSISArray.nsh"<br />
+     <br />
+     ${Array} Array2 5 26<br />
+     ${ArrayFunc} Shift<br />
+     ${ArrayFunc} Push<br />
+     ${ArrayFunc} Write<br />
+     ${ArrayFunc} Sort<br />
+     ${ArrayFunc} Splice<br />
+     ${ArrayFunc} Read<br />
+     ${ArrayFunc} Unshift<br />
+     <br />
+     Section<br />
+     <br />
+     &nbsp;## Initialise array for use<br />
+     &nbsp;${Array2-&gt;Init}<br />
+     <br />
+     &nbsp;## Write a new array<br />
+     &nbsp;${Array2-&gt;Shift} "1st shift"<br />
+     &nbsp;${Array2-&gt;Shift} "2nd shift"<br />
+     &nbsp;${Array2-&gt;Push} "1 push"<br />
+     &nbsp;${Array2-&gt;Push} "2nd push"<br />
+     &nbsp;${Array2-&gt;Write} 4 "I like writing"<br />
+     <br />
+     &nbsp;## Sort the array alphabetically or numerically<br />
+     &nbsp;${Array2-&gt;Sort} ""<br />
+     <br />
+     &nbsp;## Replace last two items with one<br />
+     &nbsp;${Array2-&gt;Splice} 3 4 '"I don$\'t like writing much"'<br />
+     <br />
+     &nbsp;## Read from the array<br />
+     &nbsp;${Array2-&gt;Read} $R0 0<br />
+     &nbsp; DetailPrint $R0 ; == "1 push"<br />
+     &nbsp;${Array2-&gt;Read} $R0 1<br />
+     &nbsp; DetailPrint $R0 ; == "1st shift"<br />
+     &nbsp;${Array2-&gt;Read} $R0 2<br />
+     &nbsp; DetailPrint $R0 ; == "2nd push"<br />
+     &nbsp;${Array2-&gt;Unshift} $R0<br />
+     &nbsp; DetailPrint $R0 ; == "I don't like writing much"<br />
+     <br />
+     &nbsp;## Don't need the array anymore<br />
+     &nbsp;${Array2-&gt;Delete}<br />
+     <br />
+     SectionEnd
+
+    </p>
+   </div>
+
+   <h3 id="h1_10_3">1.10.3 More working examples</h3>
+   <div>
+    <p>You can find more working NSIS script examples in the <span style="font-weight: bold">NSIS\Examples\NSISArray</span> folder.
+       There's an example script for every NSISArray script header function.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_11">1.11 Jumping over NSISArray functions</h2>
+
+  <div>
+   <p>You cannot jump over any NSISArray script header instructions with relative jumps...</p>
+   <p class="code">StrCmp $R0 "blah" 0 +2<br />&nbsp;${myArray-&gt;Cut} $R1 3</p>
+   <p>NSISArray script header instructions are macros that contain more than one line of NSIS code and therefore a relative jump will not work. You must use labels to jump to instead...</p>
+   <p class="code">StrCmp $R0 "blah" 0 noCut<br />&nbsp;${myArray-&gt;Cut} $R1 3<br />noCut:</p>
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+  <h2 id="h1_12">1.12 Calculating memory usage</h2>
+
+  <div>
+
+   <p>To calculate the amount of memory being used by the NSISArray plug-in, you can use the <span class="ident">SizeOf</span> function to return the number of item indexes allocated, indexes used and the length of allocated buffers. Times them together to get the total number of bytes allocated for use.</p>
+
+   <div>
+    <p class="code">
+
+     ${myArray1-&gt;SizeOf} $R3 $R1 $R2<br />
+     IntOp $R0 $R1 * $R2<br />
+     <br />
+     ${myArray2-&gt;SizeOf} $R4 $R2 $R3<br />
+     IntOp $R1 $R2 * $R3<br />
+     <br />
+     IntOp $R0 $R0 + $R1<br />
+     ## $R0 == total number of bytes allocated by myArray1 and myArray2.<br />
+     <br />
+     IntOp $R0 $R0 / 1024<br />
+     ## $R0 == total number of kilobytes (KB) allocated by myArray1 and myArray2.<br />
+     <br />
+     IntOp $R0 $R0 / 1024<br />
+     ## $R0 == total number of megabytes (MB) allocated by myArray1 and myArray2.<br />
+
+    </p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t1">Top</a></div>
+
+ </div>
+
+</td></tr></table>
+<table class="main" id="t2"><tr><td>
+
+ <h1>NSISArray Plug-in Documentation</h1>
+
+ <div>
+
+  <h2>2.0 Plug-in documentation contents</h2>
+
+   <ul>
+    <li><a href="#h2_1">2.1 Introduction</a></li>
+    <li><a href="#h2_2">2.2 Plug-in loading</a></li>
+    <li><a href="#h2_3">2.3 Plug-in DLL information</a></li>
+    <li><a href="#h2_4">2.4 Creating an array</a>
+     <ul>
+      <li><a href="#h2_4_1">2.4.1 Checking if an array has been created</a></li>
+     </ul>
+    </li>
+    <li><a href="#h2_5">2.5 Array functions</a>
+     <ul>
+      <li><a href="#h2_5_1">2.5.1 NSISArray::Write</a></li>
+      <li><a href="#h2_5_2">2.5.2 NSISArray::WriteList</a></li>
+      <li><a href="#h2_5_3">2.5.3 NSISArray::WriteListC</a></li>
+      <li><a href="#h2_5_4">2.5.4 NSISArray::Put</a></li>
+      <li><a href="#h2_5_5">2.5.5 NSISArray::Read</a></li>
+      <li><a href="#h2_5_6">2.5.6 NSISArray::ReadToStack</a></li>
+      <li><a href="#h2_5_7">2.5.7 NSISArray::Cut</a></li>
+      <li><a href="#h2_5_8">2.5.8 NSISArray::Push</a></li>
+      <li><a href="#h2_5_9">2.5.9 NSISArray::Pop</a></li>
+      <li><a href="#h2_5_10">2.5.10 NSISArray::Shift</a></li>
+      <li><a href="#h2_5_11">2.5.11 NSISArray::Unshift</a></li>
+      <li><a href="#h2_5_12">2.5.12 NSISArray::Reverse</a></li>
+      <li><a href="#h2_5_13">2.5.13 NSISArray::Sort</a></li>
+      <li><a href="#h2_5_14">2.5.14 NSISArray::Clear</a></li>
+      <li><a href="#h2_5_15">2.5.15 NSISArray::Splice</a></li>
+      <li><a href="#h2_5_16">2.5.16 NSISArray::Swap</a></li>
+      <li><a href="#h2_5_17">2.5.17 NSISArray::Copy</a></li>
+      <li><a href="#h2_5_18">2.5.18 NSISArray::Join</a></li>
+      <li><a href="#h2_5_19">2.5.19 NSISArray::Concat</a></li>
+      <li><a href="#h2_5_20">2.5.20 NSISArray::Exists &amp; NSISArray::ExistsI</a></li>
+      <li><a href="#h2_5_21">2.5.21 NSISArray::Search &amp; NSISArray::SearchI</a></li>
+      <li><a href="#h2_5_22">2.5.22 NSISArray::SizeOf</a></li>
+      <li><a href="#h2_5_23">2.5.23 NSISArray::SetSize</a></li>
+      <li><a href="#h2_5_24">2.5.24 NSISArray::ArrayCount</a></li>
+      <li><a href="#h2_5_25">2.5.25 NSISArray::ReDim</a></li>
+      <li><a href="#h2_5_26">2.5.26 NSISArray::FreeUnusedMem</a></li>
+      <li><a href="#h2_5_27">2.5.27 NSISArray::Subtract</a></li>
+      <li><a href="#h2_5_28">2.5.28 NSISArray::SetAutoReDim</a></li>
+     </ul>
+    </li>
+    <li><a href="#h2_6">2.6 Deleting an array object</a>
+     <ul>
+      <li><a href="#h2_6_1">2.6.1 Unloading the NSISArray plug-in</a></li>
+     </ul>
+    </li>
+    <li><a href="#h2_7">2.7 Array auto-redimensioning</a></li>
+    <li><a href="#h2_8">2.8 Array debugging</a>
+     <ul>
+      <li><a href="#h2_8_1">2.8.1 The array debug dialog</a></li>
+      <li><a href="#h2_8_2">2.8.2 Enabling plug-in error messages</a></li>
+      <li><a href="#h2_8_3">2.8.3 Error messages</a>
+       <ul>
+        <li><a href="#h2_8_3_1">2.8.3.1 "(1) Array name already declared."</a></li>
+        <li><a href="#h2_8_3_2">2.8.3.2 "(2) Parameters error."</a></li>
+        <li><a href="#h2_8_3_3">2.8.3.3 "(3) Index out of range."</a></li>
+        <li><a href="#h2_8_3_4">2.8.3.4 "(4) Array does not exist."</a></li>
+        <li><a href="#h2_8_3_5">2.8.3.5 "(5) Cannot declare any more arrays."</a></li>
+        <li><a href="#h2_8_3_6">2.8.3.6 "(6) Memory could not be allocated."</a></li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li><a href="#h2_9">2.9 NSIS special build for large strings</a></li>
+    <li><a href="#h3_0">3.0 Recompiling NSISArray</a></li>
+   </ul>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_1">2.1 Introduction</h2>
+
+  <div>
+   <p>The NSISArray plug-in is a powerful extension for <span style="font-style: italic">Nullsoft Scriptable Install System</span> that adds support for dynamic arrays for use with the NSIS scripting language.</p>
+   <p>It contains many functions that allows an NSIS programmer to dynamically create, delete and manipulate their arrays in many ways.</p>
+   <p>The documentation covers all plug-in functions that the plug-in offers with general descriptions and information about their parameters.</p>
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_2">2.2 Plug-in loading</h2>
+
+  <div>
+
+   <p>When using the plug-in manually (without the script header), you must use <span style="font-weight: bold">/NOUNLOAD</span> with every plug-in call. Or you can use <span class="cmd">SetPluginUnload alwaysoff</span>.</p>
+
+    <p class="example">NSISArray::FuncName /NOUNLOAD ...</p>
+    <p>Or...</p>
+    <p class="example">SetPluginUnload alwaysoff<br />&nbsp;NSISArray::FuncName ...<br />&nbsp;...<br />SetPluginUnload manual</p>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_3">2.3 Plug-in DLL information</h2>
+
+  <div>
+
+   <p>Below is a list of general information regarding the standard <span style="font-style: italic">NSISArray.dll</span> plug-in:</p>
+
+   <ul>
+    <li><span class="ident">NSISArray</span> (NSISArray.dll, 18KB)
+     <ul>
+      <li>32 bytes for array names.</li>
+      <li>8 bytes for array index references (for plug-in input).</li>
+      <li>8 total arrays.</li>
+      <li>16 more array item indexes are allocated per auto-reallocation (by default before or when not using <span class="cmd">SetAutoReDim</span>).</li>
+      <li>32 more bytes are allocated per auto-reallocation (by default before or when not using <span class="cmd">SetAutoReDim</span>).</li>
+     </ul>
+    </li>
+   </ul>
+
+   <p>If any of these do not fit your requirements, you will need to recompile the plug-in DLL. See section <a href="#h3_0">3.0 Recompiling NSISArray</a>.</p>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_4">2.4 Creating an array</h2>
+
+  <div>
+
+   <p>To create a new array, use:</p>
+   <p class="code">NSISArray::New /NOUNLOAD <span class="ident">myArray</span> <span class="param">[x] [y]</span></p>
+   <p>Where <span class="ident">myArray</span> is any custom name for an array object, <span class="param">[x]</span> specifies the initial number of indexes to allocate and <span class="param">[y]</span> specifies the initial buffer lengths to use.</p>
+   <p>The minimum value of <span class="param">[x]</span> can be 1 and the minimum value of <span class="param">[y]</span> can be 2.</p>
+   <p>Please note that the value for buffer lengths (<span class="param">[y]</span>) must always allow for the NULL escaping character on the end of strings to prevent buffer overflows. For example, if you're only putting single characters in the array, the <span class="param">[y]</span> value must be 2 and not 1.</p>
+
+   <h3 id="h2_4_1">2.4.1 Checking if an array has been created</h3>
+   <div>
+    <p>To check if an array has been created, use:</p>
+   <p class="code">NSISArray::ArrayExists /NOUNLOAD <span class="ident">myArray</span><br />&nbsp;Pop $Var</p>
+   <p>The <span class="ident">$Var</span> variable will contain 1 if the array exists (has been created) or 0 if it does not exist.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_5">2.5 Array functions</h2>
+
+  <div>
+
+   <p>The NSISArray plug-in comes with plenty of functions for managing your arrays.</p>
+   <p>Please note that much like in many programming languages, we refer to array items with an index number. This index number is also zero base, which means the first item in an array will be at index 0 and not 1.</p>
+
+   <h4 id="h2_5_1">2.5.1 &nbsp; &nbsp; NSISArray::Write /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [index] &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Writes <span class="param">"string"</span> to <span class="param">[index]</span> in <span class="ident">myArray</span>, overwriting any existing items or adding an item if the specified index is one greater than the current highest item index.</p>
+    <p class="example">NSISArray::Write /NOUNLOAD 0 "A string to save!"</p>
+   </div>
+
+   <h4 id="h2_5_2">2.5.2 &nbsp; &nbsp; NSISArray::WriteList /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; "string 1" &nbsp; "string 2" ... &nbsp; /END</span></h4>
+
+   <div>
+    <p>Writes a list of strings to <span class="ident">myArray</span>. Each separate string in quotes will become a separate array item. Any existing <span class="ident">myArray</span> array items that are inside the range of the item list will be overwritten.</p>
+    <p class="example">NSISArray::WriteList /NOUNLOAD myArray "String" "Another" "One more" /END</p>
+   </div>
+
+   <h4 id="h2_5_3">2.5.3 &nbsp; &nbsp; NSISArray::WriteListC /NOUNLOAD</h4>
+   <p class="param" style="text-align: right; font-weight: bold">myArray &nbsp; "string 1[char]string 2[char] ... " &nbsp; "[char]"</p>
+
+   <div>
+    <p>Writes a list of strings to <span class="ident">myArray</span> separated by single <span class="param">[char]</span>'s. Each separate string will become a separate array item. Any existing <span class="ident">myArray</span> array items that are inside the range of the item list will be overwritten.<br />
+       Note: <span class="param">[char]</span> must be a single character. A string is not allowed.</p>
+    <p class="example">NSISArray::WriteListC /NOUNLOAD myArray "One string|Another|One more" "|"</p>
+    <p>This is ideal for working with <span style="font-style: italic">InstallOptions</span> ListBox controls.</p>
+
+   </div>
+
+   <h4 id="h2_5_4">2.5.4 &nbsp; &nbsp; NSISArray::Put /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [index] &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Puts <span class="param">"string"</span> into <span class="ident">myArray</span> at <span class="param">[index]</span>. No existing items are overwritten, but moved up by one.</p>
+   </div>
+
+   <h4 id="h2_5_5">2.5.5 &nbsp; &nbsp; NSISArray::Read /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [index]</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Reads a string from <span class="param">[index]</span> in <span class="ident">myArray</span> and places the string onto the stack ready for a <span class="cmd">Pop $Var</span>.</p>
+   </div>
+
+   <h4 id="h2_5_6">2.5.6 &nbsp; &nbsp; NSISArray::ReadToStack /NOUNLOAD &nbsp; <span class="param">myArray</span></h4>
+
+   <div>
+    <p>Reads strings from item at <span class="ident">[index_start]</span> to <span class="ident">[index_end]</span> in <span class="ident">myArray</span> and places all strings onto the stack. The strings on the stack can then be looped through via <span style="font-style: italic">Pop</span> until a specific string is reached.<br />
+       Note: If <span class="ident">[index_end]</span> is a negative number, the end range will be up to the end of the array minus <span class="ident">[index_end]</span> inclusive, and so <span class="code">-1</span> will be up to and including the last item in the array.</p>
+    <p class="example">Push "stop_popping"<br />NSISArray::ReadToStack /NOUNLOAD myArray 0 -1<br />Loop:<br />&nbsp;Pop $R0<br />&nbsp;StrCmp $R0 "stop_popping" Done<br />&nbsp;...do something here...<br />Goto Loop<br />Done:</p>
+   </div>
+
+   <h4 id="h2_5_7">2.5.7 &nbsp; &nbsp; NSISArray::Cut /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [index]</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Cuts a string from <span class="ident">myArray</span> at <span class="param">[index]</span>. The string is placed onto the stack ready for a <span class="cmd">Pop $Var</span>. Any proceeding array items are moved down by one.</p>
+   </div>
+
+   <h4 id="h2_5_8">2.5.8 &nbsp; &nbsp; NSISArray::Push /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Pushes <span class="param">"string"</span> to the front of <span class="ident">myArray</span>.</p>
+   </div>
+
+   <h4 id="h2_5_9">2.5.9 &nbsp; &nbsp; NSISArray::Pop /NOUNLOAD &nbsp; <span class="param">myArray</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Pops a string from the front of <span class="ident">myArray</span> onto the stack ready for a <span class="cmd">Pop $Var</span>.</p>
+   </div>
+
+   <h4 id="h2_5_10">2.5.10 &nbsp; &nbsp; NSISArray::Shift /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; "string"</span></h4>
+
+   <div>
+    <p>Pushes a string to the end of <span class="ident">myArray</span>.</p>
+   </div>
+
+   <h4 id="h2_5_11">2.5.11 &nbsp; &nbsp; NSISArray::Unshift /NOUNLOAD &nbsp; <span class="param">myArray</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Pops a string from the end of <span class="ident">myArray</span> and places the string onto the stack ready for a <span class="cmd">Pop $Var</span>.</p>
+   </div>
+
+   <h4 id="h2_5_12">2.5.12 &nbsp; &nbsp; NSISArray::Reverse /NOUNLOAD &nbsp; <span class="param">myArray</span></h4>
+
+   <div>
+    <p>Reverses the contents of <span class="ident">myArray</span>.</p>
+   </div>
+
+   <h4 id="h2_5_13">2.5.13 &nbsp; &nbsp; NSISArray::Sort /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; myArray2</span></h4>
+
+   <div>
+    <p>Sorts the contents of <span class="ident">myArray</span> alphabetically or numerically, also rearranging the contents of <span class="ident">myArray2</span> into the same order.<br />
+       The <span class="ident">myArray2</span> parameter is optional (it can be left empty "").</p>
+   </div>
+
+   <h4 id="h2_5_14">2.5.14 &nbsp; &nbsp; NSISArray::Clear /NOUNLOAD &nbsp; <span class="param">myArray</span></h4>
+
+   <div>
+    <p>Clears the contents of <span class="ident">myArray</span>. All items are removed and the array size is reset to 0.</p>
+   </div>
+
+   <h4 id="h2_5_15">2.5.15 &nbsp; &nbsp; NSISArray::Splice /NOUNLOAD</h4>
+   <p class="param" style="text-align: right; font-weight: bold">myArray &nbsp; [index_start] &nbsp; [index_end] &nbsp; '"string 1" &nbsp; "string 2" ... '</p>
+
+   <div>
+    <p>Places a list of strings at <span class="param">[index_start]</span> replacing existing array items up to but not including <span class="param">[index_end]</span>.
+       If <span class="param">[index_start]</span> and <span class="param">[index_end]</span> are equal, no existing array items are overwritten.</p>
+    <p>Specifying no list of strings ('') before <span class="param">/END</span> will result in items from <span class="param">[index_start]</span> up to <span class="param">[index_end]</span> exclusive being deleted.</p>
+    <p>If <span class="ident">[index_end]</span> is a negative number, the end range will be up to the end of the array minus <span class="ident">[index_end]</span> inclusive, and so <span class="code">-1</span> will be up to and including the last item in the array.</p>
+   </div>
+
+   <h4 id="h2_5_16">2.5.16 &nbsp; &nbsp; NSISArray::Swap /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [index_1] &nbsp; [index_2]</span></h4>
+
+   <div>
+    <p>Swaps the strings in the two indexes in <span class="ident">myArray</span>.</p>
+   </div>
+
+   <h4 id="h2_5_17">2.5.17 &nbsp; &nbsp; NSISArray::Copy /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; myArray2</span></h4>
+
+   <div>
+    <p>Copies the contents of <span class="ident">myArray</span> to <span class="ident">myArray2</span>, overwriting any existing items.</p>
+   </div>
+
+   <h4 id="h2_5_18">2.5.18 &nbsp; &nbsp; NSISArray::Join /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; myArray2</span></h4>
+
+   <div>
+    <p>Copies the contents of <span class="ident">myArray</span> onto the end of <span class="ident">myArray2</span>.</p>
+   </div>
+
+   <h4 id="h2_5_19">2.5.19 &nbsp; &nbsp; NSISArray::Concat /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [join_char(s)]</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+
+    <p>Joins all strings in <span class="ident">myArray</span> together with <span class="param">[join_char(s)]</span> and places the output onto the stack ready for a <span class="cmd">Pop $Var</span>.</p>
+
+    <p class="example">NSISArray::Join /NOUNLOAD myArray " "<br />&nbsp; Pop $R0</p>
+
+   </div>
+
+   <h4 id="h2_5_20">2.5.20 &nbsp; &nbsp; NSISArray::Exists /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; "string" &nbsp; [index]</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Finds the index of an item that is exactly equal to <span class="param">"string"</span> case sensitively in <span class="ident">myArray</span> after <span class="ident">[index]</span>.<br />
+       <span class="param">$Var</span> will contain the item index, or -1 if not found.</p>
+    <p>Note: To search non case sensitively, use <span class="cmd">NSISArray::ExistsI</span> (that's a capital i) instead of <span class="cmd">NSISArray::Exists</span>.</p>
+   </div>
+
+   <h4 id="h2_5_21">2.5.21 &nbsp; &nbsp; NSISArray::Search /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; "string" &nbsp; [index]</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p>Searches through all items after <span class="ident">[index]</span> in <span class="ident">myArray</span> for <span class="param">"string"</span> case insensitively, and places the output onto the stack ready for a <span class="cmd">Pop $Var</span>.<br />
+       <span class="param">$Var</span> will contain the item index containing the first match, or -1 if not found.</p>
+    <p>Note: To search non case sensitively, use <span class="cmd">NSISArray::SearchI</span> (that's a capital i) instead of <span class="cmd">NSISArray::Search</span>.</p>
+   </div>
+
+   <h4 id="h2_5_22">2.5.22 &nbsp; &nbsp; NSISArray::SizeOf /NOUNLOAD &nbsp; <span class="param">myArray</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var1<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var2<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var3</h4>
+
+   <div>
+    <p>For <span class="ident">myArray</span>, <span class="param">$Var1</span> will now contain the allocated buffer length for all strings in the array.<br />
+       <span class="param">$Var2</span> will contain the number of allocated array indexes.<br />
+       <span class="param">$Var3</span> will contain the number of items (used indexes) in the array.</p>
+   </div>
+
+   <h4 id="h2_5_23">2.5.23 &nbsp; &nbsp; NSISArray::SetSize /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; [size]</span></h4>
+
+   <div>
+    <p>Sets the new size of <span class="ident">myArray</span> to <span class="param">[size]</span>. If the array is currently smaller than <span class="param">[size]</span>, new empty "" items are added. If the array is currently larger than <span class="param">[size]</span>, items are removed until it becomes that size.</p>
+    <p>Note: This does not allocated more memory for more items to be added. To do so, use <a href="#h2_5_25">NSISArray::ReDim</a>.</p>
+   </div>
+
+   <h4 id="h2_5_24">2.5.24 &nbsp; &nbsp; NSISArray::ArrayCount /NOUNLOAD<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pop $Var</h4>
+
+   <div>
+    <p><span class="param">$Var</span> will contain the number of arrays currently allocated.</p>
+   </div>
+
+   <h4 id="h2_5_25">2.5.25 &nbsp; &nbsp; NSISArray::ReDim /NOUNLOAD &nbsp; <span class="param">[x] &nbsp; [y]</span></h4>
+
+   <div>
+    <p>Redimensions <span class="ident">myArray</span> to <span class="param">[x]</span> item indexes and <span class="param">[y]</span> buffer lengths.
+       No existing items will be deleted. If the number of new indexes allocated is less than the number of currently allocated indexes, the excess indexes are deleted. If the new allocated buffer length is less than the currently allocated string length, strings of a greater length are truncated.</p>
+    <p>The minimum value of <span class="param">[x]</span> can be 1 and the minimum value of <span class="param">[y]</span> can be 2.</p>
+    <p>Please note that the value for buffer lengths (<span class="param">[y]</span>) must always allow for the NULL character on the end of strings to prevent buffer overflows. For example, if you're only putting single characters in the array, the <span class="param">[y]</span> value must be 2 and not 1.</p>
+   </div>
+
+   <h4 id="h2_5_26">2.5.26 &nbsp; &nbsp; NSISArray::FreeUnusedMem /NOUNLOAD</h4>
+
+   <div>
+    <p>Frees unused memory in <span class="ident">myArray</span> by deleting empty item indexes and by decreasing the buffer length of all items to fit the largest string in the array. Ideally you should call this after you've finished writing to the array.</p>
+   </div>
+
+   <h4 id="h2_5_27">2.5.27 &nbsp; &nbsp; NSISArray::Subtract /NOUNLOAD &nbsp; <span class="param">myArray &nbsp; myArray2</span></h4>
+
+   <div>
+    <p>Removes items from <span class="ident">myArray</span> that are also in <span class="ident">myArray2</span>. Items are matched case sensitively.</p>
+   </div>
+
+   <h4 id="h2_5_28">2.5.28 &nbsp; &nbsp; NSISArray::SetAutoRedim /NOUNLOAD &nbsp; <span class="param">[indexes] &nbsp; [str_len]</span></h4>
+
+   <div>
+    <p>Sets the number of indexes and characters to be increased by when the array is to be auto-redimensioned (for extra memory allocation).</p>
+    <p>If adding lots of items at a time, you should set <span class="param">[indexes]</span> to a larger number than default.</p>
+    <p>For default values (before or without using this function) and more information on array auto-redimensioning, see section <a href="#h2_7">2.7 Array auto-redimensioning</a>.</p>
+    <p>For a compilable NSIS script example, see <span style="font-style: italic">Examples\NSISArray\SetAutoRedim.nsi</span>.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_6">2.6 Deleting an array object</h2>
+
+  <div>
+   <p>To delete an array object, use:</p>
+   <p class="code">NSISArray::Delete /NOUNLOAD myArray</p>
+   <p>Deleting an array will remove it from memory and you can no longer reference that array.</p>
+
+   <h3 id="h2_6_1">2.6.1 Unloading the NSISArray plug-in</h3>
+   <div>
+    <p>To unload the NSISArray plug-in after use, call:</p>
+    <p class="code">NSISArray::Unload</p>
+    <p>You could call this in a Section, or perhaps in the <span class="ident">.onGUIEnd</span> function.<br />
+       We must not use <span class="param">/NOUNLOAD</span> here, so that the plug-in is unloaded from memory. The DLL along with the <span class="ident">$PLUGINSDIR</span> folder can then be deleted successfully by the installer without a reboot.</p>
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_7">2.7 Array auto-redimensioning</h2>
+
+  <div>
+   <p>From NSISArray v1.1 and upwards, arrays are now fully dynamic in both item indexes and buffer lengths.</p>
+   <p>When an array is full and then a new item is added, the array will be automatically resized to fit the new array item in. <span style="font-weight: bold">16</span> more indexes will be allocated by default so that more memory re-allocation will not have to re-occur for another 16 more items being added.</p>
+   <p>Similarly, when a string is added to the array with a length greater than the allocated buffer length, the array will be resized. <span style="font-weight: bold">32</span> more bytes will also be added on top so that the array may not have to be redimensioned again.</p>
+   <p>For setting the re-allocation amounts, see <a href="#h2_5_28">NSISArray::SetAutoReDim</a> (or <a href="#h1_6_28">${myArray-&gt;SetAutoReDim}</a> for the NSISArray script header).</p>
+   <p>If you want to free up any excess memory allocated, use <a href="#h2_5_26">NSISArray::FreeUnusedMem</a> (or <a href="#h1_6_26">${myArray-&gt;FreeUnusedMem}</a> for the NSISArray script header). This should really only be used when you've finished writing to the array.</p>
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_8">2.8 Array debugging</h2>
+
+  <div>
+
+   <h3 id="h2_8_1">2.8.1 The array debug dialog</h3>
+
+   <div>
+    <p>You can easily check the state of an array by calling:</p>
+    <p class="code">NSISArray::Debug /NOUNLOAD myArray</p>
+    <p>This will display a debug screen with a list-box containing the array items in <span class="ident">myArray</span>, including some general statistics.</p>
+    <p style="text-align: center"><img src="Debug.png" width="330" height="326" alt="NSISArray Debug" title="NSISArray Debug" /></p>
+    <p>There are also buttons to navigate between arrays that are currently in use.</p>
+   </div>
+
+   <h3 id="h2_8_2">2.8.2 Enabling plug-in error messages</h3>
+
+   <div>
+
+    <p>By default, you will never get error reports when NSISArray function calls fail. This is so that the least amount of NSIS code is needed when working with the plug-in.
+       However, there are a few error reporting methods available for debugging purposes.</p>
+
+    <p>To enable error reporting of a certain style, use:</p>
+    <p class="code">NSISArray::ErrorStyle /NOUNLOAD <span class="param">[style]</span></p>
+
+    <p>Where <span class="param">[style]</span> is a value from 0 to 5:</p>
+    <table style="width: 100%">
+     <tr><th>Value</th><th>Feature</th></tr>
+     <tr><td>0</td><td>No error reporting is used.</td>
+     <tr><td>1</td><td>Error codes are placed on the NSIS stack before any return values associated with the function being called.</td>
+     <tr><td>2</td><td>No stack errors are used but instead the plug-in will display an error message box with the function name, the error code and the message associated with that error code.</td>
+     <tr><td>3</td><td>Both the stack and error message boxes are enabled.</td>
+     <tr><td>4</td><td>Error messages are placed in the NSIS <span class="ident">InstFiles Page</span> log window. This only works inside a <span class="ident">Section</span>.</td>
+     <tr><td>5</td><td>Both the stack and log window error messages are enabled.</td>
+    </table>
+
+    <div>
+
+    <p>If <span class="param">[style]</span> is empty ("") then the function will place the current error style number (from 0 to 5) on the NSIS stack.</p>
+    <p><span style="font-weight: bold">Example:</span><br />
+    <span class="code">
+     ; Get current ErrorStyle<br />
+     NSISArray::ErrorStyle /NOUNLOAD ""<br />
+     &nbsp; Pop $R0 # Current ErrorStyle setting<br />
+     <br />
+     NSISArray::ErrorStyle /NOUNLOAD 4<br />
+     <br />
+     ; Do something<br />
+     <br />
+     ; Set ErrorStyle back<br />
+     NSISArray::ErrorStyle /NOUNLOAD $R0
+    </span>
+    </p>
+
+    <p><span style="font-weight: bold">This example demonstrates the use of <span class="ident">ErrorStyle</span> 1:</span><br />
+    <span class="code">
+     NSISArray::ErrorStyle /NOUNLOAD 1<br />
+     NSISArray::Read /NOUNLOAD 3<br />
+     &nbsp; Pop $R0 # Error code (if any)<br />
+     &nbsp; Pop $R1 # Return value (or "" if error occured)
+    </span>
+    </p>
+
+    </div>
+
+   </div>
+
+   <h3 id="h2_8_3">2.8.3 Error messages</h3>
+
+   <div>
+
+    <p>Below is a list of possible plug-in errors...</p>
+
+    <h4 id="h2_8_3_1">2.8.3.1 &nbsp; &nbsp; "(1) Array name already declared."</h4>
+    <div>
+     <p>This will occur if you try to create two arrays of the same name with <span class="cmd">NSISArray::New</span> (or <span class="cmd">${myArray::Init}</span>).</p>
+    </div>
+
+    <h4 id="h2_8_3_2">2.8.3.2 &nbsp; &nbsp; "(2) Parameters error."</h4>
+    <div>
+     <p>This occurs when the incorrect amount of parameters is passed to the NSISArray plug-in, or when an empty ("") value is used for a parameter that should not be empty.</p>
+    </div>
+
+    <h4 id="h2_8_3_3">2.8.3.3 &nbsp; &nbsp; "(3) Index out of range."</h4>
+    <div>
+     <p>Specifying an index that is either negative or greater than the number of items already existing in the array will cause this error message to occur.<br />
+        You can find out the size of an array with <span class="cmd">NSISArray::SizeOf</span> (or <span class="cmd">${myArray-&gt;SizeOf}</span>).</p>
+    </div>
+
+    <h4 id="h2_8_3_4">2.8.3.4 &nbsp; &nbsp; "(4) Array does not exist."</h4>
+    <div>
+     <p>This occurs when trying to reference an array object that does not exist (has not been created).</p>
+    </div>
+
+    <h4 id="h2_8_3_5">2.8.3.5 &nbsp; &nbsp; "(5) Cannot declare any more arrays."</h4>
+    <div>
+     <p>This only occurs with <a href="#h2_4">NSISArray::New</a> (or <a href="#h1_4">${myArray-&gt;Init}</a>) when you are trying to declare more than <span style="font-weight: bold">8</span> arrays.</p>
+    </div>
+
+    <h4 id="h2_8_3_6">2.8.3.6 &nbsp; &nbsp; "(6) Memory could not be allocated."</h4>
+    <div>
+     <p>If memory allocation fails for any reason, then this error will be returned. Note that this should only happen when there is no more address space in the program's (NSIS's) default memory heap and each default. Fortunately, all programs are allocated 2GB of address space to work with, so running out of memory in which case is very unlikely.</p>
+    </div>
+
+   </div>
+
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h2_9">2.9 NSIS special build for large strings</h2>
+  <div>
+   <p>There is a special NSIS build on the NSIS website which allows strings to be up to 8191 characters in length. This special build can be used with NSISArray for <span class="cmd">WriteListC</span> or <span class="cmd">Concat</span>, where a large amount of items may be added to an array or taken out of an array in one single string variable. NSISArray allocates NSIS_MAX_STRLEN bytes for array input and output. Therefore, using the NSIS 8192 characters string length special build will cause the plug-in to allocate 8192 bytes for all array input and output.</p>
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+  <h2 id="h3_0">3.0 Recompiling NSISArray</h2>
+  <div>
+   <p>NSISArray was written in Microsoft Visual C++ 6.</p>
+   <p>Settings defines can be modified at the top of the main C++ script (<span style="font-style: italic">NSISArray.cpp</span>). There are individual defines for each individual function.<br />
+      To perform the recompile, open up the <span style="font-style: italic">NSISArray.dsw</span> file in Microsoft Visual C++, go to Build &gt; Set Active Configuration and select "NSISArray - Win32 Release". You can then do a Build &gt; Build NSISArray.dll to build the DLL file (which will be placed in the NSIS 'Plugins' folder if you're compiling from <span style="font-style: italic">NSIS\Contrib\NSISArray</span>).</p>
+  </div>
+
+  <div class="top">^ <a href="#t2">Top</a></div>
+
+ </div>
+
+</td></tr></table>
+<table class="main" id="t3"><tr><td>
+
+ <h1>NSISArray Credits, Changelog &amp; License</h1>
+
+ <div>
+
+  <h2>Credits</h2>
+
+  <div>
+
+   <ul>
+    <li>NSISArray plug-in written by <span style="font-style: italic">Afrow UK</span> in Microsoft Visual C++ 6.</li>
+    <li>NSISArray plug-in script header written by <span style="font-style: italic">Afrow UK</span>.</li>
+    <li>Documentation written by <span style="font-style: italic">Afrow UK</span>, style sheet based on Modern UI readme style sheet by <span style="font-style: italic">Joost Verburg</span>.</li>
+    <li>Special thanks to <span style="font-style: italic">Microsoft</span> for their great article on <a href="javascript:void(window.open('http://support.microsoft.com/default.aspx?scid=kb%3Ben-us%3B104639', '_blank'))">dynamic arrays in C</a> :) .</li>
+    <li>Special thanks to <span style="font-style: italic">Comperio</span> for bug hunting and his working example scripts for<br />NSISArray &lt; v1.0, which many of the current example scripts are based upon.</li>
+   </ul>
+
+   <p>If you have an issue with NSISArray which you think could be a bug, or you need general help with using NSISArray, please post a topic in the NSISArray plug-in topic on the <span style="font-style: italic">NSIS Forums</span> at:<br />
+      <a href="javascript:void(window.open('http://forums.winamp.com/http://forums.winamp.com/showthread.php?threadid=22227', '_blank'))">http://forums.winamp.com/showthread.php?threadid=22227</a></p>
+
+  </div>
+
+  <h2>Changelog</h2>
+
+  <div>
+
+   <ul>
+    <li>v1.8 (21st May 2008)
+     <ul>
+      <li>Empty joining string can be used with Concat.</li>
+      <li>Fixed some memory leaks caused if GlobalAlloc() failed.</li>
+      <li>Fixed crash on debug dialog for strings over 255 characters.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.7 (18th October 2007)
+     <ul>
+      <li>Fixed bug with ReadToStack parameters validation.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.6 (12th October 2007)
+     <ul>
+      <li>Fixed Subtract function not removing the correct items.</li>
+      <li>Found and fixed memory leak in Delete function.</li>
+      <li>Increased array name buffer size from 16 to 32 bytes.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.5 (8th June 2007)
+     <ul>
+      <li>Fixed memory leak in ReDimArray function that caused random crashing.</li>
+      <li>Added GlobalFree calls for local variables using GlobalAlloc (added v1.4).</li>
+      <li>Added some more compiler (script header) and plug-in error messages/codes.</li>
+      <li>Indexes and buffer length increases for array auto-redimensioning is no longer hard-coded. Both can now be changed with the SetAutoReDim function.</li>
+      <li>More source code cleaning.</li>
+      <li>Added more examples and updated old ones.</li>
+      <li>Added more details to debugging dialog.</li>
+      <li>(RC2) Fixed parameter validation in New, ReDim and SetAutoReDim.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.4 (6th June 2007)
+     <ul>
+      <li>Removed large 8192 fixed length strings and used the NSIS compiler string length instead.</li>
+      <li>Removed 1024 fixed length strings and used the NSIS compiler string length instead.</li>
+      <li>Added Subtract function.</li>
+      <li>Code cleanup and optimisation.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.3 (27th July 2006)
+     <ul>
+      <li>Fixed concat function returning less than NSIS_MAX_STRLEN in characters.</li>
+      <li>Fixed script header SizeOf function accepting parameters in incorrect order (<span style="font-style: italic">Jnuw</span>).</li>
+      <li>Updated readme missing SizeOf information (<span style="font-style: italic">Jnuw</span>).</li>
+      <li>Added SizeOf example script.</li>
+      <li>Fixed problems with Write function parameters (and others with the same problem).</li>
+      <li>EnableErrorMsgBox function removed.</li>
+      <li>ErrorStyle function re-added with new parameter types.</li>
+      <li>Added support for error messages in the NSIS InstFiles page log window.</li>
+      <li>Removed ${ArrayEnableErrorMsgBox} from script header and replaced it with ${ArrayErrorStyle} [MsgBox|LogWin|Off].</li>
+      <li>(RC3) Added Off option for ${ArrayErrorStyle}.</li>
+      <li>(RC3) Fixed problem with some functions always returning 0.</li>
+      <li>(RC3) Script header now sets ErrorStyle to 1 which is required.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.2 (26th April 2006)
+     <ul>
+      <li>Removed ArrayErrorMsgBox script header setting.</li>
+      <li>Added NSISArray::EnableErrorMsgBox (or ${ArrayEnableErrorMsgBox}) function to enable and disable error message boxes at run time.</li>
+      <li>Added ArraySetErrors script header settings to enable use of SetErrors.</li>
+      <li>Added ArrayValVar script header setting to set $ArrayVar.</li>
+      <li>Added ArrayErrVar script header setting to set $ArrayErr.</li>
+      <li>Cleaned up error reporting code in NSISArray plug-in.</li>
+      <li>Error codes are now always pushed to the stack before anything else.</li>
+      <li>Now even when using EnableErrorMsgBox, error codes are still pushed to the stack before anything else.</li>
+      <li>Script header setting defines can now go after including the script header and before using the ${Array} instruction.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.1 (21st April 2006)
+     <ul>
+      <li>Project moved to Microsoft Visual C++ 6 from .NET 2003.</li>
+      <li>Arrays are now dynamic. Added two extra parameters for ${Array} keyword (and New plug-in function) to specify initial array size.</li>
+      <li>Added automatic array memory reallocation if data overflow of both array items and buffer lengths occur.</li>
+      <li>Array items to be deleted are now left undeleted, but marked as deleted for overwriting (more efficient).</li>
+      <li>Where possible, changed swapping/movement/replacement of array data in functions to movement of pointers only. This is much more efficient.</li>
+      <li>Added ReDim plug-in function to increase an array's item and buffer length.</li>
+      <li>Added FreeUnusedMem plug-in function to free unused memory by removing extra allocated items and trimming allocated columns to a length of the highest string length in the array.</li>
+      <li>Added ArrayCount plug-in function to return the number of arrays that have been initialised.</li>
+      <li>Removed ${ArrayUnload} keyword. The Delete script header function now unloads the plug-in by calling the plug-in Unload function when all arrays have been deleted.</li>
+      <li>SizeOf plug-in function now returns three values instead of one. The first is the currently allocated buffer length for array strings, the second being the number of array indexes allocated and the last is the number of array indexes in use.</li>
+      <li>Added Next and Prev buttons to the debug dialog which display statistics and data for the different arrays currently allocated.</li>
+      <li>Removed NSISArray128.dll from distribution.</li>
+      <li>Wrote custom internal strcpy function to prevent buffer over-running and corruption.</li>
+      <li>New internal atoi function used that accepts negative integers.</li>
+      <li>Removed (commented out) calls to internal ClearString due to use of new custom strcpy function.</li>
+      <li>Added C++ compile time defines to enable/disable plug-in functions.</li>
+      <li>Fixed Print script header function (had too many parameters).</li>
+      <li>Fixed problems with error reporting and the NSIS stack.</li>
+      <li>Cleaned all example scripts and C++ source code.</li>
+      <li>Script header functions now require declaration before use with the ${ArrayFunc} keyword.</li>
+      <li>Removed ArrayNoValVar define requirement to disable declaration of $ArrayVal variable.</li>
+      <li>Removed IsEmpty, IsFull and IsInRange functions. The SizeOf function with StrCmp or IntCmp can be used as a replacement.</li>
+      <li>Added ArrayCallInstDLL [dll_path] define so that the script header calls the NSISArray plug-in with CallInstDLL instead of the standard way which stores the plug-in in $PLUGINSDIR.</li>
+      <li>With ArrayCallInstDLL defined, script header functions Splice and WriteList become SpliceBegin, SpliceItem, SpliceEnd and WriteBegin</li>
+      <li>Fixed general bugs with some functions: ReadToStack; WriteListC and a few others.</li>
+      <li>Re-wrote Splice function.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v1.0 (1st March 2006)
+     <ul>
+      <li>Fixed Pop function in plug-in (was taking unnecessary plug-in call parameter).</li>
+      <li>Fixed Pop function in script header (was calling Push instead!)</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.9 (6th December 2005)
+     <ul>
+      <li>Fixed bug in Sort function. Sort would no longer sort when only using one array.</li>
+      <li>Removed NCB file from source distribution.</li>
+      <li>Fixed ArraySize. Should be 32 not 1024 for default (refers to array items/indexes not buffer lengths).</li>
+      <li>Added code to WriteListC to induce Index out of range error if the number of items being written to the array is bigger than the array itself (the items are still written to the array however).</li>
+      <li>NSISArray128.dll now has a 256 character buffer length for array items.</li>
+      <li>Fixed ReadToStack function which was not working at all!</li>
+      <li>WriteList throws Index out of range error if the number of items being written is greater than the number of indexes in the array.</li>
+      <li>Added source code defines for 256 x 128 arrays.</li>
+      <li>Made all function variables static to fix stack corruption when large variables were being created within functions.</li>
+      <li>Added code to clear the contents of all function variables when done with to prevent transfer of buffer contents from one function call to the next.</li>
+      <li>Added Print [index] function to script header.</li>
+      <li>Fixed Search and SearchI functions (re-wrote my_strstr function).</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.8 (17th August 2005)
+     <ul>
+      <li>Added IsFull function to script header.</li>
+      <li>Added IsEmpty function to script header.</li>
+      <li>Added IsInRange [index] function to script header.</li>
+      <li>Added ArrayExists / Inited functions.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.7 (14th August 2005)
+     <ul>
+      <li>The two arrays must be the same size when using the Sort function.</li>
+      <li>Added SetSize function.</li>
+      <li>Fixed Debug list-box which was set to multi-column.</li>
+      <li>Added ReadFirst, ReadNext &amp; ReadClose script header commands.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.6 (2nd August 2005)
+     <ul>
+      <li>szLarge global buffer was not being cleared before use.</li>
+      <li>Added [index] for Exists and ExistsI which defines the index to start searching from.</li>
+      <li>Added [index_start] and [index_end] for ReadToStack.</li>
+      <li>[index_end] for ReadToStack and Splice can be negative (for ranges from the end of an array).</li>
+      <li>Added 23 NSIS example scripts by Comperio (in NSIS\Examples\NSISArray).</li>
+      <li>Added function to set whether to use message boxes or the stack for errors.</li>
+      <li>Added NSISArray::Unload function to unload DLL (for deleting).</li>
+      <li>Added a second parameter to the Sort function which can be of another array name to be rearranged into the same order as the sorted array (works like associative arrays).</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.5 (1st August 2005)
+     <ul>
+      <li>Fixed bug with Debug where it was getting the array index from latoi instead of getArrayByName.</li>
+      <li>Search is case sensitive; added SearchI which is case insensitive.</li>
+      <li>ReadToStack was returning array items in order which meant Pop[ping] them would be in reverse order.</li>
+      <li>Some old pre v0.1 code was still in NSISArray.nsh.</li>
+      <li>Fixed Splice where the 2nd index parameter should be up to but not including [index].</li>
+      <li>szLarge global buffer was not being cleared before use.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.4 (29th July 2005)
+     <ul>
+      <li>Fixed bug where using Write to an existing array index would still increment array used index count.</li>
+      <li>Fixed WriteListC which generally did not work as it should :p .</li>
+      <li>Fixed Put function which had a bad loop causing it to fail.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.3 (28th July 2005)
+     <ul>
+      <li>Fixed SizeOf function returning zero-based array size (which would be false).</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.2 (25th July 2005)
+     <ul>
+      <li>Fixed parameters error with SizeOf.</li>
+      <li>Fixed parameters error with Search macro in NSISArray.nsh.</li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>v0.1 (23rd July 2005)
+     <ul>
+      <li>First set of array functions.</li>
+      <li>Array debug dialog.</li>
+      <li>Two plug-in builds for array types.</li>
+     </ul>
+    </li>
+   </ul>
+
+  </div>
+
+  <h2>License</h2>
+  <div>
+   <pre>
+Copyright &copy; 2007 Afrow UK
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute
+it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; 
+   you must not claim that you wrote the original software.
+   If you use this software in a product, an acknowledgment in the
+   product documentation would be appreciated but is not required.
+2. Altered versions must be plainly marked as such,
+   and must not be misrepresented as being the original software.
+3. This notice may not be removed or altered from any distribution.
+   </pre>
+  </div>
+
+ </div>
+
+</td></tr></table>
+
+</body>
+</html>

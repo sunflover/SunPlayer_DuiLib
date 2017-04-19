@@ -1,0 +1,696 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>DcryptDll Plugin</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+/*<![CDATA[*/
+
+body
+        {
+        padding: 12px;
+        background-color: #F0F0F0;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: normal;
+        text-align: left;
+        }
+
+p, li
+        {
+        font-size: 14px;
+        }
+
+.center
+        {
+        text-align: center;
+        }
+
+table
+        {
+        margin: auto;
+        font-size: 13px;
+        background-color: #FFFFFF;
+        }
+
+.maintable
+        {
+        border: 2px solid #376EAB;
+        }
+
+.parameter
+        {
+        font-weight: bold;
+        color: #6586AC;
+        }
+
+
+h1
+        {
+        font-size: 30px;
+        color: #333333;
+        font-weight: normal;
+        text-align: center;
+        margin-top: 20px;
+        }
+
+h2
+        {
+        font-size: 20px;
+        color: #7A7272;
+        font-weight: normal;
+        }
+
+h3
+        {
+        font-size: 17px;
+        font-weight: bold;
+        color: #303030;
+        }
+
+pre     {
+	font-size: 12px;
+        }
+
+div
+        {
+        margin: 15px;
+        }
+
+a:link, a:visited, a:active
+        {
+        color: #0000FF;
+        text-decoration: none;
+        }
+
+a:hover
+        {
+        color: #0000FF;
+        text-decoration: underline;
+        }
+
+/*]]>*/
+</style>
+</head>
+ <body>
+  <table width="700" class="maintable" cellspacing="0" cellpadding="0" align="center">
+    <tr> 
+      <td> 
+        <h1>DcryptDll Plugin</h1>
+        <div> 
+          <h2>Introduction</h2>
+          <div>
+          <p>DcryptDll is a plugin for NSIS that adds simple, yet reasonably secure 
+            encryption capability to the Nullsoft Scriptable Install System. The 
+            plugin is used to decrypt files on the target machine, after extraction, 
+            that were encrypted before being packed into the installer.</p>
+          <p>Encryption is the application of a cipher algorithm to some data using a <B>keystring</B>.
+            Regardless of the name, keystrings are almost always <B>binary</B> critters.  In other
+            words, a keystring is simply a string of some number of <I>bits</I> of information that
+            is used by a cipher algorithm to encrypt some data.  Grouping these bits into chunks that
+            are 8-bits long is simply a convenience, since most computers in use today, like to deal
+            with memory in easy to chew, byte-sized, chunks.</p>
+          <p>The implementation of any reasonably secure cryptography scheme, requires that the keystrings
+            fed to the cipher algorithm be as <B>random</B> as possible.  This means it is a very bad idea to
+            limit the possible values of the bytes comprising the keystring.  So we <b>don't</b> want to limit the
+            key<I>string</I> to consist of only "printable" or other kinds of legal <I>string</I> values. I.e
+            we want to allow the value of each byte of the keystring to be any of the 256 values representable
+            by an 8 bit btye, including NUL chars (binary 0).</p>
+          <p>The keystrings that are used to encrypt (and decrypt) the data, can be whatever you
+            want, so deriving them is really outside the scope of this plugin. However, since I 
+            needed a program to generate keys for my own needs anyway, I have included an exectutable
+            that can be used to generate keystrings.</p>
+          <p>The processing model for usage is very similar to that of the ExtractDLLEx
+            plugin, in that two <I>mirror image</I> processes exist. One executable for the development
+            machine, where the NSIS scripts get compiled, and the Dll for the target machine where 
+            the installer is <I>executing</I>. So the process will generally be:</p>
+          <ul>
+            <li>Generate your keystring(s).</li>
+            <li>Encrypt the desired files.</li>
+            <li>Include the encrypted files in the installer.</li>
+            <li>Call the Plugin from the script to decrypt the files.</li>
+          </ul>
+          <p>I have included the necessary programs to accomplish the entire process. This consists of
+            two executables for the installer compiling machine: NGenKeys.exe and Ncrypt.exe; and the 
+            plugin Dll DcryptDll.dll for the target machine. The source code for all three are included
+            as well.</p>
+          </div>
+          <h2>Design</h2>
+          <div>
+          <p>The fact that DcryptDll was created explicity for use from within NSIS scripts 
+            meant that communication with the Dll would be through the NSIS stack using <I>strings</I>.</p>
+          <p>For this reason I chose to design all three programs (the Key Generator, the Encryptor, 
+            and the Decryptor Plugin) to use keystrings that are encoded in a manner that won't cause us
+            any problems when being passed around as strings within an NSIS script.  The design choice
+            I made was that keystrings would be <B>required</B> to be hexadecimal encoded.</p>
+          <p>There is a price paid for this requirement, namely that the hex encoded form of any given
+            keystring will be <B>twice</B> the length of the non hex encoded form.  Since we are using
+            the NSIS stack to communicate with the plugin, this means we are limited to keystrings with non
+            hex encoded maximum length of 511 bytes: NSIS string length of 1024 / 2 - 1 (for NUL terminator)
+            = 511.</p>
+          <p>This is not as big a limitation as it might seem as this provides keystrings with a binary 
+            length of 4088 bits.  This is only 1 byte less than the length for keystrings that is considered
+            <I>military strength</I> for most cipher algorithms (many algorithms are considered VERY secure
+            with much smaller keystrings than that).</p>
+          <p>Balancing the size doubling disadvantage of hex encoding the strings is the following advantage.
+            Hex encoded strings, as opposed to binary strings, can be included in normal text documents.
+            For instance, one use of encryption would be to encrypt the program you are distributing with
+            a "License" key. You would then need to get the "License" key to the end user somehow, normally by
+            a seperate channel than the one used to distribute the program.</p>
+          <p>An obvious channel to use to get the "License" key to the user is through an email.  The keystring,
+            as a hex encoded critter, can be included directly in the email without causing problems for the
+            internet email systems, the same cannot be said for a binary form of the keystring.</p>
+          <p>Another nice advantage to using hex encoding for the keystrings, is that it allowed me to
+            make the decision to allow non hex encoded characters to be embedded within the keystring.
+            When the keystrings are being read, from the command line, the NSIS stack, or from a file,
+            non hex encoded bytes (bytes with values outside the range '0'..'9' and 'A'..'F' or 'a'..'f') are
+            simply <b>discarded</b>.</p>
+          <p>This means you don't have to worry about non hex bytes, such as carriage
+            return and/or line feed chars (or even which, if any are used) in a file.  It also means you
+            can break the keystring into more human readable forms by purposely including non
+            hex encoded characters. For example:</p>
+<pre>
+FEFF-0A15-00DE-9C28
+</pre>
+          <p>is a perfectly valid keystring, the hyphens will simply be discarded. Note that the <b>length</b>
+            of the hex encoded keystring, after discarding the non hex encoded characters, is <b>even</b>. This
+            is a <b>requirement for all</b> keystrings (since 2 hex bytes become 1 binary byte for actual encryption
+            and decryption).</p>
+          <p>There are <I>many</I> cryptographic algorithms that can be used for encrypting data.  Keeping in
+            mind the NSIS philosophy of being an installer "that doesn't suck and isn't huge", I chose to implement
+            only a single cipher algorithm so that the Dll would not get too large.  I chose to use a symmetric
+            cipher, which means the <B>same</B> keystring is used both to encrypt and to decrypt the data.</p>
+          <p>Because it is considered reasonably secure, is one of the faster algorithms, and is very simple to
+            use, I chose the ARC4 algorithm.  Since the source is included in the distribution, you are free to add
+            any algorithms you please.  You can find a boatload full of open source, standard C source cipher
+            implementations on OpenBsd / FreeBsd websites.  In fact the source code to the ARC4 algorithm I have
+            included came from such a website:  <a href="http://fxr.watson.org/">http://fxr.watson.org/</a>
+          <p>Since the purpose of the plugin is primarily to provide encryption / decryption of <b>files</b> for an
+            installer created with a compiler, the interface I chose for telling the program(s) what to do is your
+            basic command line parameters interface.
+          </div>
+          <h2>Usage</h2>
+          <div>
+          <h3>Generate your keystring(s).</h3>
+          <div>
+          <p>You can use whatever you like as a keystring, just make sure it ends up as a hex encooded critter. 
+            If you don't have some more preferable method for generating your keystrings, you can use the
+            included program NGenKeys.  If you open a "DOS Prompt" (cmd) window and type: &nbsp;&nbsp;&nbsp;
+            <code> NGenKeys -h </code>&nbsp;&nbsp;&nbsp;you should see the following:</p>
+<pre>
+Usage: NGenKeys [-BA  KeySize OutputFileName                  |
+                 -BS  KeySize PassPhraseString OutputFileName |
+                 -HA  KeySize OutputFileName                  |
+                 -HS  KeySize PassPhraseString OutputFileName |
+                 -h
+                ]
+
+-BA    Generate Auto Random Key of size KeySize,
+        write as binary data to OutputFilename
+
+-BS    Generate PassPhrase Seeded Key of size KeySize,
+        write as binary data to OutputFilename
+
+-HA    Generate Auto Random Key of size KeySize,
+        write as hex encoded string to OutputFilename
+
+-HS    Generate PassPhrase Seeded Key of size KeySize,
+        write as hex encoded string to OutputFilename
+
+-h     Help: this screen.
+
+Without parms runs interactively, i.e. prompts for necessary parameters.
+
+</pre>
+          <p>The first two forms, -BA and -BS write the generated keystring to a
+            file in binary, not hex encoded form.  This is because I use the program
+            for projects other than NSIS installer scripts.  You will usually want to
+            use either the third or fourth form for usage with NSIS.</p>
+          <p>Note both the encryptor program Ncrypt and the decryptor plugin DcryptDll
+            include functions to hex encode a non hex encoded file, so you can actually
+            use the first two forms if desired. There actually <b>are</b> reasons for
+            doing so, even for use with NSIS, as you will see in the second usage example
+            script I have included.</p>
+          <p>Also note that if you invoke the program without any parameters at all, it 
+            will interactively prompt you for the parameters, using standard c++ iostreams
+            (cin, cout).</p>
+          <p>There are only a few things that need to be said about this program. First, 
+            the KeySize refers to the non hex encoded (binary) size of the keystring you desire.
+            Entering 16 will produce a 16 byte binary keystring, if the hex encoded output options
+            are chosen the resulting output file size will be 32 bytes.</p>
+          <p>Second, both the development side Encryptor program, and the target machine Decryptor Plugin
+            require a keystring with <b>mimimum</b> (binary) size of 8 bytes (16 bytes when hex encoded).</p>
+          <p>Third, the difference between generating an Auto Random key and a Seeded key is that
+            a Seeded key uses an input PassPhrase, whereas an Auto Random key doesn't. The PassPhrase
+            parameter itself is a <b>normal</b> string such as "mary had a little lamb", or whatever you want.</p>
+          <p>Note when using a Seeded key, invoking the program again with the same passphase, will produce
+            the exact same key.  This is <b>not</b> true for an Auto Random key. From a cryptographic
+            standpoint, an Auto Random key would usually be considered to be more secure.</p>
+          </div>
+          <h3>Encrypt the desired files.</h3>
+          <div>
+          <p>Before you compile your installer script, or from within the script 
+            itself using the !system command, you invoke the console based program 
+            Ncrypt.  Ncrypt is invoked once for each file you wish to encrypt.  If 
+            you open a "DOS Prompt" (cmd) window and type: &nbsp;&nbsp;&nbsp;
+            <code> Ncrypt -h </code>&nbsp;&nbsp;&nbsp;you should see the following:</p>
+<pre>
+Usage: Ncrypt [-FF  HexKeyFileName InputFileName   OutputFileName  |
+               -FS  HexKeyFileName InputString     OutputFileName  |
+               -HE  InputFileName  OutputFileName [OptionalFmtStr] |
+               -MB  InputFileName  OutputFileName                  |
+               -MH  InputFileName  OutputFileName                  |
+               -SF  HexKeyString   InputFileName   OutputFileName  |
+               -SS  HexKeyString   InputString     OutputFileName  |
+               -h
+              ]
+
+-FF    Encrypt (Decrypt) InputFileName to OutputFileName using Hex Encoded
+         Key String found in HexKeyFileName.
+
+-FS    Encrypt (Decrypt) InputString to OutputFileName using Hex Encoded
+         Key String found in HexKeyFileName.
+
+-HE    Hex Encode InputFileName to OutputFileName
+          optionally using a format string.
+
+-MB    Calculate MD5 hash of InputFileName and write it OutputFileName.
+
+-MH    Calculate MD5 hash of InputFileName and write it hex encoded to
+         OutputFileName.
+
+-SF    Encrypt (Decrypt) InputFilename to OutputFileName using Hex Encoded
+         Key String HexKeyString.
+
+-SS    Encrypt (Decrypt) InputString to OutputFileName using Hex Encoded
+         Key String HexKeyString.
+
+-h     Help: this screen.
+
+Without parms runs interactively, i.e. prompts for necessary parameters.
+</pre>
+          <p>Notice like NGenKeys, invoking the program without any parameters at all,  
+            results in interactive prompting for parameters.</p>
+          <p>Hopefully this is understandable: the 1st parameter tells the
+            program what function it should perform. -HE says to hex encode the 
+            contents of the InputFileName and write to the Output Filename, optionally
+            using a format string.</p>
+          <p>The optional format string can be used to make the hex encoded string more
+            human readable. There are just a couple of rules for using a format string.
+            First make sure to enclose the string in quotes if it contains any whitespace.
+            Second, whatever the length of the hex encoded string becomes, the format string
+            <b>must</b> contain exactly that number of <I>placeholders</I>. A <I>placeholder</I>
+            is the literal character '#'. So the format string must contain exactly as many '#'
+            characters as there will be hex encoded characters. Third the format string
+            <b>must not</b> contain any hex encoded characters itself, i.e. it must not
+            contain any of the literal characters '0'..'9', 'A'..'F', or 'a'..'f' itself.
+            The non placeholder characters found in the format string are simply written as
+            literals on output. Since the placeholder character is the '#', there is no way
+            to include the '#' character itself in the output, not too large a limitation.</p>
+          <p>As an example, if the file InputFileName contains 8 characters, that when hex encoded 
+            become the hex string 0123456789ABCDEF, and you used the format string "{####-####-####-####}",
+            the file OutputFileName would contain the string <I>{0123-4567-89AB-CDEF}</I>.
+            Note that there are exactly 16 placeholders just as there are 16 hex digits in the input
+            from InputFileName. Also note that there are no hex encoded characters in the format string.</p>
+          <p>Since the keystrings used to encrypt and decrypt data are required to be hex
+            encoded, this function can be used to take a non hex encoded string from
+            a file and write it hex encoded to an output file which can then be
+            used as a HexKeyFileName for an encryption or decryption function.</p>
+          <p>Be aware that <b>all</b> bytes in the input file get hex encoded! This means
+            that carriage returns, line feeds, etc. will get included (hex encoded) in
+            the output.</p>
+          <p>To get a non hex encoded string <b>to</b> a file, from within the compiler,
+            so it can be hex encoded, you could just do:</p>
+<pre>
+!system 'notepad.exe'
+</pre>
+          <p>and enter your string and then save the file.  Of course the string you
+            can enter through notepad will not allow all 256 binary values for each
+            character, so this might not be the "best" way to build a keystring.</p>
+          <p>But hey, what if the string you type in consists of only digits 0, 1, ..., 9 and
+            the letters A, B, C, D, E, and F?  You wont need to use the hex 
+            encoding feature at all then. If the file you create this way is to be used as a
+            HexKeyFileName, remember that it CAN contain non hex encoded characters, but that
+            they will be thrown away. If you use this method to create a "hex string" for a key,
+            be sure the total number of "hex" characters you enter is <b>even!</b></p>
+          <p>There are four forms of the encryption function: -FF, -FS, -SF, and -SS. The first
+            character of the function identifier specifies whether the hex encoded keystring is
+            coming from a File, of name HexKeyFileName, or being input directly on the command
+            line as a String (HexKeyString). The second character of the function identifier
+            specifies whether the data to be encrypted is coming from a File, of name InputFileName,
+            or being input directly on the command line (InputString: be sure to enclose with ""
+            if there is whitespace in the string). Output is <b>always</b> to a file of name
+            OutputFileName. Of course you will replace HexKeyFileName, InputFileName, and
+            OutputFileName with actual file names.</p>
+          <p>In addition to the hex encoding and encryption functions, you can see that Ncrypt
+            also provides an MD5 Hash function. Why was this included? Consider the "License"
+            key example mentioned in the Design section. How do we make sure the "License" key
+            got transmitted correctly, or for that matter that the end user enters it correctly?</p>
+          <p>If you were to put the "License" key itself in a file and include it with the installer,
+            you could compare the value the user enters against the included "License" key.
+            From a security standpoint, doing so is a <b>VERY BAD THING!</b></p>
+          <p>The proper solution, is to calculate the MD5 Hash of the "License" key, store it in a
+            file and include that file in the installer. When you have the user enter the "License"
+            key, you dynamically calculate the MD5 Hash of the string the user just entered, and
+            compare that against the included MD5 Hash. The Plugin, being a "mirror image" process
+            to Ncrypt also includes the MD5 Hash calculation function.</p>
+          <p>An MD5 Hash is <b>always</b> a 16 byte, binary critter. -MB writes the resulting MD5
+            Hash to the OutputFileName exactly as it is, i.e. 16 binary bytes. -MH writes the hash
+            to OutputFileName as a hex encoded number, i.e. 32 bytes.</p>
+          </div>
+          <h3>Include the encrypted files in the installer.</h3>
+          <div>
+          <p>This will just be your normal NSIS File statement(s). The only
+            difference here is that you will be including files that have been
+            encrypted. Since the files are encrypted you would usually want
+            to include the /oname=x switch on the File statement so that the
+            encrypted file is NOT extracted to the $INSTDIR, but rather
+            to a temp directory (the $PLUGINSDIR would be a good choice).</p>
+          <p>After your NSIS File statement, you would include the call to
+            the Plugin, giving it the keystring, the file just extracted
+            to the temp directory, and the final desired, unencrypted
+            filename, i.e. $INSTDIR\final_file_name. You will see how this
+            works in the example scripts I have included.</p>
+          </div>
+          <h3>Call the Plugin from the script to decrypt the files.</h3>
+          <div>
+          <p>DcryptDll, being a Plugin for NSIS is designed to run silently, so
+            there is no "usage" screen to print for you. Like NGenKeys and Ncrypt,
+            it is invoked with "command line parameters". Of course the NSIS compiler
+            is going to push the parameters onto the <b>stack</b>.</p>
+          <p>DcryptDll provides 5 functions. Four of the 5 functions "mirror" the functionality
+            provided by Ncrypt. There are multiple forms for each of these 4 functions,
+            with the different forms requiring different numbers of parameters.</p>
+          <p>For this reason, I decided to <b>require</b> a "stack end marker" to be pushed
+            onto the stack before the actual parameters the functions will need. The NSIS
+            compiler will push "parameters" onto the stack from right to left, so you
+            can handle this required "stack end marker" by either including it as the <b>last</b>
+            parameter on the DcryptDll invokation line, or by pushing it just <b>before</b>
+            the line that invokes the Plugin.</p>
+          <p>The actual <b>required</b> stack end marker is the literal string: "--End--". Here
+            are a couple examples showing you the alternative forms:</p>
+<pre>
+DcryptDll::Dcrypt "FFF" "MyHexKeyFile" "$PLUGINSDIR\myprogram.dat" "$INSTDIR\myprogram.exe" "--End--"
+      or as an alternative
+push "--End--"                
+DcryptDll::Dcrypt "FFF" "MyHexKeyFile" "$PLUGINSDIR\myprogram.dat" "$INSTDIR\myprogram.exe"
+</pre>
+          <p>Failure to include the "--End--" marker will result in the Plugin pushing
+            an error message, and  aborting. If the Plugin gets the correct number of
+            parameters needed for a particular form of a particular function (and the
+            stack end marker), it will attempt to do what you told it to do.</p>
+          <p>If it is successful, it will push the parameters that it is supposed to return
+            according to the function you invoked, and then it will push a "status" message of "OK"
+            onto the stack.</p>
+          <p>So the first thing to do after a call to DcryptDll, is to pop the stack and check
+            that the value of the string you just popped is "OK". You should <b>never</b> pop any
+            more values off the stack if this first var is not "OK", as DcryptDll will not push any
+            other values onto the stack in the case of an error.</p>
+          <p>If any kind of error occurred the value of this first string you pop will <b>always</b>
+            begin with the string "ERROR: " followed by some more descriptive info. If an error occurs,
+            about all you can do is to possibly log the actual error message, display some reasonable
+            message to the user, and abort the Installation.</p>
+          <p>For this reason, I am not going to bother listing all the possible error messages you 
+            could get here. They will all be due either to calling a particular function with the wrong
+            number of parameters, or "non hex encoded key specified" kinds of errors, or runtime errors
+            such as couldn't open a file, i.e. file doesn't exist, or out of disk space on write, etc.</p>
+          <p>You can use MessageBox while testing to print the messages when this first returned var is not
+            "OK" or you can browse the source for all occurences of the string "ERROR:" to see what they
+            could be.</p>
+          <p>Now that all that is out of the way, I will just list the forms of the 5 functions that DcryptDll
+            provides. Four ot the 5 will necessarily be very similiar to the functionality provided by Ncrypt.
+            There is only one form of the 5th function which has no Ncrypt analogy. Note the  "# Vars Returned"
+            (on the stack) column <b>includes</b> the "OK" or "ERROR: ....." status message. Note that in the
+            following listing showing the form of the DcrypDll calls the assumption is that the stack end 
+            marker "--End--" will have <b>already</b> been pushed just before the call shown in the table. The
+            # of Vars returned column is for reference purposes, i.e. the number there should NOT be included
+            on the actual script call statement.</p>
+          <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td><b>Function</b></td>
+              <td><b>Parameters</b></td>
+              <td><b># Vars Returned</b></td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FFF"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FFH"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FFS"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FSF"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FSH"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputString"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"FSS"&nbsp;&nbsp; "HexKeyFileName"&nbsp;&nbsp; "InputString"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SFF"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SFH"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SFS"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SSF"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SSH"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputString"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::Decrypt</td>
+              <td>"SSS"&nbsp;&nbsp; "HexKeyString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "InputString"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+          </table>
+          <p>These are the forms of the 1st function DcryptDll provides, the function to actually decrypt data.
+            Compare these to the parameters for Ncrypt above, and they should be self explanatory. Those forms
+            in which the 1st parm end with 'S', i.e. "xxS" <b>return</b> a String on the stack, which you access
+            by popping right after you pop the status message. The forms with the 1st parm like 'xxH' return a 
+            hex encoded string on the stack.</p>
+          <p>The next 2 functions provide for Hex Encoding and Hex Decoding of data. Data can be encoded
+            (or decoded) from a File to a File, from a File to a String, from a String to a File, or from a String
+            to a String. these fuction calls look like so:</p>
+          <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td><b>Function</b></td>
+              <td><b>Parameters</b></td>
+              <td><b># Vars Returned</b></td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexDecoder</td>
+              <td>"FF"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexDecoder</td>
+              <td>"FS"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp; </td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexDecoder</td>
+              <td>"SF"&nbsp;&nbsp; "HexString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexDecoder</td>
+              <td>"SS"&nbsp;&nbsp; "HexString"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexEncoder</td>
+              <td>"FF"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexEncoder</td>
+              <td>"FS"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp; </td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexEncoder</td>
+              <td>"SF"&nbsp;&nbsp; "String"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::HexEncoder</td>
+              <td>"SS"&nbsp;&nbsp; "String"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+          </table>
+          <p>The 4th DcryptDll function provides the MD5 Hash calculation, just as does Ncrypt.
+            Like the Hex Encoding/Decoding functions, it provides the capability of calculating
+            an MD5 Hash on a File or a String, and writing the resulting hash to a File or returning
+            it as a String. Note, unlike Ncrypt, the MD5 hash is <b>always</b> hex encoded, whether it
+            is being output to a File, or being returned as a String, and so is always 32 bytes long.</p>
+          <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td><b>Function</b></td>
+              <td><b>Parameters</b></td>
+              <td><b># Vars Returned</b></td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::MD5Hash</td>
+              <td>"FF"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::MD5Hash</td>
+              <td>"FS"&nbsp;&nbsp; "InputFileName"&nbsp;&nbsp; </td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::MD5Hash</td>
+              <td>"SF"&nbsp;&nbsp; "String"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "OutputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::MD5Hash</td>
+              <td>"SS"&nbsp;&nbsp; "String"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+          </table>
+          <p>The last DcryptDll function has no Ncrypt analogy as it is not needed on
+            the development (intaller compiling) machine. It can be quite useful in the
+            script itself for when the installer is actually being executed on the target
+            machine. It allows one to load a String from a File. The string in the file
+            must be no more than 1023 bytes long. An example use for this is to read the
+            hex encoded MD5 hash of the previously mentioned "License" example from the
+            file we stored it in and included with the installer. This function allows us
+            to read it in so we can compare it against the dynammic calculation we do using
+            the above MD5Hash function.  The Loadstr function call looks like so:</p>
+          <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td><b>Function</b></td>
+              <td><b>Parameters</b></td>
+              <td><b># Vars Returned</b></td>
+            </tr>
+            <tr> 
+              <td>DcryptDll::LoadStr</td>
+              <td>"InputFileName"</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+            </tr>
+          </table>
+          <p>Whew! That should be about everything you need to know to use the Plugin and
+            associated programs. Just a couple of final notes.</p>
+          <p>In this document, Ncrypt is refered to as the Encryptor, and the Plugin
+            DcryptDll is refered to as the Decryptor. This was done only because
+            that is the way you will normally use them. Recall waaaay back in the Design
+            section that I told you I chose the ARC4 <b><I>symmetric</I></b> cipher 
+            algorithm, which uses the <b>same</b> keystring for both encryption and decryption.</p>
+          <p>Choosing a symmetric cipher algorithm means that <b>both</b> Ncrypt and DcryptDll
+            can be used for either encryption <b>or</b> decryption. In fact there is no difference
+            between encrypting and decrypting. You are simply executing the algorithm.  Doing so
+            on unencrypted data, with a given keystring, produces encrypted gibberish. Executing
+            the algorithm on the encrypted gibberish, <b>with the same keystring</b> produces
+            output that is identical to the original, unencrypted, gibberish - er, I mean - data.</p>
+          <p>Finally, consider the string "mary". If we encrypt "mary" with a given keystring today,
+            and encrypt "mary" with the same keystring tommorrow, we will get the same gibberish both
+            times. However, if we encrypt "marymary" with the same keystring, the resulting gibberish
+            will <b>not</b> simply be the gibberish for "mary" concatenated with itself.</p>
+          <p>Any reasonably good cryptographic algorithm is designed to not produce the same gibberish
+            as output for any particular character or series of characters in the data being encrypted.
+            Ideally the output gibberish will appear to be completely random. This is a GOOD THING, but
+            it has a consequence for us. Namely, the gibberish resulting from encrypting some data, say
+            a program .exe, will <b>NOT</b>compress worth a damm! So you pay a price for encrypting
+            programs and other large data files.</p>
+          <p>The solution is to compress <b>before</b> encrypting. The down side of that is we will have
+            to include a decompressor in our installer to decompress the data <b>after</b> we decrypt it
+            on the target machine. For now I recommend compressing the data before encrypting it using
+            the lzma.exe program you can find in the ExtractDllEx plugin folder. You then include lzma.exe
+            itself in the installer. This will add around 60KB to the size of your installer when using
+            lzma compression for the NSIS script. Possibly, at some future time, it will be possible
+            to use the decompression code already included in the installer to decompress a file
+            <b>after</b> it has already been extracted. This would be the ideal solution.</p>
+        </div>
+        </div>
+        </div>
+        <div>
+          <h2>Source code</h2>
+          <div>
+          <h3>NSIS plug-in (C++)</h3>
+          <div>
+          <p>(Provided you extracted the zip file to the NSIS Contrib folder like you should have.) :<br><br>
+            The source code, as well as pre-compiled binaries for the DcryptDll Plugin, the NGenKeys program,
+            and the Ncyrpt program can be found inside the DcryptDll folder in the NSIS distribution's Contrib
+            folder. You will also find 2 example scripts showing usage of all three of the programs in a couple
+            different ways.</p>
+          <p>Note DcryptDll was written using just the platform sdk to keep its size reasonable. Ncrypt also
+            mostly uses the sdk because most of its code is basically the same as that found in DcryptDll. This
+            is NOT true of NGenKeys. If you wish to compile NGenKeys from the source, you will have to go to
+            <a href="http://www.eskimo.com/~weidai/cryptlib.html"> http://www.eskimo.com/~weidai/cryptlib.html</a>
+            and download and build the Crypto++ library first. Then edit the included VC++ 6.0 project file for
+            NGenKeys to tell the VC++ compiler where to find the Crypto++ header files and the .lib file resulting
+            from your build. Then you can recompile NGenKeys itself.</p>
+          </div>
+          </div>
+          <h2>License</h2>
+          <div>
+          <p>I did not write the ARC4 and MD5 source code used in these programs. Please see the file License.txt
+            included in the DcryptDll folder for the credit and license information for these source files. The
+            following license applies to all the rest of the source code found in the DcryptDll folder with the
+            exception of the Get_parent_directory.nsi script which is just sunjammer's Get Parent Directory script
+            wrapped in the "UN" macro shown in the NSIS documentation, to make it callable from both the installer
+            and the uninstaller portions of the NSIS scripts. Thanks sunjammer!<p>
+<pre>
+           
+Copyright (C) 2005 Ron Bishop
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute
+it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; 
+   you must not claim that you wrote the original software.
+   If you use this software in a product, an acknowledgment in the
+   product documentation would be appreciated but is not required.
+2. Altered versions must be plainly marked as such,
+   and must not be misrepresented as being the original software.
+3. This notice may not be removed or altered from any distribution.
+</pre>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+ </body>
+</html>

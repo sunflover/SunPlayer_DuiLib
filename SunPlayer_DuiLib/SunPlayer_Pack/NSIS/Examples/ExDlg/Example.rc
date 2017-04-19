@@ -1,0 +1,153 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+101 DIALOG DISCARDABLE  0, 0, 238, 121
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        1005,66,22,169,14,ES_AUTOHSCROLL
+    EDITTEXT        1007,66,39,169,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        1008,66,56,169,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Do you think this is rubbish?",112,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,81,104,10
+    CONTROL         "Do you think I do?",113,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,94,74,10
+    LTEXT           "something",IDC_STATIC2,6,26,41,11
+    ICON            "",APP_ICON,0,0,18,20
+    LTEXT           "a password",IDC_STATIC3,6,43,41,10
+    LTEXT           "a number",IDC_STATIC4,6,59,39,11
+END
+
+102 DIALOG DISCARDABLE  0, 0, 238, 134
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            "",APP_ICON,0,0,18,20
+    CONTROL         "",104,"START_BROWSE",WS_GROUP | WS_TABSTOP,27,17,208,84
+    LTEXT           "Heh, these are your start menu things...",IDC_STATIC,27,
+                    7,186,8
+    CONTROL         "Slider1",105,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+                    WS_TABSTOP,76,107,107,16
+    LTEXT           "cool",IDC_STATIC,77,122,14,8
+    LTEXT           "not cool",IDC_STATIC,161,122,26,8
+    LTEXT           "is this cool ?",IDC_STATIC,29,108,40,8
+END
+
+103 DIALOG DISCARDABLE  0, 0, 238, 121
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",15,"FILE_BROWSE",WS_GROUP | WS_TABSTOP,9,46,226,14
+    CONTROL         "",16,"DIR_BROWSE",WS_GROUP | WS_TABSTOP,9,89,226,14
+    ICON            "",APP_ICON,0,0,18,20
+    LTEXT           "Would ye like to select a file??",IDC_STATIC,9,34,168,8
+    LTEXT           "Care for a directory?",IDC_STATIC,12,79,129,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    101, DIALOG
+    BEGIN
+        RIGHTMARGIN, 235
+        BOTTOMMARGIN, 117
+    END
+
+    102, DIALOG
+    BEGIN
+        RIGHTMARGIN, 235
+        BOTTOMMARGIN, 130
+    END
+
+    103, DIALOG
+    BEGIN
+        RIGHTMARGIN, 235
+        BOTTOMMARGIN, 117
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

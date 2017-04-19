@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window size="800,600" mininfo="488,97" sizebox="4,4,4,4" drop="true" showshadow="true" shadowimage="shadow_frame.png" shadowsize="10" shadowcorner="20,20,20,20" >
+	<Font id="0" name="微软雅黑" size="12" default="true" share="true"/>
+	<Font id="1" name="微软雅黑" size="20" bold="true"/>
+	
+    <VerticalLayout name="Client" menu="true" > 
+        <!-- 标题栏区 -->
+        <HorizontalLayout name="areaTitle" height="20" bkcolor="#FF383A48" > 
+			<Button name="btnMenu" tooltip="菜单" width="100" padding="3,1,0,0" normalimage="menu.png" hotimage="menu_hover.png" pushedimage="menu_pressed.png"/>
+			<Label name="lblTitle" align="left" valign="center" padding="3,1,3,1" textcolor="#FFFFFFFF" textpadding="5,0,5,0" endellipsis="true" />			
+            <HorizontalLayout childpadding="2" width="110" > 
+				<Button name="btnDock" tooltip="总在最前" width="22" padding="0,1,0,0" normalimage="dock.png" hotimage="dock_hover.png" pushedimage="dock_pressed.png" />
+				<Button name="btnDocked" visible="false" tooltip="取消最前" width="22" padding="0,1,0,0" width="22" normalimage="docked.png" hotimage="docked_hover.png" pushedimage="docked_pressed.png" />				
+                <Button name="minbtn" tooltip="最小化" width="16" padding="2,2,2,2" normalimage="min.png" hotimage="min_hover.png" pushedimage="min_pressed.png" />				
+                <Button name="maxbtn" tooltip="最大化" width="16" padding="2,2,2,2" normalimage="max.png" hotimage="max_hover.png" pushedimage="max_pressed.png" />
+                <Button name="restorebtn" visible="false" tooltip="还原" width="16" padding="2,2,2,2" normalimage="restore.png" hotimage="restore_hover.png" pushedimage="restore_pressed.png" />				
+				<Button name="btnFull" tooltip="全屏" width="16" padding="2,2,2,2" normalimage="full.png" hotimage="full_hover.png" pushedimage="full_pressed.png" />
+				<Button name="btnExitFull" visible="false" tooltip="退出全屏" width="16" padding="2,2,2,2" normalimage="full_restore.png" hotimage="full_restore_hover.png" pushedimage="full_restore_pressed.png" />
+                <Button name="closebtn" tooltip="关闭" width="16" padding="2,2,4,2" normalimage="close.png" hotimage="close_hover.png" pushedimage="close_pressed.png" />
+            </HorizontalLayout>			
+        </HorizontalLayout>
+		
+		<!-- 中央区域 -->
+		<HorizontalLayout name="areaPlay" bkcolor="#FF212228" >
+		<HorizontalLayout />
+		<VerticalLayout name="areaLogo" width="128">
+			<VerticalLayout />
+			<Control name="logo" width="128" height="128" bkimage="SunPlayer.png" />				
+			<Label name="logotext" font="1" padding="15,10,0,0" height="25" text="SunPlayer" textcolor="0xFFFFFFFF" />
+			<VerticalLayout />
+		</VerticalLayout>	
+		<HorizontalLayout />
+		</HorizontalLayout>
+		
+		<!-- 控制区 -->
+		<VerticalLayout name="areaCtrl" height="77" bkcolor="#FF383A48" > 		
+			<!-- 进度条 -->
+			<HorizontalLayout height="20" padding="2,0,2,0">
+				<Button name="btnBackward" tooltip="快退10秒" width="24" padding="0,5,0,5" normalimage="fast_backward.png" hotimage="fast_backward_hover.png" pushedimage="fast_backward_pressed.png" />					
+				<Slider name="sliderPlay" height="20" min="0" value="0" hor="true" bkimage="file='SliderBK.png'" foreimage="file='SliderFore.png'" thumbimage="file='SliderBar.png' source='0,0,20,20'" thumbhotimage="file='SliderBar.png' source='21,0,41,20'" thumbpushedimage="file='SliderBar.png' source='42,0,62,20'" thumbsize="20,20" sendmove="true" />
+				<Button name="btnForward" tooltip="快进10秒" width="24" padding="0,5,0,5" normalimage="fast_forward.png" hotimage="fast_forward_hover.png" pushedimage="fast_forward_pressed.png"/>	
+			</HorizontalLayout>
+			
+			<!-- 控制条 -->	
+			<HorizontalLayout height="57" >
+				<HorizontalLayout>
+					<Label name="lblTime" textcolor="#FFFFFFFF" width="115" align="left" textpadding="10,0,0,0" text="00:00:00/00:00:00" />
+					<Button name="btnOpen" tooltip="打开" width="24" height="18" padding="0,19,0,20" normalimage="open.png" hotimage="open_hover.png" pushedimage="open_pressed.png" />											
+					<HorizontalLayout />					
+					<Button name="btnStop" tooltip="停止" width="36" height="57" padding="0,0,4,0" normalimage="stop.png" hotimage="stop_hover.png" pushedimage="stop_pressed.png" />
+				</HorizontalLayout>
+				
+				<HorizontalLayout width="126" childpadding="4" >
+					<Button name="btnPrevious" tooltip="左键：后退，右键：上一个" width="36" height="57" normalimage="previous.png" hotimage="previous_hover.png" pushedimage="previous_pressed.png" />
+					<Button name="btnPlay" tooltip="播放" width="46" height="57" normalimage="play.png" hotimage="play_hover.png" pushedimage="play_pressed.png" />						
+					<Button name="btnPause" visible="false" tooltip="暂停" width="46" height="57" normalimage="pause.png" hotimage="pause_hover.png" pushedimage="pause_pressed.png" />
+					<Button name="btnNext" tooltip="左键：前进，右键：下一个" width="36" height="57" normalimage="next.png" hotimage="next_hover.png" pushedimage="next_pressed.png" />
+				</HorizontalLayout>
+				
+				<HorizontalLayout>					
+					<Button name="btnMute" tooltip="静音" width="19" height="19" padding="15,19,0,19" normalimage="vol.png" hotimage="vol_hover.png" pushedimage="vol_pressed.png" />
+					<Button name="btnMuted" tooltip="恢复音量" visible="false" width="19" height="19" padding="15,19,0,19" normalimage="vol_off.png" hotimage="vol_off_hover.png" pushedimage="vol_off_pressed.png" />							
+					<Slider name="sliderVolume" width="80" height="20" padding="0,18,0,19" min="0" max="255" value="182" bkimage="SliderBKVolume.png" foreimage="SliderForeVolume.png" hor="true" thumbimage="file='SliderBar.png' source='0,0,20,20'" thumbhotimage="file='SliderBar.png' source='21,0,41,20'" thumbpushedimage="file='SliderBar.png' source='42,0,62,20'" thumbsize="20,20" sendmove="true" />
+					<HorizontalLayout />
+					
+					<Button name="btnFull2" tooltip="全屏" width="24" height="24" padding="0,11,0,12" normalimage="full.png" hotimage="full_hover.png" pushedimage="full_pressed.png" />	
+					<Button name="btnExitFull2" visible="false" tooltip="退出全屏" width="24" height="24" padding="0,11,0,12" normalimage="full_restore.png" hotimage="full_restore_hover.png" pushedimage="full_restore_pressed.png" />
+					<Control width="7" height="7" padding="0,49,1,1" bkimage="sizebox.png" />											
+				</HorizontalLayout>
+			</HorizontalLayout>
+		</VerticalLayout>
+		
+	</VerticalLayout>
+</Window>

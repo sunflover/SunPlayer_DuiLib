@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>XtInfoPlugin plug-in</title>
+<style type="text/css">
+<!--
+body,td,th {
+	font-family: Tahoma;
+}
+-->
+</style></head>
+
+<body>
+<H1 class=firstHeading>XtInfoPlugin plug-in</H1>
+<H3 id=siteSub>Description </H3>
+<P><B>Version:</B> 1.0 (13/May/2004) </P>
+<P>xtInfoPlugin determines version information for various components. This plug-in can gather the following: </P>
+<UL lastCheckbox="null">
+  <LI>Installer Filename (ie. Setup.exe) 
+  <LI>Installer FullPath (ie. D:\SetupFiles) 
+  <LI>Installer FileName (ie. D:\SetupFiles\Setup.exe) 
+  <LI>Windows Language (ie. Danish, English, German, etc.) 
+  <LI>.NET Framework IDs (ie. 1.0, 1.1, 2.0, etc.) 
+  <LI>.NET Framework Version (ie. 1.0.3705, 1.1.4322, etc.) 
+  <LI>Internet Explorer IDs (ie. 4.01, 5.0, 5.01, 6.0, etc.) 
+  <LI>Internet Explorer Versions (ie, 5.00.2920.0000, 6.00.2600.0000, etc.) 
+  <LI>Windows IDs (ie. 95, 98, me, xp, nt3, nt4, 2003, etc) 
+  <LI>Windows Versions (ie, 5.1.2800, etc.) 
+  <LI>MDAC IDs (ie. 2.5) 
+  <LI>MDAC Versions (ie. 2.50.4403.9) 
+  <LI>OLEDB IDs (ie. 2.5) 
+  <LI>OLEDB Versions (ie. 2.50.4403.8) 
+  <LI>Windows Service Pack IDs (ie, 1, 2a, 6a, etc.)</LI>
+</UL>
+<H2>How To Use </H2>
+<P>All ID's are lowercase and no spaces - see the example with .onInit method (bottom of page).Functions Reference</P>
+<P>xtInfoPlugin::CompareVersion </P>
+<P>Compares two version numbers and outputs the result.</P>
+<P>Syntax</P>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace"><SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660066">"VersionNumber2"</SPAN>
+<SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660066">"VersionNumber1"</SPAN>
+xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">CompareVersion
+</SPAN>Pop <SPAN style="COLOR: #660066">"ResultVar"
+
+</SPAN>Parameters</PRE>
+<DL>
+  <DT>VersionNumber1, VersionNumber2 
+  <DD>Version numbers to compared relating from "VersionNumber1"'s point of view. </DD>
+</DL>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the comparasion result is returned from "VersionNumber1"'s point of view. If "1", "VersionNumber1" is greater than "VersionNumber2", if "0", it is equals to that, and if "-1", it is lesser than that.</DD>
+  <dt>&nbsp;</dt>
+</DL>
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">    <SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660066">"2.5"</SPAN>
+    <SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660066">"2.81.1117.0"</SPAN>
+    xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">CompareVersion
+</SPAN>    <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;$0 = "1"</SPAN>
+</PRE>
+<H4>xtInfoPlugin::GetDotNetFrameworkId </H4>
+<P>Retrieves the ID number for the .NET Framework version installed in the computer.</P>
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetDotNetFrameworkId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN>
+</PRE>
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the .NET Framework's ID number for its version is returned.</DD>
+</DL>
+<p>&nbsp;</p>
+<DL>
+  <dt>&nbsp;</dt>
+  <dd>&nbsp;</dd>
+  <dt>&nbsp;</dt>
+  <dd>&nbsp;</dd>
+  <dt><strong>Example</strong></dt>
+</DL>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetDotNetFrameworkId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;.NET Framework's ID number for its version</SPAN></PRE>
+<H4>xtInfoPlugin::GetDotNetFrameworkVersion </H4>
+<P>Retrieves the version of .NET Framework, if it is installed in the computer.</P>
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetDotNetFrameworkVersion
+</SPAN>Pop <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE><H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the version of .NET Framework is returned. </DD>
+</DL>
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetDotNetFrameworkVersion
+</SPAN>Pop <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;.NET Framework's version</SPAN></PRE>
+<H4>xtInfoPlugin::GetInstaller </H4>
+<P>Retrieves the installer's file name without its path. </P>
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstaller
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the installer's file name without its path is returned. </DD>
+</DL>
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstaller
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Installer's file name without its path</SPAN></PRE>
+<H4>xtInfoPlugin::GetInstallerFileName </H4>
+<P>Retrieves the installer's file name with its path. </P>
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstallerFileName
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the installer's file name with its path is returned. </DD>
+</DL>
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstallerFileName
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Installer's file name with its path</SPAN></PRE>
+<H4>xtInfoPlugin::GetInstallerFullPath </H4>
+<P>Retrieves the path to the installer's file. </P>
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstallerFullPath
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the path to the installer's file is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInstallerFullPath
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Path to the installer's file</SPAN></PRE>
+<H4>xtInfoPlugin::GetInternetExplorerId </H4>
+<P>Retrieves the ID number for the Internet Explorer version installed in the computer. </P>
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInternetExplorerId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the Internet Explorer's ID number for its version is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInternetExplorerId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Internet Explorer's ID number for its version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetInternetExplorerVersion </H4>
+<P>Retrieves the version of Internet Explorer, if it is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInternetExplorerVersion
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the version of Internet Explorer is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetInternetExplorerVersion
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Internet Explorer's version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetLanguage </H4>
+<P>Retrieves the Windows system language, if it is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetLanguage
+</SPAN>Pop <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the Windows system language is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetLanguage
+</SPAN>Pop <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Windows system language</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetMDACId </H4>
+<P>Retrieves the ID number for the MDAC version installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetMDACId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the MDAC's ID number for its version is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetMDACId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;MDAC's ID number for its version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetMDACVersion </H4>
+<P>Retrieves the version of MDAC, if it is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetMDACVersion
+</SPAN>Pop <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the version of MDAC is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetMDACVersion
+</SPAN>Pop <SPAN style="COLOR: #660000">$1</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;MDAC's version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetOLEDBId </H4>
+<P>Retrieves the ID number for the OLEDB version installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetOLEDBId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the OLEDB's ID number for its version is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetOLEDBId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;OLEDB's ID number for its version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetOLEDBVersion </H4>
+<P>Retrieves the version of OLEDB, if it is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetOLEDBVersion
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the version of OLEDB is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetOLEDBVersion
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$1</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;OLEDB's version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetWindowsId </H4>
+<P>Retrieves the ID number for the Windows version installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetWindowsId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the Windows's ID number for its version is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetWindowsId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Windows' ID number for its version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetWindowsServicePackId </H4>
+<P>Retrieves the ID number for the Windows Service Pack version installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetWindowsServicePackId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the Windows Service Pack's ID number for its version is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetWindowsServicePackId
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Windows Service Pack's ID number for its version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::GetWindowsVersion </H4>
+<P>Retrieves the version of Windows, if it is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetWindowsVersion
+</SPAN>Pop <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the version of Windows is returned. </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetWindowsVersion
+</SPAN>Pop <SPAN style="COLOR: #660000">$1</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Windows's version</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::IsAdministrator </H4>
+<P>Detects if the current user has administrator rights. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsAdministrator
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the string "true" will be outputted if the current user has administrator rights, otherwise it is "false". </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsAdministrator
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;"true" if the current user has administrator rights, otherwise it is "false"</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::IsDotNetFrameworkInstalled </H4>
+<P>Detects if .NET Framework is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsDotNetFrameworkInstalled
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the string "true" will be outputted if the .NET Framework is installed, otherwise it is "false". </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsDotNetFrameworkInstalled
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;"true" if it is installed, otherwise it is "false"</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::IsDotNetFrameworkInstalled </H4>
+<P>Detects if .NET Framework is installed in the computer. </P>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsDotNetFrameworkInstalled
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the string "true" will be outputted if the .NET Framework is installed, otherwise it is "false". </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsDotNetFrameworkInstalled
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;"true" if it is installed, otherwise it is "false"</SPAN></PRE>
+
+
+<H4>xtInfoPlugin::IsWindowsXXXX </H4>
+<P>Detects if the XXXX version of Windows is installed in the computer. Replace "XXXX" with either: </P>
+<UL lastCheckbox="null">
+  <LI><I>95</I>; 
+  <LI><I>98</I>; 
+  <LI><I>ME</I>; 
+  <LI><I>NT3</I>; 
+  <LI><I>NT4</I>; 
+  <LI><I>2000</I>; 
+  <LI><I>XP</I>; 
+  <LI><I>2003</I>. </LI>
+</UL>
+
+
+<H5>Syntax</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsWindowsXXXX <SPAN style="COLOR: #666666; FONT-STYLE: italic">;Replace "XXXX" with Windows versions on the list above.</SPAN>
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660066">"ResultVar"</SPAN></PRE>
+
+
+<H5>Parameters</H5>
+<DL>
+  <DT>ResultVar 
+  <DD>Variable where the string "true" will be outputted if the specific Windows version is installed, otherwise it is "false". </DD>
+</DL>
+
+
+<H5>Example</H5>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace">xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsWindows2003
+<SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">;"true" if Windows 2003 is installed, otherwise it is "false"</SPAN></PRE>
+
+
+<H2>Example (also found in .zip file) </H2>
+<PRE class="nsis nsis" style="FONT-FAMILY: monospace"><SPAN style="COLOR: #666666; FONT-STYLE: italic">; Download xtInfoPlugin from</SPAN>
+<SPAN style="COLOR: #666666; FONT-STYLE: italic">; http://www.razormotion.com/nsis/xtInfoPlugin.zip</SPAN>
+<SPAN style="COLOR: #666666; FONT-STYLE: italic">; best to copy xtInfoPlugin.dll to NSIS\Plugins and remove below code</SPAN>
+<SPAN style="FONT-WEIGHT: bold; COLOR: #000066">!addplugindir</SPAN> <SPAN style="COLOR: #660066">".\"</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">; detect xtInfoPlugin.dll in current directory</SPAN>
+<SPAN style="FONT-WEIGHT: bold; COLOR: #000066">!addplugindir</SPAN> <SPAN style="COLOR: #660066">"..\"</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">; detect xtInfoPlugin.dll in parent directory</SPAN>
+<SPAN style="COLOR: #000066">Name</SPAN> <SPAN style="COLOR: #660066">"NSIS xtInfoPlugin-MinimalExample"</SPAN>
+<SPAN style="COLOR: #000066">OutFile</SPAN> <SPAN style="COLOR: #660066">"xtInfoPlugin-MinimalExample.exe"</SPAN>
+<SPAN style="COLOR: #003366">SetCompress</SPAN> <SPAN style="COLOR: #ff6600">off</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">; Useful to disable compression under development</SPAN>
+<SPAN style="FONT-WEIGHT: bold; COLOR: #000066">!include</SPAN> <SPAN style="COLOR: #660066">"${NSISDIR}\Include\MUI.nsh"</SPAN>
+<SPAN style="FONT-WEIGHT: bold; COLOR: #000066">!include</SPAN> <SPAN style="COLOR: #660066">"${NSISDIR}\Include\LogicLib.nsh"</SPAN>
+?
+<SPAN style="COLOR: #000066">Function</SPAN> <SPAN style="COLOR: #006600">.onInit</SPAN>
+?
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; CompareVersion example</SPAN>
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; (C++)CompareVersion("2.50.4403.9","2.50.4403.9") return 0 (a==b)</SPAN>
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; (C++)CompareVersion("2.50.4403.9","2.71.9030.0") return 1 (b&gt;a)</SPAN>
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; (C++)CompareVersion("2.71.9030.0","2.50.4403.9") return -1 (a&gt;b)</SPAN>
+?
+    <SPAN style="COLOR: #000099">StrCpy</SPAN> <SPAN style="COLOR: #660000">$2</SPAN> <SPAN style="COLOR: #660066">"2.5"</SPAN>
+    <SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660000">$2</SPAN>
+    xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetMDACVersion
+</SPAN>    <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$1</SPAN>
+    <SPAN style="COLOR: #000099">Push</SPAN> <SPAN style="COLOR: #660000">$1</SPAN>
+    xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">CompareVersion
+</SPAN>    <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>if<SPAN>}</SPAN></SPAN> <SPAN style="COLOR: #660000">$0</SPAN> &gt;= 0
+        <SPAN style="COLOR: #000099">MessageBox</SPAN> <SPAN style="COLOR: #ff6600">MB_OK</SPAN> <SPAN style="COLOR: #660066">"MDAC version is Newer or Equal to $2 (found: $1)"</SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>else<SPAN>}</SPAN></SPAN>
+        <SPAN style="COLOR: #000099">MessageBox</SPAN> <SPAN style="COLOR: #ff6600">MB_OK</SPAN> <SPAN style="COLOR: #660066">"MDAC version is OLDER than $2 (found: $1)"</SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>endif<SPAN>}</SPAN></SPAN>
+?
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; ---------------------------------------------------------------------</SPAN>
+?
+    <SPAN style="COLOR: #666666; FONT-STYLE: italic">; Say we want our application to only work with .NET Framework v1.1</SPAN>
+?
+    xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::IsDotNetFrameworkInstalled
+    <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>if<SPAN>}</SPAN></SPAN> <SPAN style="COLOR: #660000">$0</SPAN> == <SPAN style="COLOR: #ff6600">true</SPAN>
+        xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::GetDotNetFrameworkId
+        <SPAN style="COLOR: #666666; FONT-STYLE: italic">; GetDotNetFrameworkId (id methods) return x.x and not build info</SPAN>
+        <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$0</SPAN>
+        <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>if<SPAN>}</SPAN></SPAN> <SPAN style="COLOR: #660000">$0</SPAN> == <SPAN style="COLOR: #660066">"1.1"</SPAN>
+            <SPAN style="COLOR: #000099">StrCpy</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #660066">"Version 1.1 Installed"</SPAN>
+        <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>else<SPAN>}</SPAN></SPAN>
+            <SPAN style="COLOR: #000099">StrCpy</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #660066">"Version 1.0 Installed"</SPAN>
+        <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>endif<SPAN>}</SPAN></SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>else<SPAN>}</SPAN></SPAN>
+        <SPAN style="COLOR: #000099">StrCpy</SPAN> <SPAN style="COLOR: #660000">$0</SPAN> <SPAN style="COLOR: #660066">"Not installed"</SPAN>
+    <SPAN style="COLOR: #660000">$<SPAN>{</SPAN>endif<SPAN>}</SPAN></SPAN>
+    xtInfoP<SPAN style="COLOR: #000099">lugin</SPAN>::<SPAN style="COLOR: #003399">GetDotNetFrameworkVersion
+</SPAN>    <SPAN style="COLOR: #000099">Pop</SPAN> <SPAN style="COLOR: #660000">$1</SPAN>
+    <SPAN style="COLOR: #000099">MessageBox</SPAN> <SPAN style="COLOR: #ff6600">MB_OK</SPAN> <SPAN style="COLOR: #660066">".NET Framework version check = $0 (found: $1)"</SPAN>
+    <SPAN style="COLOR: #000099">Quit</SPAN> <SPAN style="COLOR: #666666; FONT-STYLE: italic">; Quit before installer start</SPAN>
+?
+<SPAN style="COLOR: #000066">FunctionEnd</SPAN>
+?
+<SPAN style="COLOR: #666666; FONT-STYLE: italic">; Required by NSIS, we don't need it!</SPAN>
+<SPAN style="COLOR: #000066">Section</SPAN>
+<SPAN style="COLOR: #000066">SectionEnd</SPAN></PRE>
+</body>
+</html>
